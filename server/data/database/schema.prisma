@@ -1,0 +1,80 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public"]
+}
+
+model Sender {
+  id               Int               @id @default(autoincrement())
+  userId           String            @unique @map("user_id")
+  name             String
+  invoicePositions InvoicePosition[]
+  logoUrl          String?            @map("logo_url")
+  footNote         String[]          @map("foot_note")
+  addressOnSender  AddressOnSender[]
+
+  @@map("sender")
+  @@schema("public")
+}
+
+model InvoicePosition {
+  id          Int    @id @default(autoincrement())
+  description String
+  price       Int
+  vatRate     Int    @map("vat_rate")
+  sender      Sender @relation(fields: [senderId], references: [id])
+  senderId    Int    @map("sender_id")
+
+  @@map("invoice_position")
+  @@schema("public")
+}
+
+model Recipient {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  addressOnRecipient AddressOnRecipient[]
+
+  @@map("recipient")
+  @@schema("public")
+}
+
+model Address {
+  id                 Int                  @id @default(autoincrement())
+  addressLine        String               @map("address_line")
+  zipCode            Int                  @map("zip_code")
+  city               String
+  country            String
+  addressOnSender    AddressOnSender[]
+  addressOnRecipient AddressOnRecipient[]
+
+  @@map("address")
+  @@schema("public")
+}
+
+model AddressOnSender {
+  id        Int     @id @default(autoincrement())
+  sender    Sender  @relation(fields: [senderId], references: [id])
+  senderId  Int     @map("sender_id")
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int     @map("address_id")
+
+  @@map("address_on_sender")
+  @@schema("public")
+}
+
+model AddressOnRecipient {
+  id          Int       @id @default(autoincrement())
+  recipient   Recipient @relation(fields: [recipientId], references: [id])
+  recipientId Int       @map("recipient_id")
+  address     Address   @relation(fields: [addressId], references: [id])
+  addressId   Int       @map("address_id")
+
+  @@map("address_on_recipient")
+  @@schema("public")
+}
