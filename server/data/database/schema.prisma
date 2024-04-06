@@ -11,17 +11,18 @@ datasource db {
 }
 
 model Sender {
-  id               Int               @id @default(autoincrement())
-  userId           String            @unique @map("user_id")
-  name             String
-  invoicePositions InvoicePosition[]
-  logoUrl          String?           @map("logo_url")
-  footNote         String[]          @default([]) @map("foot_note")
-  addressLine      String            @map("address_line")
-  zipCode          Int               @map("zip_code")
-  city             String
-  country          String
-  recipient        Recipient[]
+  id                   Int               @id @default(autoincrement())
+  userId               String            @unique @map("user_id")
+  name                 String
+  invoicePositions     InvoicePosition[]
+  logoUrl              String?           @map("logo_url")
+  footNote             String[]          @default([]) @map("foot_note")
+  addressLine          String            @map("address_line")
+  zipCode              Int               @map("zip_code")
+  city                 String
+  country              String
+  recipient            Recipient[]
+  runningInvoiceNumber Int               @default(1) @map("running_invoice_number")
 
   @@map("sender")
   @@schema("public")

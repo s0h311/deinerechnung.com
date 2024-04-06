@@ -12,11 +12,15 @@
 <script setup lang="ts">
 import { jsPDF } from 'jspdf'
 
-// Default export is a4 paper, portrait, using millimeters for units
+const sender = await useSender()
+
 const doc = new jsPDF()
+
+doc.setFont('helvetica')
+doc.setFontSize(11)
 
 function handleSave(): void {
   doc.text('Hello world!', 10, 10)
-  doc.save('a4.pdf')
+  //doc.save(sender.value!.runningInvoiceNumber + '.pdf')
 }
 </script>

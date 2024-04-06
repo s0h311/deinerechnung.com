@@ -50,6 +50,7 @@ export async function useSender(): Promise<Ref<Sender | null>> {
     city: fetchedSender.city,
     country: fetchedSender.country,
     footNote: fetchedSender.foot_note ?? [],
+    runningInvoiceNumber: fetchedSender.running_invoice_number,
     logoUrl: logoPath,
   }
 

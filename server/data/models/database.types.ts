@@ -88,6 +88,7 @@ export type Database = {
           id: number
           logo_url: string | null
           name: string
+          running_invoice_number: number
           user_id: string
           zip_code: number
         }
@@ -99,6 +100,7 @@ export type Database = {
           id?: number
           logo_url?: string | null
           name: string
+          running_invoice_number?: number
           user_id: string
           zip_code: number
         }
@@ -110,6 +112,7 @@ export type Database = {
           id?: number
           logo_url?: string | null
           name?: string
+          running_invoice_number?: number
           user_id?: string
           zip_code?: number
         }
