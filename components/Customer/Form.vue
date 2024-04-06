@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col gap-7 w-fit">
+  <form
+    class="grid gap-7"
+    @submit.prevent="handleSubmit"
+  >
     <input
       class="input input-bordered"
       type="text"
@@ -36,17 +39,17 @@
     />
 
     <button
-      class="btn btn-wide"
-      @click="handleSubmit"
+      class="btn btn-wide btn-primary"
+      type="submit"
     >
       <span
         v-if="isLoading"
         class="loading loading-spinner"
       />
 
-      <p v-else>Hinzufügen</p>
+      <p v-else>{{ editingRecipient ? 'Aktualisieren' : 'Hinzufügen' }}</p>
     </button>
-  </div>
+  </form>
 </template>
 
 <script setup lang="ts">
@@ -70,7 +73,6 @@ const recipient = reactive<any>({
 })
 
 watch(editingRecipient, (newRecipient, _) => {
-  console.log(newRecipient)
   if (newRecipient) {
     recipient.name = newRecipient.name
     recipient.addressLine = newRecipient.addressLine
@@ -99,10 +101,9 @@ async function handleSubmit(): Promise<void> {
 
   if (editingRecipient.value) {
     updateRecipient()
-    return
+  } else {
+    addRecipient()
   }
-
-  addRecipient()
 
   isLoading.value = false
   // TODO display toast notification

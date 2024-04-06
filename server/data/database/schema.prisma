@@ -16,7 +16,7 @@ model Sender {
   name             String
   invoicePositions InvoicePosition[]
   logoUrl          String?           @map("logo_url")
-  footNote         String[]          @map("foot_note")
+  footNote         String[]          @default([]) @map("foot_note")
   addressLine      String            @map("address_line")
   zipCode          Int               @map("zip_code")
   city             String

@@ -1,7 +1,6 @@
 <template>
   <div class="grid grid-flow-col gap-10">
     <CustomerForm />
-
     <CustomerList />
   </div>
 </template>

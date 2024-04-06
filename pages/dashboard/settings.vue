@@ -1,5 +1,8 @@
 <template>
-  <div>settings page</div>
+  <div class="grid grid-flow-col gap-10">
+    <SettingsAddressForm />
+    <SettingsLogo />
+  </div>
 </template>
 
 <script setup lang="ts">

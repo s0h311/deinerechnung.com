@@ -15,6 +15,6 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ['sunset'],
+    themes: ['emerald'],
   },
 }

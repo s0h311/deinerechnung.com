@@ -24,6 +24,21 @@ export async function useSender(): Promise<Ref<Sender | null>> {
     return sender
   }
 
+  let logoPath = data[0].logo_url
+
+  if (logoPath) {
+    const { data: signedLogoUrlData, error: signedLogoUrlError } = await supabase.storage
+      .from('pictures')
+      .createSignedUrl(logoPath, 60 * 60 * 24)
+
+    if (signedLogoUrlError) {
+      console.error(signedLogoUrlError)
+      return sender
+    }
+
+    logoPath = signedLogoUrlData.signedUrl
+  }
+
   const fetchedSender = data[0]
 
   const mappedSender: Sender = {
@@ -35,7 +50,7 @@ export async function useSender(): Promise<Ref<Sender | null>> {
     city: fetchedSender.city,
     country: fetchedSender.country,
     footNote: fetchedSender.foot_note ?? [],
-    logoUrl: fetchedSender.logo_url,
+    logoUrl: logoPath,
   }
 
   sender.value = mappedSender

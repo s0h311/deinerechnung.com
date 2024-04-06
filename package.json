@@ -16,7 +16,7 @@
     "test": "vitest",
     "prisma:studio": "prisma studio --browser none",
     "db:seed": "prisma db push --force-reset && prisma db seed",
-    "gen:db:types": "npx supabase gen types typescript --project-id nzbvsifqheptupfzulpu > server/data/models/database.types.ts"
+    "gen:db:types": "npx supabase gen types typescript --project-id qhruaikzsyhphvntlkqz > server/data/models/database.types.ts"
   },
   "dependencies": {
     "@nuxt/image": "^1.4.0",
