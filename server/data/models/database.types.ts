@@ -9,96 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      address: {
-        Row: {
-          address_line: string
-          city: string
-          country: string
-          id: number
-          zip_code: number
-        }
-        Insert: {
-          address_line: string
-          city: string
-          country: string
-          id?: number
-          zip_code: number
-        }
-        Update: {
-          address_line?: string
-          city?: string
-          country?: string
-          id?: number
-          zip_code?: number
-        }
-        Relationships: []
-      }
-      address_on_recipient: {
-        Row: {
-          address_id: number
-          id: number
-          recipient_id: number
-        }
-        Insert: {
-          address_id: number
-          id?: number
-          recipient_id: number
-        }
-        Update: {
-          address_id?: number
-          id?: number
-          recipient_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "address_on_recipient_address_id_fkey"
-            columns: ["address_id"]
-            isOneToOne: false
-            referencedRelation: "address"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "address_on_recipient_recipient_id_fkey"
-            columns: ["recipient_id"]
-            isOneToOne: false
-            referencedRelation: "recipient"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      address_on_sender: {
-        Row: {
-          address_id: number
-          id: number
-          sender_id: number
-        }
-        Insert: {
-          address_id: number
-          id?: number
-          sender_id: number
-        }
-        Update: {
-          address_id?: number
-          id?: number
-          sender_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "address_on_sender_address_id_fkey"
-            columns: ["address_id"]
-            isOneToOne: false
-            referencedRelation: "address"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "address_on_sender_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "sender"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       invoice_position: {
         Row: {
           description: string
@@ -133,40 +43,75 @@ export type Database = {
       }
       recipient: {
         Row: {
+          address_line: string
+          city: string
+          country: string
           id: number
           name: string
+          sender_id: number
+          zip_code: number
         }
         Insert: {
+          address_line: string
+          city: string
+          country: string
           id?: number
           name: string
+          sender_id: number
+          zip_code: number
         }
         Update: {
+          address_line?: string
+          city?: string
+          country?: string
           id?: number
           name?: string
+          sender_id?: number
+          zip_code?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "recipient_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "sender"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sender: {
         Row: {
+          address_line: string
+          city: string
+          country: string
           foot_note: string[] | null
           id: number
           logo_url: string | null
           name: string
           user_id: string
+          zip_code: number
         }
         Insert: {
+          address_line: string
+          city: string
+          country: string
           foot_note?: string[] | null
           id?: number
           logo_url?: string | null
           name: string
           user_id: string
+          zip_code: number
         }
         Update: {
+          address_line?: string
+          city?: string
+          country?: string
           foot_note?: string[] | null
           id?: number
           logo_url?: string | null
           name?: string
           user_id?: string
+          zip_code?: number
         }
         Relationships: []
       }

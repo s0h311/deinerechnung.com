@@ -13,9 +13,10 @@
 
 <script setup lang="ts">
 const links = [
-  { title: 'Neue Rechnung', path: '/newInvoice' },
-  { title: 'Rechnungen', path: '/invoices' },
-  { title: 'Kunden', path: '/customers' },
-  { title: 'Einstellungen', path: '/settings' },
+  { title: 'Übersicht', path: '/dashboard' },
+  { title: 'Neue Rechnung', path: '/dashboard/newInvoice' },
+  { title: 'Rechnungen', path: '/dashboard/invoices' },
+  { title: 'Kunden', path: '/dashboard/customers' },
+  { title: 'Einstellungen', path: '/dashboard/settings' },
 ]
 </script>

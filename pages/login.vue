@@ -36,6 +36,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 
+definePageMeta({
+  middleware: ['not-auth'],
+})
+
 const supabase = useSupabaseClient()
 
 const credentials = reactive({

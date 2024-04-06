@@ -13,10 +13,11 @@ export default defineNuxtConfig({
     format: ['webp', 'avif'],
   },
   supabase: {
-    redirectOptions: {
+    redirect: false,
+    /* redirectOptions: {
       login: '/login',
       callback: '/dashboard',
       exclude: ['/', '/signup'],
-    },
+    }, */
   },
 })

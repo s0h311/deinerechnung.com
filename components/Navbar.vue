@@ -11,10 +11,12 @@
 
 <script setup lang="ts">
 const supabase = useSupabaseClient()
+const sender = await useSender()
 
 async function handleSignout(): Promise<void> {
   await supabase.auth.signOut()
 
+  sender.value = null
   navigateTo('/')
 }
 </script>

@@ -47,7 +47,12 @@
 import { reactive, ref } from 'vue'
 import type { Database } from '~/server/data/models/database.types'
 
+definePageMeta({
+  middleware: ['not-auth'],
+})
+
 const supabase = useSupabaseClient<Database>()
+const sender = await useSender()
 
 const credentials = reactive({
   companyName: '',
@@ -74,14 +79,34 @@ async function handleLogin(): Promise<void> {
     return
   }
 
-  const { error: insertError } = await supabase.from('sender').insert({
-    user_id: signupData.user.id,
-    name: credentials.companyName,
-  })
+  const { data: insertSenderData, error: insertSenderError } = await supabase
+    .from('sender')
+    .insert({
+      user_id: signupData.user.id,
+      name: credentials.companyName,
+      address_line: 'Steindamm 1',
+      city: 'Hamburg',
+      zip_code: 20099,
+      country: 'Germany',
+    })
+    .select()
+    .single()
 
-  if (insertError) {
-    console.error(insertError)
+  if (insertSenderError) {
+    console.error(insertSenderError)
     return
+  }
+
+  sender.value = {
+    ...insertSenderData,
+    userId: insertSenderData.user_id,
+    name: insertSenderData.name,
+    addressLine: insertSenderData.address_line,
+    zipCode: insertSenderData.zip_code,
+    city: insertSenderData.city,
+    country: insertSenderData.country,
+    logoUrl: insertSenderData.logo_url,
+    footNote: insertSenderData.foot_note ?? [],
   }
 
   isLoading.value = false

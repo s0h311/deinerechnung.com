@@ -1,0 +1,189 @@
+<template>
+  <div class="flex flex-col gap-7 w-fit">
+    <input
+      class="input input-bordered"
+      type="text"
+      v-model="recipient.name"
+      placeholder="Name"
+    />
+
+    <input
+      class="input input-bordered"
+      type="text"
+      v-model="recipient.addressLine"
+      placeholder="Straße und Hausnummer"
+    />
+
+    <input
+      class="input input-bordered"
+      type="number"
+      v-model="recipient.zipCode"
+      placeholder="PZL"
+    />
+
+    <input
+      class="input input-bordered"
+      type="text"
+      v-model="recipient.city"
+      placeholder="Ort"
+    />
+
+    <input
+      class="input input-bordered"
+      type="text"
+      v-model="recipient.country"
+      placeholder="Land"
+    />
+
+    <button
+      class="btn btn-wide"
+      @click="handleSubmit"
+    >
+      <span
+        v-if="isLoading"
+        class="loading loading-spinner"
+      />
+
+      <p v-else>Hinzufügen</p>
+    </button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Recipient } from '@prisma/client'
+import type { Database } from '~/server/data/models/database.types'
+
+const recipients = await useRecipients()
+const editingRecipient = useEditingRecipient()
+const sender = await useSender()
+const supabase = useSupabaseClient<Database>()
+
+const isLoading = ref<boolean>(false)
+
+const recipient = reactive<any>({
+  // TODO remove any
+  name: '',
+  addressLine: '',
+  zipCode: null,
+  city: '',
+  country: '',
+})
+
+watch(editingRecipient, (newRecipient, _) => {
+  console.log(newRecipient)
+  if (newRecipient) {
+    recipient.name = newRecipient.name
+    recipient.addressLine = newRecipient.addressLine
+    recipient.zipCode = newRecipient.zipCode
+    recipient.city = newRecipient.city
+    recipient.country = newRecipient.country
+  }
+})
+
+async function handleSubmit(): Promise<void> {
+  // TODO test this?
+
+  isLoading.value = true
+
+  if (
+    !sender.value ||
+    !recipient.addressLine ||
+    !recipient.zipCode ||
+    !recipient.city ||
+    !recipient.country ||
+    !recipient.name
+  ) {
+    // TODO display error message
+    return
+  }
+
+  if (editingRecipient.value) {
+    updateRecipient()
+    return
+  }
+
+  addRecipient()
+
+  isLoading.value = false
+  // TODO display toast notification
+}
+
+async function updateRecipient(): Promise<void> {
+  if (!editingRecipient.value) {
+    return
+  }
+
+  const { data: updateRecipientData, error: updateRecipientError } = await supabase
+    .from('recipient')
+    .update({
+      name: recipient.name,
+      address_line: recipient.addressLine,
+      zip_code: recipient.zipCode,
+      city: recipient.city,
+      country: recipient.country,
+    })
+    .eq('id', editingRecipient.value.id)
+    .select()
+    .single()
+
+  if (updateRecipientError) {
+    console.error(updateRecipientError)
+    return
+  }
+
+  const recipientIndex = recipients.value.findIndex(
+    (currentRecipient) => currentRecipient.id === editingRecipient.value?.id
+  )
+
+  recipients.value = recipients.value.toSpliced(recipientIndex, 1, mapRecipient(updateRecipientData))
+
+  editingRecipient.value = null
+
+  resetForm()
+}
+
+async function addRecipient(): Promise<void> {
+  if (!sender.value) {
+    return
+  }
+
+  const { data: insertRecipientData, error: insertRecipientError } = await supabase
+    .from('recipient')
+    .insert({
+      name: recipient.name,
+      address_line: recipient.addressLine,
+      zip_code: recipient.zipCode,
+      city: recipient.city,
+      country: recipient.country,
+      sender_id: sender.value.id,
+    })
+    .select()
+    .single()
+
+  if (insertRecipientError) {
+    console.error(insertRecipientError)
+    return
+  }
+
+  recipients.value.push(mapRecipient(insertRecipientData))
+
+  resetForm()
+}
+
+function mapRecipient(dbRecipient: any): Recipient {
+  return {
+    ...dbRecipient,
+    senderId: dbRecipient.sender_id,
+    addressLine: dbRecipient.address_line,
+    zipCode: dbRecipient.zip_code,
+  }
+}
+
+function resetForm(): void {
+  recipient.addressLine = ''
+  recipient.zipCode = null
+  recipient.city = ''
+  recipient.country = ''
+  recipient.name = ''
+}
+</script>

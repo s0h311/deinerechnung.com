@@ -1,3 +1,3 @@
-import type { DishesByCategory } from '~/server/api/dishesByCategory/models/dishesByCategory.model'
+import type { Recipient } from '@prisma/client'
 
-export const useVisibleDishesByCategory = () => useState<DishesByCategory[]>('dishes-by-category')
+export const useEditingRecipient = () => useState<Recipient | null>('editingRecipient', () => null)

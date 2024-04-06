@@ -15,9 +15,13 @@ model Sender {
   userId           String            @unique @map("user_id")
   name             String
   invoicePositions InvoicePosition[]
-  logoUrl          String?            @map("logo_url")
+  logoUrl          String?           @map("logo_url")
   footNote         String[]          @map("foot_note")
-  addressOnSender  AddressOnSender[]
+  addressLine      String            @map("address_line")
+  zipCode          Int               @map("zip_code")
+  city             String
+  country          String
+  recipient        Recipient[]
 
   @@map("sender")
   @@schema("public")
@@ -36,45 +40,15 @@ model InvoicePosition {
 }
 
 model Recipient {
-  id                 Int                  @id @default(autoincrement())
-  name               String
-  addressOnRecipient AddressOnRecipient[]
+  id          Int    @id @default(autoincrement())
+  name        String
+  addressLine String @map("address_line")
+  zipCode     Int    @map("zip_code")
+  city        String
+  country     String
+  sender      Sender @relation(fields: [senderId], references: [id])
+  senderId    Int    @map("sender_id")
 
   @@map("recipient")
-  @@schema("public")
-}
-
-model Address {
-  id                 Int                  @id @default(autoincrement())
-  addressLine        String               @map("address_line")
-  zipCode            Int                  @map("zip_code")
-  city               String
-  country            String
-  addressOnSender    AddressOnSender[]
-  addressOnRecipient AddressOnRecipient[]
-
-  @@map("address")
-  @@schema("public")
-}
-
-model AddressOnSender {
-  id        Int     @id @default(autoincrement())
-  sender    Sender  @relation(fields: [senderId], references: [id])
-  senderId  Int     @map("sender_id")
-  address   Address @relation(fields: [addressId], references: [id])
-  addressId Int     @map("address_id")
-
-  @@map("address_on_sender")
-  @@schema("public")
-}
-
-model AddressOnRecipient {
-  id          Int       @id @default(autoincrement())
-  recipient   Recipient @relation(fields: [recipientId], references: [id])
-  recipientId Int       @map("recipient_id")
-  address     Address   @relation(fields: [addressId], references: [id])
-  addressId   Int       @map("address_id")
-
-  @@map("address_on_recipient")
   @@schema("public")
 }
