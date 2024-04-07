@@ -1,7 +1,12 @@
 <template>
-  <div class="relative navbar bg-gray-300 rounded-xl">
+  <div class="relative navbar gap-10 px-10 bg-base-200 rounded-xl">
+    <NuxtLink to="login"> Anmelden </NuxtLink>
+
+    <NuxtLink to="signup"> Registrieren </NuxtLink>
+
     <button
-      class="btn btn-md btn-neutral absolute right-4"
+      v-if="user"
+      class="btn btn-md btn-neutral absolute right-10"
       @click="handleSignout"
     >
       Abmelden
@@ -10,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const sender = await useSender()
 

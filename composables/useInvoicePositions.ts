@@ -16,6 +16,8 @@ export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
     return invoicePositions
   }
 
+  console.warn('FETCHING useInvoicePositions')
+
   const { data: invoicePositionsData, error: invoicePositionsError } = await supabase
     .from('invoice_position')
     .select()

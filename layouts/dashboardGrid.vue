@@ -1,5 +1,5 @@
 <template>
-  <section class="flex">
+  <section class="grid">
     <DashboardSidebar />
 
     <main class="p-10">
@@ -7,3 +7,8 @@
     </main>
   </section>
 </template>
+<style scoped>
+section {
+  grid-template-columns: auto 1fr;
+}
+</style>

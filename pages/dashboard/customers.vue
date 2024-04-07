@@ -1,18 +1,15 @@
 <template>
-  <div class="grid grid-flow-col gap-10">
+  <div class="flex gap-10">
     <CustomerForm />
-    <CustomerList />
+    <CustomerList v-if="recipients.length > 0" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Database } from '~/server/data/models/database.types'
-
 definePageMeta({
   layout: 'dashboard-grid',
   middleware: ['auth'],
 })
 
-const user = useSupabaseUser()
-const supabase = useSupabaseClient<Database>()
+const recipients = await useRecipients()
 </script>

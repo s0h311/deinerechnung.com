@@ -1,7 +1,10 @@
 <template>
-  <div class="flex gap-10 w-full h-full">
-    <div class="flex flex-col gap-7 pr-10 border-r h-full">
-      <select class="select select-bordered w-full max-w-xs">
+  <div class="flex gap-10 h-full">
+    <div class="space-y-7 pr-10 border-r h-full">
+      <select
+        class="select select-bordered w-full max-w-xs"
+        @change="handleRecipientChange"
+      >
         <option
           disabled
           selected
@@ -12,6 +15,7 @@
         <option
           v-for="recipient in recipients"
           :key="recipient.id"
+          :value="recipient.id"
         >
           {{ recipient.name }}
         </option>
@@ -47,11 +51,20 @@
 </template>
 
 <script setup lang="ts">
+import { useCurrentRecipient } from '~/composables/states'
+
 definePageMeta({
   layout: 'dashboard-grid',
   middleware: ['auth'],
 })
 
 const recipients = await useRecipients()
+const currentRecipient = useCurrentRecipient()
 const invoicePositions = await useInvoicePositions()
+
+function handleRecipientChange(event: Event): void {
+  const select = event.target as HTMLSelectElement
+
+  console.log(select)
+}
 </script>

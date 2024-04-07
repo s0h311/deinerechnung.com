@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-7">
+  <div class="grid gap-7">
     <textarea
       class="textarea textarea-bordered"
       placeholder="Beschreibung"

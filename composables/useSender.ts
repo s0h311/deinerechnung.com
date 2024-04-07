@@ -18,6 +18,8 @@ export async function useSender(): Promise<Ref<Sender | null>> {
 
   const supabase = useSupabaseClient<Database>()
 
+  console.warn('FETCHING useSender')
+
   const { data, error } = await supabase.from('sender').select().eq('user_id', user.value.id)
 
   if (error) {

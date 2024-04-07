@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-flow-col gap-10">
+  <div class="flex gap-10">
     <SettingsAddressForm />
     <SettingsLogo />
   </div>
