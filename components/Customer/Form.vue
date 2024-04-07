@@ -108,6 +108,7 @@ async function handleSubmit(): Promise<void> {
     addRecipient()
   }
 
+  resetForm()
   isLoading.value = false
   // TODO display toast notification
 }
@@ -142,8 +143,6 @@ async function updateRecipient(): Promise<void> {
   recipients.value = recipients.value.toSpliced(recipientIndex, 1, objectToCamel(updateRecipientData))
 
   editingRecipient.value = null
-
-  resetForm()
 }
 
 async function addRecipient(): Promise<void> {
@@ -170,8 +169,6 @@ async function addRecipient(): Promise<void> {
   }
 
   recipients.value.push(objectToCamel(insertRecipientData))
-
-  resetForm()
 }
 
 function resetForm(): void {

@@ -2,7 +2,7 @@
   <div class="flex gap-10 w-full">
     <button
       class="btn btn-neutral"
-      @click="handleSave"
+      @click="update"
     >
       PDF Laden
     </button>
@@ -19,6 +19,7 @@ import { jsPDF } from 'jspdf'
 
 const sender = (await useSender()).value!
 const currentRecipient = (await useCurrentRecipient()).value!
+const currentInvoicePositions = useCurrentInvoidePositions()
 
 const blobUri = ref<string | undefined>(undefined)
 
@@ -39,7 +40,7 @@ addRecipientAddress()
 addSenderContactInfo()
 addInvoiceNumber()
 addDate()
-addPositions()
+// addPositions()
 
 function addSenderLogo(): void {
   if (sender.logoUrl) {
@@ -95,12 +96,47 @@ function addDate(): void {
 }
 
 function addPositions(): void {
-  const positions = [1, 2, 3]
-  const rect = doc.rect(MARGIN, 130, PAGE_WIDTH - 2 * MARGIN, positions.length * 15)
+  const RECT_HEIGHT = currentInvoicePositions.value.length * 7 + 5 // h = 7 for each position and 5 for overall margin on y-axis
+  const rect = doc.rect(MARGIN, 130, PAGE_WIDTH - 2 * MARGIN, RECT_HEIGHT)
+
+  const RECT_MARGIN = MARGIN + 5
+
+  bold()
+  rect.text('Pos', MARGIN + 1, 127)
+  rect.line(RECT_MARGIN + 7, 130, RECT_MARGIN + 7, 130 + RECT_HEIGHT)
+
+  // Next line is on x = RECT_MARGIN + 7
+  rect.text('Beschreibung', RECT_MARGIN + 7 + 1, 127)
+  rect.line(RECT_MARGIN + 120, 130, RECT_MARGIN + 120, 130 + RECT_HEIGHT)
+
+  // Next line is on x = RECT_MARGIN + 120
+  rect.text('Menge', RECT_MARGIN + 120 + 1, 127)
+  rect.line(RECT_MARGIN + 135, 130, RECT_MARGIN + 135, 130 + RECT_HEIGHT)
+
+  // Next line is on x = RECT_MARGIN + 135
+  rect.text('Einzelpreis', RECT_MARGIN + 135 + 1, 127)
+  rect.line(RECT_MARGIN + 160, 130, RECT_MARGIN + 160, 130 + RECT_HEIGHT)
+
+  // Next line is on x = RECT_MARGIN + 160
+  rect.text('Gesamtpreis', RECT_MARGIN + 160 + 1, 127)
+  resetFont()
+
+  let currentLineY = 130
+
+  currentInvoicePositions.value.forEach((position, index) => {
+    currentLineY += 7
+
+    rect.text((index + 1).toString(), RECT_MARGIN, currentLineY)
+    rect.text(position.description, RECT_MARGIN + 7 + 2, currentLineY)
+    rect.text(position.quantity.toString(), RECT_MARGIN + 120 + 2, currentLineY)
+    rect.text(formatPrice(position.price), RECT_MARGIN + 135 + 2, currentLineY)
+    rect.text(formatPrice(position.price * position.quantity), RECT_MARGIN + 160 + 2, currentLineY)
+  })
 }
 
-function handleSave(): void {
+function update(): void {
   blobUri.value = doc.output('bloburi').toString()
+  addPositions()
   // window.open(doc.output('bloburi'), '_blank')
   // doc.save(sender.value!.runningInvoiceNumber + '.pdf')
 }
@@ -112,5 +148,9 @@ function resetFont(): void {
 
 function bold(): void {
   doc.setFont('helvetica', 'bold')
+}
+
+function formatPrice(price: number): string {
+  return price.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })
 }
 </script>

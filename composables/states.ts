@@ -1,4 +1,4 @@
-import type { Recipient } from '@prisma/client'
+import type { InvoicePosition, Recipient } from '@prisma/client'
 
 export const useEditingRecipient = () => useState<Recipient | null>('editingRecipient', () => null)
 
@@ -13,3 +13,6 @@ export async function useCurrentRecipient(): Promise<Ref<Recipient | null>> {
 
   return currentRecipient
 }
+
+export const useCurrentInvoidePositions = () =>
+  useState<(InvoicePosition & { quantity: number })[]>('currentInvoicePositions', () => [])

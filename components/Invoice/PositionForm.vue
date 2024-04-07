@@ -46,6 +46,7 @@ import type { Database } from '~/server/data/models/database.types'
 const supabase = useSupabaseClient<Database>()
 const sender = await useSender()
 const invoicePositions = await useInvoicePositions()
+const currentInvoicePositions = useCurrentInvoidePositions()
 
 const invoicePosition = reactive<Partial<InvoicePosition>>({
   description: '',
@@ -59,10 +60,11 @@ async function handleSubmit(): Promise<void> {
   if (
     !invoicePosition.description ||
     !invoicePosition.price ||
-    !invoicePosition.vatRate ||
+    invoicePosition.vatRate === undefined ||
     !quantity.value ||
     !sender.value
   ) {
+    console.error('Something went wrong')
     return
   }
 
@@ -82,6 +84,7 @@ async function handleSubmit(): Promise<void> {
     return
   }
 
+  currentInvoicePositions.value.push({ ...mapInvoicePosition(insertInvoicePositionData), quantity: quantity.value })
   invoicePositions.value.push(mapInvoicePosition(insertInvoicePositionData))
 }
 
