@@ -3,6 +3,8 @@
     class="grid gap-7"
     @submit.prevent="handleSubmit"
   >
+    <h2>Neuer Kunde</h2>
+
     <input
       class="input input-bordered"
       type="text"

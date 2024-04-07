@@ -1,31 +1,35 @@
 <template>
-  <ul class="py-4 px-5 border rounded-lg space-y-4">
-    <li
-      v-for="(recipient, index) in recipients"
-      :key="recipient.id"
-      class="grid items-center gap-10 justify-items-end"
-    >
-      <p class="justify-self-start">{{ recipient.name }}</p>
+  <section class="space-y-7">
+    <h2>Kunden</h2>
 
-      <p class="text-sm">{{ recipient.addressLine }}, {{ recipient.city }}</p>
+    <ul class="py-4 px-5 border rounded-lg space-y-4">
+      <li
+        v-for="(recipient, index) in recipients"
+        :key="recipient.id"
+        class="grid items-center gap-10 justify-items-end"
+      >
+        <p class="justify-self-start">{{ recipient.name }}</p>
 
-      <div class="flex items-center gap-2">
-        <button
-          class="btn btn-sm btn-outline btn-secondary w-fit"
-          @click="handleEdit(recipient)"
-        >
-          bearbeiten
-        </button>
+        <p class="text-sm">{{ recipient.addressLine }}, {{ recipient.city }}</p>
 
-        <button
-          class="btn btn-sm btn-outline btn-error w-fit"
-          @click="handleDelete(recipient.id, index)"
-        >
-          <IconDelete />
-        </button>
-      </div>
-    </li>
-  </ul>
+        <div class="flex items-center gap-2">
+          <button
+            class="btn btn-sm btn-outline btn-secondary w-fit"
+            @click="handleEdit(recipient)"
+          >
+            bearbeiten
+          </button>
+
+          <button
+            class="btn btn-sm btn-outline btn-error w-fit"
+            @click="handleDelete(recipient.id, index)"
+          >
+            <IconDelete />
+          </button>
+        </div>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <script setup lang="ts">
