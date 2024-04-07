@@ -1,5 +1,6 @@
 import type { Sender } from '@prisma/client'
 import type { RefSymbol } from '@vue/reactivity'
+import { objectToCamel } from 'ts-case-convert'
 import type { Database } from '~/server/data/models/database.types'
 
 export async function useSender(): Promise<Ref<Sender | null>> {
@@ -41,20 +42,10 @@ export async function useSender(): Promise<Ref<Sender | null>> {
 
   const fetchedSender = data[0]
 
-  const mappedSender: Sender = {
-    id: fetchedSender.id,
-    userId: fetchedSender.user_id,
-    name: fetchedSender.name,
-    addressLine: fetchedSender.address_line,
-    zipCode: fetchedSender.zip_code,
-    city: fetchedSender.city,
-    country: fetchedSender.country,
-    footNote: fetchedSender.foot_note ?? [],
-    runningInvoiceNumber: fetchedSender.running_invoice_number,
+  sender.value = {
+    ...objectToCamel(fetchedSender),
     logoUrl: logoPath,
   }
-
-  sender.value = mappedSender
 
   return sender
 }

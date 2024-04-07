@@ -1,4 +1,5 @@
 import type { Recipient } from '@prisma/client'
+import { objectToCamel } from 'ts-case-convert'
 import type { Database } from '~/server/data/models/database.types'
 
 export async function useRecipients(): Promise<Ref<Recipient[]>> {
@@ -26,12 +27,7 @@ export async function useRecipients(): Promise<Ref<Recipient[]>> {
     return recipients
   }
 
-  const fetchedRecipients: Recipient[] = recipientData.map((value) => ({
-    ...value,
-    addressLine: value.address_line,
-    senderId: value.sender_id,
-    zipCode: value.zip_code,
-  }))
+  const fetchedRecipients: Recipient[] = recipientData.map(objectToCamel)
 
   recipients.value = fetchedRecipients
 

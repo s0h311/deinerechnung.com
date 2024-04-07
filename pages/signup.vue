@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { objectToCamel } from 'ts-case-convert'
 import { reactive, ref } from 'vue'
 import type { Database } from '~/server/data/models/database.types'
 
@@ -97,17 +98,7 @@ async function handleLogin(): Promise<void> {
     return
   }
 
-  sender.value = {
-    ...insertSenderData,
-    userId: insertSenderData.user_id,
-    name: insertSenderData.name,
-    addressLine: insertSenderData.address_line,
-    zipCode: insertSenderData.zip_code,
-    city: insertSenderData.city,
-    country: insertSenderData.country,
-    logoUrl: insertSenderData.logo_url,
-    footNote: insertSenderData.foot_note ?? [],
-  }
+  sender.value = objectToCamel(insertSenderData)
 
   isLoading.value = false
   navigateTo('/dashboard')

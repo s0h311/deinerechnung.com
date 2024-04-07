@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import type { Recipient } from '@prisma/client'
+import { objectToCamel } from 'ts-case-convert'
 import type { Database } from '~/server/data/models/database.types'
 
 const recipients = await useRecipients()
@@ -136,7 +137,7 @@ async function updateRecipient(): Promise<void> {
     (currentRecipient) => currentRecipient.id === editingRecipient.value?.id
   )
 
-  recipients.value = recipients.value.toSpliced(recipientIndex, 1, mapRecipient(updateRecipientData))
+  recipients.value = recipients.value.toSpliced(recipientIndex, 1, objectToCamel(updateRecipientData))
 
   editingRecipient.value = null
 
@@ -166,18 +167,9 @@ async function addRecipient(): Promise<void> {
     return
   }
 
-  recipients.value.push(mapRecipient(insertRecipientData))
+  recipients.value.push(objectToCamel(insertRecipientData))
 
   resetForm()
-}
-
-function mapRecipient(dbRecipient: any): Recipient {
-  return {
-    ...dbRecipient,
-    senderId: dbRecipient.sender_id,
-    addressLine: dbRecipient.address_line,
-    zipCode: dbRecipient.zip_code,
-  }
 }
 
 function resetForm(): void {
