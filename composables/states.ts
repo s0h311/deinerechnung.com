@@ -14,5 +14,5 @@ export async function useCurrentRecipient(): Promise<Ref<Recipient | null>> {
   return currentRecipient
 }
 
-export const useCurrentInvoidePositions = () =>
+export const useCurrentInvoicePositions = () =>
   useState<(InvoicePosition & { quantity: number })[]>('currentInvoicePositions', () => [])

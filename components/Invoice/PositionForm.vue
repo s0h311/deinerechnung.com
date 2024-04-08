@@ -1,41 +1,61 @@
 <template>
-  <div class="grid gap-7">
-    <textarea
-      class="textarea textarea-bordered"
-      placeholder="Beschreibung"
-      v-model="invoicePosition.description"
-    ></textarea>
+  <div class="flex flex-col w-full border-opacity-50">
+    <select class="select select-bordered w-full max-w-xs">
+      <option
+        disabled
+        selected
+      >
+        Position auswählen
+      </option>
 
-    <input
-      class="input input-bordered"
-      v-model="invoicePosition.price"
-      type="number"
-      :min="0.0"
-      :max="100_000.0"
-      :step="0.01"
-      placeholder="Einzelpreis"
-    />
+      <option
+        v-for="invoicePosition in invoicePositions"
+        :key="invoicePosition.id"
+      >
+        {{ invoicePosition.description }} {{ invoicePosition.price }} €
+      </option>
+    </select>
 
-    <input
-      class="input input-bordered"
-      v-model="quantity"
-      type="number"
-      placeholder="Menge"
-    />
+    <div class="divider my-8">oder hinzufügen</div>
 
-    <input
-      class="input input-bordered"
-      v-model="invoicePosition.vatRate"
-      type="number"
-      placeholder="Umsatzsteuer"
-    />
+    <div class="grid gap-7">
+      <textarea
+        class="textarea textarea-bordered"
+        placeholder="Beschreibung"
+        v-model="invoicePosition.description"
+      ></textarea>
 
-    <button
-      class="btn btn-primary"
-      @click="handleSubmit"
-    >
-      Hinzufügen
-    </button>
+      <input
+        class="input input-bordered"
+        v-model="invoicePosition.price"
+        type="number"
+        :min="0.0"
+        :max="100_000.0"
+        :step="0.01"
+        placeholder="Einzelpreis"
+      />
+
+      <input
+        class="input input-bordered"
+        v-model="quantity"
+        type="number"
+        placeholder="Menge"
+      />
+
+      <input
+        class="input input-bordered"
+        v-model="invoicePosition.vatRate"
+        type="number"
+        placeholder="Umsatzsteuer"
+      />
+
+      <button
+        class="btn btn-primary"
+        @click="handleSubmit"
+      >
+        Hinzufügen
+      </button>
+    </div>
   </div>
 </template>
 
@@ -46,7 +66,7 @@ import type { Database } from '~/server/data/models/database.types'
 const supabase = useSupabaseClient<Database>()
 const sender = await useSender()
 const invoicePositions = await useInvoicePositions()
-const currentInvoicePositions = useCurrentInvoidePositions()
+const currentInvoicePositions = useCurrentInvoicePositions()
 
 const invoicePosition = reactive<Partial<InvoicePosition>>({
   description: '',
@@ -86,6 +106,8 @@ async function handleSubmit(): Promise<void> {
 
   currentInvoicePositions.value.push({ ...mapInvoicePosition(insertInvoicePositionData), quantity: quantity.value })
   invoicePositions.value.push(mapInvoicePosition(insertInvoicePositionData))
+
+  resetForm()
 }
 
 function mapInvoicePosition(dbInvoicePosition: any): InvoicePosition {
@@ -96,5 +118,12 @@ function mapInvoicePosition(dbInvoicePosition: any): InvoicePosition {
     vatRate: dbInvoicePosition.vat_rate,
     senderId: dbInvoicePosition.sender_id,
   }
+}
+
+function resetForm(): void {
+  invoicePosition.description = ''
+  invoicePosition.price = undefined
+  invoicePosition.vatRate = undefined
+  quantity.value = null
 }
 </script>

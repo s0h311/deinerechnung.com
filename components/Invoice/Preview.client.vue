@@ -1,25 +1,16 @@
 <template>
-  <div class="flex gap-10 w-full">
-    <button
-      class="btn btn-neutral"
-      @click="update"
-    >
-      PDF Laden
-    </button>
-
-    <iframe
-      :src="blobUri"
-      class="border rounded-lg w-auto h-full aspect-[1/1.4]"
-    ></iframe>
-  </div>
+  <iframe
+    :src="blobUri"
+    class="border rounded-lg w-auto h-full aspect-[1/1.4]"
+  ></iframe>
 </template>
 
 <script setup lang="ts">
 import { jsPDF } from 'jspdf'
 
 const sender = (await useSender()).value!
-const currentRecipient = (await useCurrentRecipient()).value!
-const currentInvoicePositions = useCurrentInvoidePositions()
+const currentRecipient = await useCurrentRecipient()
+const currentInvoicePositions = useCurrentInvoicePositions()
 
 const blobUri = ref<string | undefined>(undefined)
 
@@ -33,14 +24,49 @@ const MARGIN = 10
 const MAX_WIDTH = PAGE_WIDTH - MARGIN
 const MAX_HEIGHT = PAGE_HEIGHT - MARGIN
 
-resetFont()
-addSenderLogo()
-addSenderAddress()
-addRecipientAddress()
-addSenderContactInfo()
-addInvoiceNumber()
-addDate()
-// addPositions()
+onMounted(() => {
+  init()
+})
+
+watch(
+  currentInvoicePositions,
+  () => {
+    doc.deletePage(1)
+    doc.addPage()
+    init()
+    updatePositions()
+    update()
+  },
+  { deep: true }
+)
+
+watch(currentRecipient, () => {
+  doc.deletePage(1)
+  doc.addPage()
+  init()
+
+  if (currentRecipient.value) {
+    addRecipientAddress()
+  }
+
+  updatePositions()
+  update()
+})
+
+function init(): void {
+  resetFont()
+  addSenderLogo()
+  addSenderAddress()
+  addSenderContactInfo()
+  addInvoiceNumber()
+  addDate()
+  update()
+
+  if (currentRecipient.value) {
+    addRecipientAddress()
+    update()
+  }
+}
 
 function addSenderLogo(): void {
   if (sender.logoUrl) {
@@ -61,9 +87,9 @@ function addSenderAddress(): void {
 
 function addRecipientAddress(): void {
   const recipientAddress = [
-    currentRecipient.name,
-    currentRecipient.addressLine,
-    currentRecipient.zipCode.toString() + ', ' + currentRecipient.city,
+    currentRecipient.value!.name,
+    currentRecipient.value!.addressLine,
+    currentRecipient.value!.zipCode.toString() + ', ' + currentRecipient.value!.city,
   ]
 
   doc.text(recipientAddress, MARGIN, 70)
@@ -95,7 +121,7 @@ function addDate(): void {
   doc.text(text, MAX_WIDTH - text.length - 20, 100)
 }
 
-function addPositions(): void {
+function updatePositions(): void {
   const RECT_HEIGHT = currentInvoicePositions.value.length * 7 + 5 // h = 7 for each position and 5 for overall margin on y-axis
   const rect = doc.rect(MARGIN, 130, PAGE_WIDTH - 2 * MARGIN, RECT_HEIGHT)
 
@@ -134,11 +160,10 @@ function addPositions(): void {
   })
 }
 
+function addFootnotes(): void {}
+
 function update(): void {
   blobUri.value = doc.output('bloburi').toString()
-  addPositions()
-  // window.open(doc.output('bloburi'), '_blank')
-  // doc.save(sender.value!.runningInvoiceNumber + '.pdf')
 }
 
 function resetFont(): void {

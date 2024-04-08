@@ -84,7 +84,7 @@ export type Database = {
           address_line: string
           city: string
           country: string
-          foot_note: string[] | null
+          footnotes: string[] | null
           id: number
           logo_url: string | null
           name: string
@@ -96,7 +96,7 @@ export type Database = {
           address_line: string
           city: string
           country: string
-          foot_note?: string[] | null
+          footnotes?: string[] | null
           id?: number
           logo_url?: string | null
           name: string
@@ -108,7 +108,7 @@ export type Database = {
           address_line?: string
           city?: string
           country?: string
-          foot_note?: string[] | null
+          footnotes?: string[] | null
           id?: number
           logo_url?: string | null
           name?: string
