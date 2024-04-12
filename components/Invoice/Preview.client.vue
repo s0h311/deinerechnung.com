@@ -7,10 +7,10 @@
 
 <script setup lang="ts">
 import { jsPDF } from 'jspdf'
+import { useCurrentInvoice } from '~/composables/states'
 
 const sender = (await useSender()).value!
-const currentRecipient = await useCurrentRecipient()
-const currentInvoicePositions = useCurrentInvoicePositions()
+const currentInvoice = await useCurrentInvoice()
 
 const blobUri = ref<string | undefined>(undefined)
 
@@ -29,23 +29,28 @@ onMounted(() => {
 })
 
 watch(
-  currentInvoicePositions,
+  currentInvoice,
   () => {
     doc.deletePage(1)
     doc.addPage()
     init()
+
+    if (currentInvoice.value.recipient) {
+      addRecipientAddress()
+    }
+
     updatePositions()
     update()
   },
   { deep: true }
 )
 
-watch(currentRecipient, () => {
+watch(currentInvoice, () => {
   doc.deletePage(1)
   doc.addPage()
   init()
 
-  if (currentRecipient.value) {
+  if (currentInvoice.value.recipient) {
     addRecipientAddress()
   }
 
@@ -62,7 +67,7 @@ function init(): void {
   addDate()
   update()
 
-  if (currentRecipient.value) {
+  if (currentInvoice.value.recipient) {
     addRecipientAddress()
     update()
   }
@@ -86,10 +91,12 @@ function addSenderAddress(): void {
 }
 
 function addRecipientAddress(): void {
+  const currentRecipient = currentInvoice.value.recipient
+
   const recipientAddress = [
-    currentRecipient.value!.name,
-    currentRecipient.value!.addressLine,
-    currentRecipient.value!.zipCode.toString() + ', ' + currentRecipient.value!.city,
+    currentRecipient!.name,
+    currentRecipient!.addressLine,
+    currentRecipient!.zipCode.toString() + ', ' + currentRecipient!.city,
   ]
 
   doc.text(recipientAddress, MARGIN, 70)
@@ -122,7 +129,11 @@ function addDate(): void {
 }
 
 function updatePositions(): void {
-  const RECT_HEIGHT = currentInvoicePositions.value.length * 7 + 5 // h = 7 for each position and 5 for overall margin on y-axis
+  if (currentInvoice.value.positions.length === 0) {
+    return
+  }
+
+  const RECT_HEIGHT = currentInvoice.value.positions.length * 7 + 5 // h = 7 for each position and 5 for overall margin on y-axis
   const rect = doc.rect(MARGIN, 130, PAGE_WIDTH - 2 * MARGIN, RECT_HEIGHT)
 
   const RECT_MARGIN = MARGIN + 5
@@ -149,7 +160,7 @@ function updatePositions(): void {
 
   let currentLineY = 130
 
-  currentInvoicePositions.value.forEach((position, index) => {
+  currentInvoice.value.positions.forEach((position, index) => {
     currentLineY += 7
 
     rect.text((index + 1).toString(), RECT_MARGIN, currentLineY)

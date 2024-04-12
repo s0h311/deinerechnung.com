@@ -4,7 +4,7 @@
 
     <ul class="space-y-2 w-full">
       <li
-        v-for="(invoicePosition, index) in currentInvoicePositions"
+        v-for="(invoicePosition, index) in currentInvoice.positions"
         class="grid grid-flow-col items-center"
         :key="invoicePosition.id"
       >
@@ -20,9 +20,11 @@
   </section>
 </template>
 <script setup lang="ts">
-const currentInvoicePositions = useCurrentInvoicePositions()
+import { useCurrentInvoice } from '~/composables/states'
+
+const currentInvoice = await useCurrentInvoice()
 
 function handleRemoveInvoicePosition(index: number): void {
-  currentInvoicePositions.value.splice(index, 1)
+  currentInvoice.value.positions.splice(index, 1)
 }
 </script>

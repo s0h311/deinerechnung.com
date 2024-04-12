@@ -1,4 +1,5 @@
 import type { InvoicePosition } from '@prisma/client'
+import { objectToCamel } from 'ts-case-convert'
 import type { Database } from '~/server/data/models/database.types'
 
 export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
@@ -28,13 +29,7 @@ export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
     return invoicePositions
   }
 
-  const fetchedInvoicePositions: InvoicePosition[] = invoicePositionsData.map((value) => ({
-    id: value.id,
-    description: value.description,
-    price: value.price,
-    vatRate: value.vat_rate,
-    senderId: value.sender_id,
-  }))
+  const fetchedInvoicePositions: InvoicePosition[] = invoicePositionsData.map(objectToCamel)
 
   invoicePositions.value = fetchedInvoicePositions
 

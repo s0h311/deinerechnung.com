@@ -20,8 +20,10 @@
   </select>
 </template>
 <script setup lang="ts">
+import { useCurrentInvoice } from '~/composables/states'
+
 const recipients = await useRecipients()
-const currentRecipient = await useCurrentRecipient()
+const currenctInvoice = await useCurrentInvoice()
 
 function handleRecipientChange(event: Event): void {
   const select = event.target as HTMLSelectElement
@@ -30,7 +32,7 @@ function handleRecipientChange(event: Event): void {
   const recipient = recipients.value.find((recipient) => recipient.id === recipientId)
 
   if (recipient) {
-    currentRecipient.value = recipient
+    currenctInvoice.value.recipient = recipient
   }
 }
 </script>

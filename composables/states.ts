@@ -2,17 +2,26 @@ import type { InvoicePosition, Recipient } from '@prisma/client'
 
 export const useEditingRecipient = () => useState<Recipient | null>('editingRecipient', () => null)
 
-export async function useCurrentRecipient(): Promise<Ref<Recipient | null>> {
-  const currentRecipient = useState<Recipient | null>('currentRecipient', () => null)
+type InvoiceState = {
+  recipient: Recipient | null
+  positions: (InvoicePosition & { quantity: number })[]
+  vatRate: number
+}
+
+export async function useCurrentInvoice(): Promise<Ref<InvoiceState>> {
+  const currentInvoice = useState<InvoiceState>('currentInvoice', () => ({
+    recipient: null,
+    positions: [],
+    vatRate: 0,
+  }))
 
   const recipients = await useRecipients()
 
   if (recipients.value.length === 1) {
-    currentRecipient.value = recipients.value[0]
+    currentInvoice.value.recipient = recipients.value[0]
   }
 
-  return currentRecipient
+  return currentInvoice
 }
 
-export const useCurrentInvoicePositions = () =>
-  useState<(InvoicePosition & { quantity: number })[]>('currentInvoicePositions', () => [])
+export const resetInvoice = () => clearNuxtState('currentInvoice')
