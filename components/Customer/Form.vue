@@ -89,6 +89,7 @@ watch(editingRecipient, (newRecipient, _) => {
     recipient.zipCode = newRecipient.zipCode
     recipient.city = newRecipient.city
     recipient.country = newRecipient.country
+    recipient.emailAddress = newRecipient.emailAddress
   }
 })
 
@@ -133,6 +134,7 @@ async function updateRecipient(): Promise<void> {
       zip_code: recipient.zipCode,
       city: recipient.city,
       country: recipient.country,
+      email_address: recipient.emailAddress,
     })
     .eq('id', editingRecipient.value.id)
     .select()
@@ -166,6 +168,7 @@ async function addRecipient(): Promise<void> {
       city: recipient.city,
       country: recipient.country,
       sender_id: sender.value.id,
+      email_address: recipient.emailAddress,
     })
     .select()
     .single()
@@ -184,5 +187,6 @@ function resetForm(): void {
   recipient.city = ''
   recipient.country = ''
   recipient.name = ''
+  recipient.emailAddress = ''
 }
 </script>

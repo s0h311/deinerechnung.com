@@ -116,7 +116,15 @@ export type Database = {
           user_id?: string
           zip_code?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sender_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
