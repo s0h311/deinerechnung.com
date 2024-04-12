@@ -1,7 +1,6 @@
-import type { Sender } from '@prisma/client'
-import type { RefSymbol } from '@vue/reactivity'
 import { objectToCamel } from 'ts-case-convert'
-import type { Database } from '~/server/data/models/database.types'
+import type { Sender } from '~/server/types'
+import type { Database } from '~/supabase/database.types'
 
 export async function useSender(): Promise<Ref<Sender | null>> {
   const sender = useState<Sender | null>('sender', () => null)

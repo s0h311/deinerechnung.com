@@ -60,10 +60,10 @@
 </template>
 
 <script setup lang="ts">
-import type { InvoicePosition } from '@prisma/client'
-import type { Database } from '~/server/data/models/database.types'
+import type { Database } from '~/supabase/database.types'
 import { objectToCamel } from 'ts-case-convert'
 import { useCurrentInvoice } from '~/composables/states'
+import type { InvoicePosition } from '~/server/types'
 
 const supabase = useSupabaseClient<Database>()
 const sender = await useSender()

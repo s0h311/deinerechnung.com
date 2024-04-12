@@ -26,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Sender } from '@prisma/client'
 import type jsPDF from 'jspdf'
+import type { Sender } from '~/server/types'
 
 type Props = {
   document: jsPDF

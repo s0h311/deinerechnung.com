@@ -14,6 +14,13 @@
 
     <input
       class="input input-bordered"
+      type="email"
+      v-model="recipient.emailAddress"
+      placeholder="hi@reffect.org"
+    />
+
+    <input
+      class="input input-bordered"
       type="text"
       v-model="recipient.addressLine"
       placeholder="Straße und Hausnummer"
@@ -55,9 +62,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Recipient } from '@prisma/client'
 import { objectToCamel } from 'ts-case-convert'
-import type { Database } from '~/server/data/models/database.types'
+import type { Recipient } from '~/server/types'
+import type { Database } from '~/supabase/database.types'
 
 const recipients = await useRecipients()
 const editingRecipient = useEditingRecipient()
@@ -66,13 +73,13 @@ const supabase = useSupabaseClient<Database>()
 
 const isLoading = ref<boolean>(false)
 
-const recipient = reactive<any>({
-  // TODO remove any
+const recipient = reactive<Omit<Recipient, 'id' | 'senderId'>>({
   name: '',
   addressLine: '',
-  zipCode: null,
+  zipCode: 0,
   city: '',
   country: '',
+  emailAddress: null,
 })
 
 watch(editingRecipient, (newRecipient, _) => {
@@ -173,7 +180,7 @@ async function addRecipient(): Promise<void> {
 
 function resetForm(): void {
   recipient.addressLine = ''
-  recipient.zipCode = null
+  recipient.zipCode = 0
   recipient.city = ''
   recipient.country = ''
   recipient.name = ''

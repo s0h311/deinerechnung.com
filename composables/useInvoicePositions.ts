@@ -1,6 +1,6 @@
-import type { InvoicePosition } from '@prisma/client'
 import { objectToCamel } from 'ts-case-convert'
-import type { Database } from '~/server/data/models/database.types'
+import type { InvoicePosition } from '~/server/types'
+import type { Database } from '~/supabase/database.types'
 
 export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
   const invoicePositions = useState<InvoicePosition[]>('invoicePositions', () => [])

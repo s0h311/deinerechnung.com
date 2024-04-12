@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { objectToCamel } from 'ts-case-convert'
 import { reactive, ref } from 'vue'
-import type { Database } from '~/server/data/models/database.types'
+import type { Database } from '~/supabase/database.types'
 
 definePageMeta({
   middleware: ['not-auth'],

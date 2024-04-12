@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Database } from '~/server/data/models/database.types'
+import type { Database } from '~/supabase/database.types'
 
 const sender = await useSender()
 const user = useSupabaseUser()

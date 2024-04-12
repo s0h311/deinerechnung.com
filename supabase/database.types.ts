@@ -9,39 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      _prisma_migrations: {
-        Row: {
-          applied_steps_count: number
-          checksum: string
-          finished_at: string | null
-          id: string
-          logs: string | null
-          migration_name: string
-          rolled_back_at: string | null
-          started_at: string
-        }
-        Insert: {
-          applied_steps_count?: number
-          checksum: string
-          finished_at?: string | null
-          id: string
-          logs?: string | null
-          migration_name: string
-          rolled_back_at?: string | null
-          started_at?: string
-        }
-        Update: {
-          applied_steps_count?: number
-          checksum?: string
-          finished_at?: string | null
-          id?: string
-          logs?: string | null
-          migration_name?: string
-          rolled_back_at?: string | null
-          started_at?: string
-        }
-        Relationships: []
-      }
       invoice_position: {
         Row: {
           description: string
@@ -76,7 +43,7 @@ export type Database = {
           address_line: string
           city: string
           country: string
-          email_address: string
+          email_address: string | null
           id: number
           name: string
           sender_id: number
@@ -86,7 +53,7 @@ export type Database = {
           address_line: string
           city: string
           country: string
-          email_address: string
+          email_address?: string | null
           id?: number
           name: string
           sender_id: number
@@ -96,7 +63,7 @@ export type Database = {
           address_line?: string
           city?: string
           country?: string
-          email_address?: string
+          email_address?: string | null
           id?: number
           name?: string
           sender_id?: number

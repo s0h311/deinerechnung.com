@@ -14,13 +14,11 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest",
-    "prisma:studio": "prisma studio --browser none",
-    "db:seed": "prisma db push --force-reset && prisma db seed",
-    "gen:db:types": "npx supabase gen types typescript --project-id qhruaikzsyhphvntlkqz > server/data/models/database.types.ts"
+    "migrate:up": "npx supabase migration up --linked",
+    "gen:db:types": "npx supabase gen types typescript --project-id qhruaikzsyhphvntlkqz > supabase/database.types.ts"
   },
   "dependencies": {
     "@nuxt/image": "^1.4.0",
-    "@prisma/client": "^5.11.0",
     "jspdf": "^2.5.1",
     "ts-case-convert": "^2.0.7",
     "vue": "^3.4.21",
@@ -35,13 +33,8 @@
     "daisyui": "^4.9.0",
     "nuxt": "^3.11.2",
     "postcss": "^8.4.38",
-    "prisma": "^5.11.0",
     "tailwindcss": "^3.4.3",
     "tsx": "^4.7.1",
     "vitest": "^1.4.0"
-  },
-  "prisma": {
-    "schema": "./server/data/database/schema.prisma",
-    "seed": "tsx ./server/data/database/seed.ts"
   }
 }

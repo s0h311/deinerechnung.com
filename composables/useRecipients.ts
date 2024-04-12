@@ -1,6 +1,6 @@
-import type { Recipient } from '@prisma/client'
 import { objectToCamel } from 'ts-case-convert'
-import type { Database } from '~/server/data/models/database.types'
+import type { Recipient } from '~/server/types'
+import type { Database } from '~/supabase/database.types'
 
 export async function useRecipients(): Promise<Ref<Recipient[]>> {
   const recipients = useState<Recipient[]>('recipients', () => [])

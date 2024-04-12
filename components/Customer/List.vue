@@ -33,8 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Recipient } from '@prisma/client'
-import type { Database } from '~/server/data/models/database.types'
+import type { Recipient } from '~/server/types'
+import type { Database } from '~/supabase/database.types'
 
 const recipients = await useRecipients()
 const supabase = useSupabaseClient<Database>()
