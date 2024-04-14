@@ -29,7 +29,7 @@ onMounted(() => {
 })
 
 watch(
-  currentInvoice,
+  currentInvoice.value.positions,
   () => {
     doc.deletePage(1)
     doc.addPage()
@@ -62,6 +62,7 @@ function init(): void {
   resetFont()
   addSenderLogo()
   addSenderAddress()
+  addFootnotes()
   addSenderContactInfo()
   addInvoiceNumber()
   addDate()
@@ -171,7 +172,22 @@ function updatePositions(): void {
   })
 }
 
-function addFootnotes(): void {}
+function addFootnotes(): void {
+  if (!sender.footnotes || sender.footnotes.length === 0) {
+    return
+  }
+
+  doc.setFontSize(9)
+  doc.setTextColor(107, 114, 128)
+
+  sender.footnotes.forEach((column, index) => {
+    let space = index * 30
+
+    doc.text(column, MARGIN + space, MAX_HEIGHT - 10)
+  })
+
+  resetFont()
+}
 
 function update(): void {
   blobUri.value = doc.output('bloburi').toString()
@@ -179,6 +195,7 @@ function update(): void {
 
 function resetFont(): void {
   doc.setFont('helvetica', 'normal')
+  doc.setTextColor(0, 0, 0)
   doc.setFontSize(11)
 }
 

@@ -14,7 +14,7 @@
       <option
         v-for="invoicePosition in invoicePositions"
         :key="invoicePosition.id"
-        :vlaue="invoicePosition.id"
+        :value="invoicePosition.id"
       >
         {{ invoicePosition.description }} {{ invoicePosition.price }} €
       </option>
@@ -24,17 +24,24 @@
 
     <form
       class="grid gap-7"
-      @submit.prevent="handleSubmit"
+      @submit.prevent="submit(handleSubmit)"
     >
       <textarea
         class="textarea textarea-bordered"
         placeholder="Beschreibung"
-        v-model="invoicePosition.description"
+        v-model="fields.description"
       ></textarea>
+
+      <p
+        v-if="errors.description"
+        class="text-red-400 -mt-6"
+      >
+        {{ errors.description }}
+      </p>
 
       <input
         class="input input-bordered"
-        v-model="invoicePosition.price"
+        v-model="fields.price"
         type="number"
         :min="0.0"
         :max="100_000.0"
@@ -42,12 +49,26 @@
         placeholder="Einzelpreis"
       />
 
+      <p
+        v-if="errors.price"
+        class="text-red-400 -mt-6"
+      >
+        {{ errors.price }}
+      </p>
+
       <input
         class="input input-bordered"
-        v-model="invoicePosition.quantity"
+        v-model="fields.quantity"
         type="number"
         placeholder="Menge"
       />
+
+      <p
+        v-if="errors.quantity"
+        class="text-red-400 -mt-6"
+      >
+        {{ errors.quantity }}
+      </p>
 
       <button
         class="btn btn-primary"
@@ -64,18 +85,28 @@ import type { Database } from '~/supabase/database.types'
 import { objectToCamel } from 'ts-case-convert'
 import { useCurrentInvoice } from '~/composables/states'
 import type { InvoicePosition } from '~/server/types'
+import { z } from 'zod'
 
 const supabase = useSupabaseClient<Database>()
 const sender = await useSender()
 const invoicePositions = await useInvoicePositions()
 const currentInvoice = await useCurrentInvoice()
 
-const invoicePosition = reactive<InvoicePosition & { quantity: number }>({
-  id: 0,
-  description: '',
-  price: 0,
-  senderId: 0,
-  quantity: 0,
+const { fields, errors, reset, set, submit } = useForm({
+  initialValue: {
+    id: 0,
+    description: '',
+    price: null,
+    senderId: 0,
+    quantity: null,
+  },
+  resolver: z.object({
+    id: z.number(),
+    description: z.string().min(1),
+    price: z.number().gt(0),
+    senderId: z.number(),
+    quantity: z.number().gt(0),
+  }),
 })
 
 function handleInvoicePositionChange(event: Event): void {
@@ -87,26 +118,24 @@ function handleInvoicePositionChange(event: Event): void {
   )
 
   if (selectedInvoicePosition) {
-    invoicePosition.id = selectedInvoicePosition.id
-    invoicePosition.description = selectedInvoicePosition.description
-    invoicePosition.price = selectedInvoicePosition.price
+    set(selectedInvoicePosition)
   }
 }
 
-async function handleSubmit(): Promise<void> {
-  if (!invoicePosition.description || !invoicePosition.price || !invoicePosition.quantity || !sender.value) {
-    console.error('Something went wrong')
+async function handleSubmit(fields: InvoicePosition & { quantity: number }): Promise<void> {
+  if (!sender.value) {
+    console.error('Could not create invoice position, sender is undefined or null')
     return
   }
 
-  let insertInvoicePositionData: InvoicePosition & { quantity: number } = invoicePosition
+  let insertInvoicePositionData = fields
 
-  if (invoicePosition.id === 0) {
+  if (fields.id === 0) {
     const { data, error: insertInvoicePositionError } = await supabase
       .from('invoice_position')
       .insert({
-        description: invoicePosition.description,
-        price: invoicePosition.price,
+        description: fields.description,
+        price: fields.price,
         sender_id: sender.value.id,
       })
       .select()
@@ -117,18 +146,12 @@ async function handleSubmit(): Promise<void> {
       return
     }
 
-    insertInvoicePositionData = objectToCamel({ ...data, quantity: invoicePosition.quantity })
+    insertInvoicePositionData = objectToCamel({ ...data, quantity: fields.quantity })
+    invoicePositions.value.push(insertInvoicePositionData)
   }
 
   currentInvoice.value.positions.push(insertInvoicePositionData)
-  invoicePositions.value.push(insertInvoicePositionData)
 
-  resetForm()
-}
-
-function resetForm(): void {
-  invoicePosition.description = ''
-  invoicePosition.price = 0
-  invoicePosition.quantity = 0
+  reset()
 }
 </script>

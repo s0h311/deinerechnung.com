@@ -1,7 +1,7 @@
 <template>
   <form
     v-if="sender"
-    class="grid gap-7"
+    class="grid gap-7 h-fit"
     @submit.prevent="handleSubmit"
   >
     <h2>Adresse</h2>

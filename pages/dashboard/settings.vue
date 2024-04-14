@@ -2,6 +2,7 @@
   <div class="flex gap-10">
     <SettingsAddressForm />
     <SettingsLogo />
+    <SettingsFootnotesForm />
   </div>
 </template>
 
