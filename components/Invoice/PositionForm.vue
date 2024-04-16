@@ -83,7 +83,6 @@
 <script setup lang="ts">
 import type { Database } from '~/supabase/database.types'
 import { objectToCamel } from 'ts-case-convert'
-import { useCurrentInvoice } from '~/composables/states'
 import type { InvoicePosition } from '~/server/types'
 import { z } from 'zod'
 

@@ -11,7 +11,11 @@ export default {
     './error.vue',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        xxs: '8.5px',
+      },
+    },
   },
   plugins: [daisyui],
   daisyui: {

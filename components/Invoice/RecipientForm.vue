@@ -20,8 +20,6 @@
   </select>
 </template>
 <script setup lang="ts">
-import { useCurrentInvoice } from '~/composables/states'
-
 const recipients = await useRecipients()
 const currenctInvoice = await useCurrentInvoice()
 

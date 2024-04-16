@@ -4,11 +4,16 @@
       <h2>Daten</h2>
 
       <InvoiceRecipientForm />
+
       <div class="divider" />
+
       <InvoicePositionForm />
+
+      <InvoiceNextSteps />
     </div>
 
     <InvoicePreview />
+
     <InvoiceCurrentPositions />
   </div>
 </template>

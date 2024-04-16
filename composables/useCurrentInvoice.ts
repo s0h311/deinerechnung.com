@@ -1,7 +1,5 @@
 import type { InvoicePosition, Recipient } from '~/server/types'
 
-export const useEditingRecipient = () => useState<Recipient | null>('editingRecipient', () => null)
-
 type InvoiceState = {
   recipient: Recipient | null
   positions: (InvoicePosition & { quantity: number })[]

@@ -20,8 +20,6 @@
   </section>
 </template>
 <script setup lang="ts">
-import { useCurrentInvoice } from '~/composables/states'
-
 const currentInvoice = await useCurrentInvoice()
 
 function handleRemoveInvoicePosition(index: number): void {
