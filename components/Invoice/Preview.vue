@@ -60,11 +60,6 @@
 const sender = (await useSender()).value!
 const invoice = await useCurrentInvoice()
 
-watch(invoice.value.positions, (newValue, oldValue) => {
-  console.log('newValue', newValue)
-  console.log('oldValue', oldValue)
-})
-
 const senderFullAddress = computed(() => `${sender.name} - ${sender.addressLine} - ${sender.zipCode} - ${sender.city}`)
 const recipientFullAddress = computed(() => {
   const recipient = invoice.value.recipient

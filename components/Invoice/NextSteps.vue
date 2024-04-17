@@ -10,8 +10,10 @@
 <script setup lang="ts">
 import { jsPDF } from 'jspdf'
 
+const sender = (await useSender()).value!
+
 function showDialog(): void {
-  const doc = new jsPDF()
+  const doc = new jsPDF('p', 'pt', 'a4')
 
   const invoice = document.getElementById('invoiceDocument')
 
@@ -19,8 +21,10 @@ function showDialog(): void {
     console.error('Cannot go to next steps, invoice element is null')
     return
   }
-
-  doc.html(invoice)
-  doc.save('invoice')
+  doc.html(invoice, {
+    callback: (doc) => {
+      doc.save(`${sender.runningInvoiceNumber}-rechnung.pdf`)
+    },
+  })
 }
 </script>
