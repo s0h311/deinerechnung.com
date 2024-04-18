@@ -5,6 +5,6 @@ export function toEuro(centValue: number): string {
   }).format(centValue / 100)
 }
 
-export function toCents(euroValue: number): number {
-  return euroValue * 100
+export function toCents(euroValue: number, centValue?: number): number {
+  return euroValue * 100 + (centValue ?? 0)
 }

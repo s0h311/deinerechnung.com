@@ -1,5 +1,5 @@
 <template>
-  <div>invoices page</div>
+  <InvoiceList />
 </template>
 
 <script setup lang="ts">

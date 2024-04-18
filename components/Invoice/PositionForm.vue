@@ -39,21 +39,34 @@
         {{ errors.description }}
       </p>
 
-      <input
-        class="input input-bordered"
-        v-model="fields.price"
-        type="number"
-        :min="0.0"
-        :max="100_000.0"
-        :step="0.01"
-        placeholder="Einzelpreis"
-      />
+      <div class="grid grid-cols-2 gap-3">
+        <input
+          class="input input-bordered"
+          v-model="fields.priceEuro"
+          type="number"
+          :min="0"
+          :max="100_000"
+          :step="1"
+          placeholder="Euro"
+        />
+
+        <input
+          class="input input-bordered"
+          v-model="fields.priceCent"
+          type="number"
+          :min="0"
+          :max="99"
+          :step="1"
+          placeholder="Cent"
+        />
+      </div>
 
       <p
-        v-if="errors.price"
+        v-if="errors.priceEuro || errors.priceCent"
         class="text-red-400 -mt-6"
       >
-        {{ errors.price }}
+        {{ errors.priceEuro }} <br />
+        {{ errors.priceCent }}
       </p>
 
       <input
@@ -95,14 +108,16 @@ const { fields, errors, reset, set, submit } = useForm({
   initialValue: {
     id: 0,
     description: '',
-    price: null,
+    priceEuro: null,
+    priceCent: null,
     senderId: 0,
     quantity: null,
   },
   resolver: z.object({
     id: z.number(),
     description: z.string().min(1),
-    price: z.number().gt(0),
+    priceEuro: z.number().gt(0),
+    priceCent: z.number().gte(0).max(99),
     senderId: z.number(),
     quantity: z.number().gt(0),
   }),
@@ -117,24 +132,41 @@ function handleInvoicePositionChange(event: Event): void {
   )
 
   if (selectedInvoicePosition) {
-    set(selectedInvoicePosition)
+    const centValue = selectedInvoicePosition.price / 100
+    const priceEuro = ~~centValue
+    const priceCent = centValue - priceEuro
+
+    set({
+      ...selectedInvoicePosition,
+      priceEuro,
+      priceCent,
+    })
   }
 }
 
-async function handleSubmit(fields: InvoicePosition & { quantity: number }): Promise<void> {
+async function handleSubmit(
+  fields: Omit<InvoicePosition, 'price'> & {
+    quantity: number
+    priceEuro: number
+    priceCent: number
+  }
+): Promise<void> {
   if (!sender.value) {
     console.error('Could not create invoice position, sender is undefined or null')
     return
   }
 
-  let insertInvoicePositionData = fields
+  let insertInvoicePositionData: InvoicePosition & { quantity: number } = {
+    ...fields,
+    price: toCents(fields.priceEuro, fields.priceCent),
+  }
 
   if (fields.id === 0) {
     const { data, error: insertInvoicePositionError } = await supabase
       .from('invoice_position')
       .insert({
         description: fields.description,
-        price: toCents(fields.price),
+        price: toCents(fields.priceEuro, fields.priceCent),
         sender_id: sender.value.id,
       })
       .select()

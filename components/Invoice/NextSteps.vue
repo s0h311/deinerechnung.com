@@ -68,49 +68,69 @@ function showDialog(): void {
   dialog.value?.showModal()
 }
 
-function handleDownload(): void {
+async function handleDownload(): Promise<void> {
   isLoadingDownload.value = true
 
   const invoiceName = sender.runningInvoiceNumber.toString().padStart(4, '0') + '-rechnung.pdf'
 
-  createPdf((doc) => {
+  createPdf(async (doc) => {
     doc.save(invoiceName)
 
+    await uploadInvoice()
+    await increaseRunningInvoiceNumber()
+    resetInvoice()
+
     isLoadingDownload.value = false
+    dialog.value?.close()
   })
 }
 
 async function handleSendViaEmail(): Promise<void> {
   isLoadingSendViaEmail.value = true
 
+  await uploadInvoice()
+  await increaseRunningInvoiceNumber()
+  resetInvoice()
+
+  isLoadingSendViaEmail.value = false
+  dialog.value?.close()
+}
+
+async function uploadInvoice(): Promise<void> {
   const invoiceName = `${sender.runningInvoiceNumber.toString().padStart(4, '0')}-rechnung-${new Date().getTime()}.pdf`
   const invoicePath = `${sender.userId}/${invoiceName}`
 
-  createPdf(async (doc) => {
-    const invoiceBlob: Blob = doc.output('blob')
+  return new Promise((resolve, reject) => {
+    createPdf(async (doc) => {
+      const invoiceBlob: Blob = doc.output('blob')
 
-    const invoiceFile: File = new File([invoiceBlob], invoiceName, {
-      type: 'application/pdf',
+      const invoiceFile: File = new File([invoiceBlob], invoiceName, {
+        type: 'application/pdf',
+      })
+
+      const { error: uploadInvoiceError } = await supabase.storage.from('invoice').upload(invoicePath, invoiceFile)
+
+      if (uploadInvoiceError) {
+        console.error(uploadInvoiceError)
+        reject()
+      }
+
+      resolve()
     })
-
-    const { error: uploadInvoiceError } = await supabase.storage.from('invoice').upload(invoicePath, invoiceFile)
-
-    if (uploadInvoiceError) {
-      console.error(uploadInvoiceError)
-    }
-
-    const { error: increaseRunningInvoiceNumberError } = await supabase.rpc('increase_running_invoice_number', {
-      user_id: sender.id,
-    })
-
-    if (increaseRunningInvoiceNumberError) {
-      console.error(increaseRunningInvoiceNumberError)
-    } else {
-      sender.runningInvoiceNumber++
-    }
-
-    isLoadingSendViaEmail.value = false
   })
+}
+
+async function increaseRunningInvoiceNumber(): Promise<void> {
+  const { error: increaseRunningInvoiceNumberError } = await supabase.rpc('increase_running_invoice_number', {
+    user_id: sender.id,
+  })
+
+  if (increaseRunningInvoiceNumberError) {
+    console.error(increaseRunningInvoiceNumberError)
+    return
+  }
+
+  sender.runningInvoiceNumber++
 }
 
 function createPdf(callback: (jsPdf: jsPDF) => void): void {
