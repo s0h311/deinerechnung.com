@@ -16,7 +16,7 @@
         :key="invoicePosition.id"
         :value="invoicePosition.id"
       >
-        {{ invoicePosition.description }} {{ invoicePosition.price }} €
+        {{ invoicePosition.description }} {{ toEuro(invoicePosition.price) }}
       </option>
     </select>
 
@@ -134,7 +134,7 @@ async function handleSubmit(fields: InvoicePosition & { quantity: number }): Pro
       .from('invoice_position')
       .insert({
         description: fields.description,
-        price: fields.price,
+        price: toCents(fields.price),
         sender_id: sender.value.id,
       })
       .select()
