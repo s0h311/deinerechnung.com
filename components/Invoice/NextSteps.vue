@@ -134,7 +134,7 @@ async function increaseRunningInvoiceNumber(): Promise<void> {
 }
 
 function createPdf(callback: (jsPdf: jsPDF) => void): void {
-  const doc = new jsPDF('p', 'pt', 'a4')
+  const doc = new jsPDF('p', 'pt', 'a4', true)
 
   const invoice = document.getElementById('invoiceDocument')
 
@@ -143,6 +143,8 @@ function createPdf(callback: (jsPdf: jsPDF) => void): void {
     return
   }
 
-  doc.html(invoice, { callback })
+  doc.html(invoice, {
+    callback,
+  })
 }
 </script>

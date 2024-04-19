@@ -1,51 +1,93 @@
 <template>
   <form
     class="grid gap-7"
-    @submit.prevent="handleSubmit"
+    @submit.prevent="submit(handleSubmit)"
   >
     <h2>Neuer Kunde</h2>
 
     <input
       class="input input-bordered"
       type="text"
-      v-model="recipient.name"
+      v-model="fields.name"
       placeholder="Name"
     />
+
+    <p
+      v-if="errors.name"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.name }}
+    </p>
 
     <input
       class="input input-bordered"
       type="email"
-      v-model="recipient.emailAddress"
+      v-model="fields.emailAddress"
       placeholder="hi@reffect.org"
     />
 
+    <p
+      v-if="errors.emailAddress"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.emailAddress }}
+    </p>
+
     <input
       class="input input-bordered"
       type="text"
-      v-model="recipient.addressLine"
+      v-model="fields.addressLine"
       placeholder="Straße und Hausnummer"
     />
 
+    <p
+      v-if="errors.addressLine"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.addressLine }}
+    </p>
+
     <input
       class="input input-bordered"
-      type="number"
-      v-model="recipient.zipCode"
+      type="text"
+      v-model="fields.zipCode"
       placeholder="PZL"
     />
 
-    <input
-      class="input input-bordered"
-      type="text"
-      v-model="recipient.city"
-      placeholder="Ort"
-    />
+    <p
+      v-if="errors.zipCode"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.zipCode }}
+    </p>
 
     <input
       class="input input-bordered"
       type="text"
-      v-model="recipient.country"
+      v-model="fields.city"
+      placeholder="Ort"
+    />
+
+    <p
+      v-if="errors.city"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.city }}
+    </p>
+
+    <input
+      class="input input-bordered"
+      type="text"
+      v-model="fields.country"
       placeholder="Land"
     />
+
+    <p
+      v-if="errors.country"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.country }}
+    </p>
 
     <button
       class="btn btn-wide btn-primary"
@@ -63,6 +105,7 @@
 
 <script setup lang="ts">
 import { objectToCamel } from 'ts-case-convert'
+import { z } from 'zod'
 import type { Recipient } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
 
@@ -73,55 +116,48 @@ const supabase = useSupabaseClient<Database>()
 
 const isLoading = ref<boolean>(false)
 
-const recipient = reactive<Omit<Recipient, 'id' | 'senderId'>>({
-  name: '',
-  addressLine: '',
-  zipCode: 0,
-  city: '',
-  country: '',
-  emailAddress: null,
+const { fields, errors, reset, set, submit } = useForm({
+  initialValue: {
+    name: '',
+    addressLine: '',
+    zipCode: '',
+    city: '',
+    country: '',
+    emailAddress: null,
+  },
+  resolver: z.object({
+    name: z.string().min(2),
+    addressLine: z.string().min(2),
+    zipCode: z.string().min(4).max(5),
+    city: z.string().min(2),
+    country: z.string().min(2),
+    emailAddress: z.string().email().nullable(),
+  }),
 })
 
 watch(editingRecipient, (newRecipient, _) => {
   if (newRecipient) {
-    recipient.name = newRecipient.name
-    recipient.addressLine = newRecipient.addressLine
-    recipient.zipCode = newRecipient.zipCode
-    recipient.city = newRecipient.city
-    recipient.country = newRecipient.country
-    recipient.emailAddress = newRecipient.emailAddress
+    set(newRecipient)
   }
 })
 
-async function handleSubmit(): Promise<void> {
+async function handleSubmit(recipient: Omit<Recipient, 'id' | 'senderId'>): Promise<void> {
   // TODO test this?
 
   isLoading.value = true
 
-  if (
-    !sender.value ||
-    !recipient.addressLine ||
-    !recipient.zipCode ||
-    !recipient.city ||
-    !recipient.country ||
-    !recipient.name
-  ) {
-    // TODO display error message
-    return
-  }
-
   if (editingRecipient.value) {
-    updateRecipient()
+    updateRecipient(recipient)
   } else {
-    addRecipient()
+    addRecipient(recipient)
   }
 
-  resetForm()
+  reset()
   isLoading.value = false
   // TODO display toast notification
 }
 
-async function updateRecipient(): Promise<void> {
+async function updateRecipient(recipient: Omit<Recipient, 'id' | 'senderId'>): Promise<void> {
   if (!editingRecipient.value) {
     return
   }
@@ -154,7 +190,7 @@ async function updateRecipient(): Promise<void> {
   editingRecipient.value = null
 }
 
-async function addRecipient(): Promise<void> {
+async function addRecipient(recipient: Omit<Recipient, 'id' | 'senderId'>): Promise<void> {
   if (!sender.value) {
     return
   }
@@ -179,14 +215,5 @@ async function addRecipient(): Promise<void> {
   }
 
   recipients.value.push(objectToCamel(insertRecipientData))
-}
-
-function resetForm(): void {
-  recipient.addressLine = ''
-  recipient.zipCode = 0
-  recipient.city = ''
-  recipient.country = ''
-  recipient.name = ''
-  recipient.emailAddress = ''
 }
 </script>

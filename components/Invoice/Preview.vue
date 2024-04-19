@@ -1,13 +1,15 @@
 <template>
   <div
     id="invoiceDocument"
-    class="h-full w-full aspect-[210/297] p-8 ring-2 ring-neutral rounded-lg text-[11px] leading-3 flex flex-col text-black font-[Helvetica]"
+    class="h-full aspect-[210/297] p-8 ring-2 ring-neutral rounded-lg text-[11px] leading-3 flex flex-col text-black font-[Helvetica]"
   >
-    <img
-      v-if="sender.logoUrl"
-      :src="sender.logoUrl"
-      class="max-h-[10%] ml-auto"
-    />
+    <div class="min-h-[10%] max-h-[10%]">
+      <img
+        v-if="sender.logoUrl"
+        :src="sender.logoUrl"
+        class="max-w-[30%] ml-auto"
+      />
+    </div>
 
     <div class="space-y-3 mb-16 mt-10">
       <p class="text-xxs">{{ senderFullAddress }}</p>
@@ -36,7 +38,7 @@
           class="[&>*]:py-1.5 [&>*]:px-2 border-b pb-4"
           :key="'position' + index"
         >
-          <td class="text-start">{{ index }}</td>
+          <td class="text-start">{{ index + 1 }}</td>
           <td class="text-start">{{ position.description }}</td>
           <td class="text-start">{{ position.quantity }}</td>
           <td class="text-end">{{ toEuro(position.price) }}</td>
@@ -49,7 +51,7 @@
           <td></td>
           <td class="text-end">USt.:</td>
           <td class="text-end">
-            {{ invoice.vatRate + '%' }}
+            {{ (invoice.vatRate ?? 0) + '%' }}
           </td>
         </tr>
 

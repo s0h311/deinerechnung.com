@@ -47,7 +47,7 @@ export type Database = {
           id: number
           name: string
           sender_id: number
-          zip_code: number
+          zip_code: string
         }
         Insert: {
           address_line: string
@@ -57,7 +57,7 @@ export type Database = {
           id?: number
           name: string
           sender_id: number
-          zip_code: number
+          zip_code: string
         }
         Update: {
           address_line?: string
@@ -67,7 +67,7 @@ export type Database = {
           id?: number
           name?: string
           sender_id?: number
-          zip_code?: number
+          zip_code?: string
         }
         Relationships: [
           {
@@ -90,7 +90,7 @@ export type Database = {
           name: string
           running_invoice_number: number
           user_id: string
-          zip_code: number
+          zip_code: string
         }
         Insert: {
           address_line: string
@@ -102,7 +102,7 @@ export type Database = {
           name: string
           running_invoice_number?: number
           user_id: string
-          zip_code: number
+          zip_code: string
         }
         Update: {
           address_line?: string
@@ -114,7 +114,7 @@ export type Database = {
           name?: string
           running_invoice_number?: number
           user_id?: string
-          zip_code?: number
+          zip_code?: string
         }
         Relationships: [
           {
@@ -131,7 +131,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increase_running_invoice_number: {
+        Args: {
+          user_id: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

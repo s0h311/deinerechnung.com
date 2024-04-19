@@ -3,14 +3,14 @@ import type { InvoicePosition, Recipient } from '~/server/types'
 type InvoiceState = {
   recipient: Recipient | null
   positions: (InvoicePosition & { quantity: number })[]
-  vatRate: number
+  vatRate: number | null
 }
 
 export async function useCurrentInvoice(): Promise<Ref<InvoiceState>> {
   const currentInvoice = useState<InvoiceState>('currentInvoice', () => ({
     recipient: null,
     positions: [],
-    vatRate: 0,
+    vatRate: null,
   }))
 
   const recipients = await useRecipients()

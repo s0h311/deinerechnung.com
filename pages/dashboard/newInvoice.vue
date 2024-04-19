@@ -8,6 +8,7 @@
       <div class="divider" />
 
       <InvoicePositionForm />
+      <InvoiceVatForm />
 
       <InvoiceNextSteps />
     </div>

@@ -5,7 +5,7 @@ CREATE TABLE "public"."sender" (
     "logo_url" TEXT,
     "footnotes" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "address_line" TEXT NOT NULL,
-    "zip_code" INTEGER NOT NULL,
+    "zip_code" TEXT NOT NULL,
     "city" TEXT NOT NULL,
     "country" TEXT NOT NULL,
     "running_invoice_number" INTEGER NOT NULL DEFAULT 1,
@@ -28,7 +28,7 @@ CREATE TABLE "public"."recipient" (
     "name" TEXT NOT NULL,
     "email_address" TEXT,
     "address_line" TEXT NOT NULL,
-    "zip_code" INTEGER NOT NULL,
+    "zip_code" TEXT NOT NULL,
     "city" TEXT NOT NULL,
     "country" TEXT NOT NULL,
 
