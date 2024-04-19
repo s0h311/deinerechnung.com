@@ -134,7 +134,7 @@ function handleInvoicePositionChange(event: Event): void {
   if (selectedInvoicePosition) {
     const centValue = selectedInvoicePosition.price / 100
     const priceEuro = ~~centValue
-    const priceCent = centValue - priceEuro
+    const priceCent = Number(centValue.toString().split('.').pop() ?? 0)
 
     set({
       ...selectedInvoicePosition,
