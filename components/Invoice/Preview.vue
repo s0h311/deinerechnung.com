@@ -1,7 +1,7 @@
 <template>
   <div
     id="invoiceDocument"
-    class="h-full aspect-[210/297] p-8 ring-2 ring-neutral rounded-lg text-[11px] leading-3 flex flex-col text-black font-[Helvetica]"
+    class="h-[calc(100%-40px)] aspect-[210/297] p-8 ring-2 ring-neutral rounded-lg text-[11px] leading-3 flex flex-col text-black font-[Helvetica]"
   >
     <div class="min-h-[10%] max-h-[10%]">
       <img
@@ -21,7 +21,10 @@
       <p>{{ dateText }}</p>
     </div>
 
-    <table class="text-xs">
+    <table
+      v-if="invoice.positions.length > 0"
+      class="text-xs"
+    >
       <thead>
         <tr class="[&>*]:py-1.5 [&>*]:px-2 border-b">
           <th class="text-start">Pos</th>
@@ -81,6 +84,7 @@
 <script setup lang="ts">
 import { formatDate } from '~/utils/date'
 import { toEuro } from '~/utils/monetary'
+import { ln2Br } from '~/utils/string'
 
 const sender = (await useSender()).value!
 const invoice = await useCurrentInvoice()
@@ -103,8 +107,4 @@ const total = computed(() => {
   const total = invoice.value.positions.map((position) => position.quantity * position.price).reduce((a, b) => a + b)
   return toEuro(total)
 })
-
-function ln2Br(text: string): string {
-  return text.replace(/\n/g, '<br />')
-}
 </script>

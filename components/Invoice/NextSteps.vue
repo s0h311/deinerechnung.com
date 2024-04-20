@@ -144,7 +144,10 @@ function createPdf(callback: (jsPdf: jsPDF) => void): void {
   }
 
   doc.html(invoice, {
-    callback,
+    callback: (doc) => {
+      doc.deletePage(2) // TODO Just a hack
+      callback(doc)
+    },
   })
 }
 </script>
