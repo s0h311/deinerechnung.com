@@ -1,7 +1,7 @@
 <template>
-  <nav class="flex items-center justify-between navbar px-10">
+  <nav class="navbar px-10 grid grid-cols-3 place-items-center">
     <NuxtLink
-      class="tracking-wider bg-neutral text-base-100 px-2 py-1 text-lg rounded-sm"
+      class="tracking-wider bg-neutral text-base-100 px-2 py-1 text-lg rounded-sm justify-self-start"
       to="/"
     >
       QBlock
@@ -17,7 +17,7 @@
       </NuxtLink>
     </div>
 
-    <div class="space-x-3">
+    <div class="space-x-3 justify-self-end">
       <NuxtLink
         v-if="!user"
         to="/login"

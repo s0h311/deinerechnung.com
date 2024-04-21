@@ -58,6 +58,7 @@ import type { Database } from '~/supabase/database.types'
 const supabase = useSupabaseClient<Database>()
 const sender = (await useSender()).value!
 const recipientEmail = ref<string>('')
+const shouldUseQrCode = useQrCode()
 
 const dialog = ref<HTMLDialogElement>()
 
@@ -73,12 +74,15 @@ async function handleDownload(): Promise<void> {
 
   const invoiceName = sender.runningInvoiceNumber.toString().padStart(4, '0') + '-rechnung.pdf'
 
+  shouldUseQrCode.value = true
+
   createPdf(async (doc) => {
     doc.save(invoiceName)
 
     await uploadInvoice()
     await increaseRunningInvoiceNumber()
     resetInvoice()
+    shouldUseQrCode.value = false
 
     isLoadingDownload.value = false
     dialog.value?.close()
@@ -88,9 +92,11 @@ async function handleDownload(): Promise<void> {
 async function handleSendViaEmail(): Promise<void> {
   isLoadingSendViaEmail.value = true
 
+  shouldUseQrCode.value = true
   await uploadInvoice()
   await increaseRunningInvoiceNumber()
   resetInvoice()
+  shouldUseQrCode.value = false
 
   isLoadingSendViaEmail.value = false
   dialog.value?.close()

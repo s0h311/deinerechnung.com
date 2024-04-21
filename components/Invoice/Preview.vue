@@ -1,7 +1,7 @@
 <template>
   <div
     id="invoiceDocument"
-    class="h-[calc(100%-40px)] aspect-[210/297] p-8 ring-2 ring-neutral rounded-lg text-[11px] leading-3 flex flex-col text-black font-[Helvetica]"
+    class="h-full desktop:h-[calc(100%-45px)] aspect-[210/297] p-8 pb-4 ring-2 ring-neutral rounded-lg text-[10px] leading-3 flex flex-col text-black font-[Helvetica]"
   >
     <div class="min-h-[10%] max-h-[10%]">
       <img
@@ -16,14 +16,23 @@
       <p v-html="recipientFullAddress"></p>
     </div>
 
-    <div class="flex items-center justify-between mb-16">
+    <div class="flex items-center justify-between mb-5">
       <p class="font-bold text-xs">{{ invoiceText }}</p>
       <p>{{ dateText }}</p>
     </div>
 
+    <div class="mb-10 flex max-w-[300px] items-center gap-2">
+      <p>
+        Bitte überweisen Sie den Betrag zeitnah an das Konto in der Fußzeile. Einfach den QR-Code in Ihrer Onlinebanking
+        App scannen.
+      </p>
+
+      <InvoiceQRCode :qrCodeData="qrCodeData" />
+    </div>
+
     <table
       v-if="invoice.positions.length > 0"
-      class="text-xs"
+      class="text-[10px]"
     >
       <thead>
         <tr class="[&>*]:py-1.5 [&>*]:px-2 border-b">
@@ -64,7 +73,7 @@
           <td></td>
           <td class="text-end">Gesamtbrutto:</td>
           <td class="text-end break-normal">
-            {{ total }}
+            {{ toEuro(total) }}
           </td>
         </tr>
       </tbody>
@@ -101,10 +110,9 @@ const invoiceText = computed(() => `RECHNUNG Nr. ${sender.runningInvoiceNumber.t
 const dateText = computed(() => `Datum: ${formatDate(new Date())}`)
 const total = computed(() => {
   if (invoice.value.positions.length === 0) {
-    return toEuro(0)
+    return 0
   }
 
-  const total = invoice.value.positions.map((position) => position.quantity * position.price).reduce((a, b) => a + b)
-  return toEuro(total)
+  return invoice.value.positions.map((position) => position.quantity * position.price).reduce((a, b) => a + b)
 })
 </script>

@@ -16,6 +16,9 @@ export default {
         xxs: '8.5px',
       },
     },
+    screens: {
+      desktop: '1850px',
+    },
   },
   plugins: [daisyui],
   daisyui: {
