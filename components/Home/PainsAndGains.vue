@@ -1,6 +1,6 @@
 <template>
   <div class="text-center w-fit space-y-14">
-    <h2 class="text-3xl">QBlock macht Dir das Leben einfacher</h2>
+    <h2 class="text-3xl">Es macht Dir das Leben einfacher</h2>
     <div class="grid grid-cols-2 gap-10">
       <ul class="bg-red-100 p-5 rounded-lg shadow-md">
         <li

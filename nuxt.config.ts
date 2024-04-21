@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/image', '@vueuse/nuxt', '@nuxtjs/supabase'],
   app: {
     head: {
-      title: 'QBlock: Rechnungen einfacher gemacht',
+      title: 'Deine Rechnung: Rechnungen einfacher gemacht',
     },
   },
   devtools: { enabled: true },
