@@ -48,15 +48,15 @@ const user = useSupabaseUser()
 const links = [
   {
     title: 'Preise',
-    path: '/pricing',
+    path: '/#pricing',
   },
   {
     title: "Wie funktioniert's",
-    path: '/demo',
+    path: '/#demo',
   },
   {
     title: 'Wer sind wir',
-    path: '/about',
+    path: '/#about',
   },
 ]
 </script>

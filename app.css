@@ -6,6 +6,10 @@
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* for Chrome, Safari and Opera */
 }

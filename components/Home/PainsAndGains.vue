@@ -1,8 +1,8 @@
 <template>
-  <div class="text-center w-fit space-y-10 mx-auto">
-    <h2 class="text-3xl">Es macht dir das Leben einfacher</h2>
+  <div class="text-center w-fit space-y-14">
+    <h2 class="text-3xl">QBlock macht Dir das Leben einfacher</h2>
     <div class="grid grid-cols-2 gap-10">
-      <ul class="bg-red-100 p-5 rounded-lg">
+      <ul class="bg-red-100 p-5 rounded-lg shadow-md">
         <li
           v-for="(pain, index) in pains"
           :key="'pain' + index"
@@ -12,7 +12,7 @@
         </li>
       </ul>
 
-      <ul class="bg-green-100 p-5 rounded-lg">
+      <ul class="bg-green-100 p-5 rounded-lg shadow-md">
         <li
           v-for="(gain, index) in gains"
           :key="'gain' + index"

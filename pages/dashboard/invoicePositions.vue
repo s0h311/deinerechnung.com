@@ -38,6 +38,7 @@ import type { Database } from '~/supabase/database.types'
 
 definePageMeta({
   layout: 'dashboard-grid',
+  middleware: ['auth'],
 })
 
 useSeoMeta({

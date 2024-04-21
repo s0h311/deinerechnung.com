@@ -1,5 +1,5 @@
 <template>
-  <div class="hero min-h-[80dvh]">
+  <div class="hero">
     <div class="hero-content text-center">
       <div class="space-y-3">
         <h1 class="text-5xl font-bold">Mehr Zeit, weniger Kopfschmerzen</h1>

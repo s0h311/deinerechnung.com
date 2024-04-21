@@ -5,5 +5,5 @@ export default defineNuxtRouteMiddleware(() => {
     return
   }
 
-  return navigateTo('/dashboard/newInvoice')
+  return navigateTo('/')
 })
