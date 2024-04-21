@@ -24,4 +24,8 @@ definePageMeta({
   layout: 'dashboard-grid',
   middleware: ['auth'],
 })
+
+useSeoMeta({
+  title: 'Neue Rechnung',
+})
 </script>

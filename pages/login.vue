@@ -34,10 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-
 definePageMeta({
   middleware: ['not-auth'],
+})
+
+useSeoMeta({
+  title: 'Einloggen',
 })
 
 const supabase = useSupabaseClient()
@@ -62,6 +64,6 @@ async function handleLogin(): Promise<void> {
   })
 
   isLoading.value = false
-  navigateTo('/dashboard')
+  navigateTo('/dashboard/newInvoice')
 }
 </script>

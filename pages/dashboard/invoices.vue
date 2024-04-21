@@ -7,4 +7,8 @@ definePageMeta({
   layout: 'dashboard-grid',
   middleware: ['auth'],
 })
+
+useSeoMeta({
+  title: 'Rechnungen',
+})
 </script>

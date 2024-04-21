@@ -11,4 +11,8 @@ definePageMeta({
   layout: 'dashboard-grid',
   middleware: ['auth'],
 })
+
+useSeoMeta({
+  title: 'Einstellungen',
+})
 </script>

@@ -1,28 +1,62 @@
 <template>
-  <div class="navbar gap-10 px-10 bg-base-200 rounded-xl">
+  <nav class="flex items-center justify-between navbar px-10">
     <NuxtLink
-      v-if="!user"
-      to="login"
+      class="tracking-wider bg-neutral text-base-100 px-2 py-1 text-lg rounded-sm"
+      to="/"
     >
-      Anmelden
+      QBlock
     </NuxtLink>
 
-    <NuxtLink
-      v-if="!user"
-      to="signup"
-    >
-      Registrieren
-    </NuxtLink>
+    <div class="space-x-7">
+      <NuxtLink
+        v-for="link in links"
+        :key="link.path"
+        :to="link.path"
+      >
+        {{ link.title }}
+      </NuxtLink>
+    </div>
 
-    <NuxtLink
-      class="ml-auto"
-      v-if="user"
-      to="/dashboard"
-      >Dashboard</NuxtLink
-    >
-  </div>
+    <div class="space-x-3">
+      <NuxtLink
+        v-if="!user"
+        to="/login"
+      >
+        Anmelden
+      </NuxtLink>
+
+      <NuxtLink
+        v-if="!user"
+        to="/signup"
+      >
+        Registrieren
+      </NuxtLink>
+
+      <NuxtLink
+        v-if="user"
+        to="/dashboard/newInvoice"
+      >
+        <IconDashboard />
+      </NuxtLink>
+    </div>
+  </nav>
 </template>
 
 <script setup lang="ts">
 const user = useSupabaseUser()
+
+const links = [
+  {
+    title: 'Preise',
+    path: '/pricing',
+  },
+  {
+    title: "Wie funktioniert's",
+    path: '/demo',
+  },
+  {
+    title: 'Wer sind wir',
+    path: '/about',
+  },
+]
 </script>

@@ -126,6 +126,10 @@ definePageMeta({
   middleware: ['not-auth'],
 })
 
+useSeoMeta({
+  title: 'Registrieren',
+})
+
 const supabase = useSupabaseClient<Database>()
 const sender = await useSender()
 
@@ -188,6 +192,6 @@ async function handleSubmit(
   sender.value = objectToCamel(insertSenderData)
 
   isLoading.value = false
-  navigateTo('/dashboard')
+  navigateTo('/dashboard/newInvoice')
 }
 </script>

@@ -40,6 +40,10 @@ definePageMeta({
   layout: 'dashboard-grid',
 })
 
+useSeoMeta({
+  title: 'Positionen',
+})
+
 const supabase = useSupabaseClient<Database>()
 const invoicePositions = await useInvoicePositions()
 

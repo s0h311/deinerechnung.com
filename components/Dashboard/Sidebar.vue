@@ -27,7 +27,6 @@ const supabase = useSupabaseClient()
 const sender = await useSender()
 
 const links = [
-  { title: 'Übersicht', path: '/dashboard' },
   { title: 'Neue Rechnung', path: '/dashboard/newInvoice' },
   { title: 'Rechnungen', path: '/dashboard/invoices' },
   { title: 'Positionen', path: '/dashboard/invoicePositions' },

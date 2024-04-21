@@ -11,5 +11,9 @@ definePageMeta({
   middleware: ['auth'],
 })
 
+useSeoMeta({
+  title: 'Kunden',
+})
+
 const recipients = await useRecipients()
 </script>
