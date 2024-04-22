@@ -123,7 +123,13 @@ import type { Sender } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
 
 definePageMeta({
-  middleware: ['not-auth'],
+  middleware: [
+    // 'not-auth'
+    // Using Stripe Webhook to signup the user
+    () => {
+      return navigateTo('/')
+    },
+  ],
 })
 
 useSeoMeta({

@@ -1,5 +1,8 @@
 <template>
-  <div class="space-y-10">
+  <div
+    id="pricing"
+    class="space-y-10"
+  >
     <h2 class="text-3xl text-center">Preise</h2>
 
     <div class="border border-accent p-8 rounded-xl space-y-10">
@@ -19,11 +22,17 @@
         </li>
       </ul>
 
-      <button class="btn btn-primary w-full">Jetzt holen</button>
+      <NuxtLink
+        :to="STRIPE_LINK"
+        class="btn btn-primary w-full"
+        >Jetzt holen</NuxtLink
+      >
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const benefits = ['Automatische Verbesserungen', '24/7 Kundenservice', 'Einmal zahlen, für immer benutzen']
+
+const STRIPE_LINK = 'https://buy.stripe.com/test_00geWo2MG2Pu9jO9AA'
 </script>

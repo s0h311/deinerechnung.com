@@ -26,13 +26,6 @@
       </NuxtLink>
 
       <NuxtLink
-        v-if="!user"
-        to="/signup"
-      >
-        Registrieren
-      </NuxtLink>
-
-      <NuxtLink
         v-if="user"
         to="/dashboard/newInvoice"
       >
