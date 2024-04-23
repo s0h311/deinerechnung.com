@@ -22,6 +22,7 @@
     "html2canvas": "github:s0h311/html2canvas",
     "jspdf": "github:s0h311/jsPDF",
     "qrjs": "github:s0h311/qrjs",
+    "stripe": "^15.3.0",
     "ts-case-convert": "^2.0.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
