@@ -8,7 +8,7 @@ type StripeWebhookHandlerQuery = {
   stripeSignatureHeader: string
 }
 
-type StripeWebhookHandlerResponse = {
+export type StripeWebhookHandlerResponse = {
   received: boolean
 }
 
@@ -57,7 +57,11 @@ export default class StripeWebhookHandler {
       return
     }
 
-    await createUser(h3Event, customerDetails.address, customerDetails.name, customerDetails.email)
+    await createUser(h3Event, {
+      name: customerDetails.name,
+      email: customerDetails.email,
+      address: customerDetails.address,
+    })
   }
 
   private getVerifiedEvent(rawEvent: string, stripeSignatureHeader: string): Stripe.Event {

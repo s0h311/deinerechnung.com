@@ -4,7 +4,18 @@ import Stripe from 'stripe'
 import { Database } from '~/supabase/database.types'
 import MailClient from '../mail/mailClient'
 
-export async function createUser(event: H3Event, address: Stripe.Address, name: string, email: string): Promise<void> {
+export async function createUser(
+  event: H3Event,
+  {
+    name,
+    email,
+    address,
+  }: {
+    name: string
+    email: string
+    address: Stripe.Address
+  }
+): Promise<void> {
   const supabase = serverSupabaseServiceRole<Database>(event)
 
   const randomPassword = generateRandomPassword()

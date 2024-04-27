@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import StripeWebhookHandler from './webhookHandler'
+import StripeWebhookHandler, { StripeWebhookHandlerResponse } from './webhookHandler'
 
-export default defineEventHandler(async (event): Promise<string> => {
+export default defineEventHandler(async (event): Promise<StripeWebhookHandlerResponse> => {
   const rawEvent = parseRawBody(await readRawBody(event))
   const stripeSignatureHeader = parseStripeSignatureHeader(getRequestHeader(event, 'stripe-signature'))
 
