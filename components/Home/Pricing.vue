@@ -60,7 +60,7 @@ const pricingOptions = [
     newPrice: 7.99,
     paymentPeriod: 'monthly',
     paymentPeriodText: 'monatlich',
-    benefits: ['Automatische Verbesserungen', '24/7 Kundenservice', 'Flexible monatlich zahlen'],
+    benefits: ['Automatische Verbesserungen', '24/7 Kundenservice', 'Flexibel monatlich zahlen'],
     isPremium: false,
   },
 

@@ -15,7 +15,8 @@
     "postinstall": "nuxt prepare",
     "test": "vitest",
     "migrate:up": "npx supabase migration up --linked",
-    "gen:db:types": "npx supabase gen types typescript --project-id dhoxlruyybwfiifulzvs > supabase/database.types.ts"
+    "gen:db:types": "npx supabase gen types typescript --project-id dhoxlruyybwfiifulzvs > supabase/database.types.ts",
+    "stripe:webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
   },
   "dependencies": {
     "@nuxt/image": "^1.4.0",
