@@ -16,34 +16,23 @@
     />
 
     <div class="flex items-center gap-4">
-      <button
-        class="btn btn-neutral"
-        @click="handleSaveImage"
+      <UICta
+        :is-loading="isUploadLoading"
+        @handle-click="handleSaveImage"
       >
-        <span
-          v-if="isUploadLoading"
-          class="loading loading-spinner"
-        />
+        {{ sender?.logoUrl ? 'Aktualisieren' : 'Speichern' }}
+      </UICta>
 
-        <p v-else>{{ sender?.logoUrl ? 'Aktualisieren' : 'Speichern' }}</p>
-      </button>
-
-      <button
-        class="btn btn-md btn-outline btn-error w-fit"
-        @click="handleDeleteImage"
+      <UICta
+        class="w-fit"
+        medium
+        outline
+        error
+        @handle-click="handleDeleteImage"
+        :is-loading="isDeleteLoading"
       >
-        <span
-          v-if="isDeleteLoading"
-          class="loading loading-spinner"
-        />
-
-        <p
-          v-else
-          class="flex items-center gap-1"
-        >
-          Löschen <IconDelete />
-        </p>
-      </button>
+        Löschen <IconDelete />
+      </UICta>
     </div>
   </div>
 </template>

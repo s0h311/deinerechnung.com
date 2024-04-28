@@ -15,9 +15,9 @@ export default {
       fontSize: {
         xxs: '8.5px',
       },
-    },
-    screens: {
-      desktop: '1850px',
+      screens: {
+        desktop: '1850px',
+      },
     },
   },
   plugins: [daisyui],

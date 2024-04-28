@@ -29,7 +29,7 @@
         v-if="user"
         to="/dashboard/newInvoice"
       >
-        <IconDashboard />
+        Dashboard
       </NuxtLink>
     </div>
   </nav>

@@ -22,30 +22,23 @@
           placeholder="empfänger@email.de"
         />
 
-        <button
-          class="btn btn-wide btn-primary"
+        <UICta
+          primary
+          wide
           type="submit"
+          :is-loading="isLoadingSendViaEmail"
         >
-          <span
-            v-if="isLoadingSendViaEmail"
-            class="loading loading-spinner"
-          />
+          Senden
+        </UICta>
 
-          <p v-else>Senden</p>
-        </button>
-
-        <button
-          class="btn btn-wide btn-secondary"
-          type="button"
-          @click="handleDownload"
+        <UICta
+          secondary
+          wide
+          :is-loading="isLoadingDownload"
+          @handle-click="handleDownload"
         >
-          <span
-            v-if="isLoadingDownload"
-            class="loading loading-spinner"
-          />
-
-          <p v-else>Herunterladen</p>
-        </button>
+          Herunterladen
+        </UICta>
       </form>
     </dialog>
   </section>

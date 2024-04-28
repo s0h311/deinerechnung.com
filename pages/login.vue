@@ -20,16 +20,13 @@
       />
     </label>
 
-    <button
-      class="btn btn-wide"
-      @click="handleLogin"
+    <UICta
+      wide
+      :is-loading="isLoading"
+      @handle-click="handleLogin"
     >
-      <span
-        v-if="isLoading"
-        class="loading loading-spinner"
-      ></span>
-      <p v-else>Einloggen</p>
-    </button>
+      Einloggen
+    </UICta>
   </div>
 </template>
 

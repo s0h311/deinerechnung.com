@@ -33,18 +33,14 @@
           </li>
         </ul>
 
-        <NuxtLink
-          class="btn w-full"
-          :class="option.isPremium ? 'btn-primary' : 'btn-neutral'"
-          @click="handleGoToCheckout(index)"
+        <UICta
+          class="w-full"
+          :primary="option.isPremium"
+          :is-loading="isLoading === index"
+          @handle-click="handleGoToCheckout(index)"
         >
-          <span
-            v-if="isLoading === index"
-            class="loading loading-spinner"
-          />
-
-          <p v-else>Jetzt holen</p>
-        </NuxtLink>
+          Jetzt holen
+        </UICta>
       </div>
     </div>
   </div>

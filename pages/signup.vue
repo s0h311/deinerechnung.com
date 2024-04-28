@@ -103,16 +103,13 @@
       {{ errors.password }}
     </p>
 
-    <button
-      class="btn btn-wide"
+    <UICta
+      wide
       type="submit"
+      :is-loading="isLoading"
     >
-      <span
-        v-if="isLoading"
-        class="loading loading-spinner"
-      ></span>
-      <p v-else>Registrieren</p>
-    </button>
+      Registrieren
+    </UICta>
   </form>
 </template>
 

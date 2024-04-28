@@ -5,7 +5,7 @@
   >
     <option
       disabled
-      selected
+      :selected="recipients.length === 0"
     >
       Kunde auswählen
     </option>

@@ -89,17 +89,14 @@
       {{ errors.country }}
     </p>
 
-    <button
-      class="btn btn-wide btn-primary"
+    <UICta
+      primary
+      wide
       type="submit"
+      :is-loading="isLoading"
     >
-      <span
-        v-if="isLoading"
-        class="loading loading-spinner"
-      />
-
-      <p v-else>{{ editingRecipient ? 'Aktualisieren' : 'Hinzufügen' }}</p>
-    </button>
+      {{ editingRecipient ? 'Aktualisieren' : 'Hinzufügen' }}
+    </UICta>
   </form>
 </template>
 

@@ -18,19 +18,25 @@
         <td>{{ formatDate(invoice.updatedAt) }}</td>
 
         <div class="flex items-center gap-2">
-          <button
-            class="btn btn-sm btn-outline btn-secondary w-fit"
-            @click="handleOpenInvoice(invoice.name)"
+          <UICta
+            class="w-fit"
+            outline
+            secondary
+            small
+            @handle-click="handleDelete(invoice.name)"
           >
             anzeigen
-          </button>
+          </UICta>
 
-          <button
-            class="btn btn-sm btn-outline btn-error w-fit"
-            @click="handleDelete(invoice.name)"
+          <UICta
+            class="w-fit"
+            outline
+            error
+            small
+            @handle-click="handleDelete(invoice.name)"
           >
             <IconDelete />
-          </button>
+          </UICta>
         </div>
       </tr>
     </tbody>

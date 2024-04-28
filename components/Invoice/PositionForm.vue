@@ -1,26 +1,37 @@
 <template>
-  <div class="flex flex-col w-full border-opacity-50">
-    <select
-      class="select select-bordered w-full max-w-xs"
-      @change="handleInvoicePositionChange"
-    >
-      <option
-        disabled
-        selected
+  <div class="flex flex-col w-full border-opacity-50 gap-2">
+    <span class="flex items-center gap-1">
+      <select
+        class="select select-bordered w-full max-w-xs"
+        @change="handleInvoicePositionChange"
       >
-        Position auswählen
-      </option>
+        <option
+          disabled
+          selected
+        >
+          Position auswählen
+        </option>
 
-      <option
-        v-for="invoicePosition in invoicePositions"
-        :key="invoicePosition.id"
-        :value="invoicePosition.id"
+        <option
+          v-for="invoicePosition in invoicePositions"
+          :key="invoicePosition.id"
+          :value="invoicePosition.id"
+        >
+          {{ invoicePosition.description }} {{ toEuro(invoicePosition.price) }}
+        </option>
+      </select>
+
+      <UICta
+        outline
+        error
+        small
+        @handle-click="reset"
       >
-        {{ invoicePosition.description }} {{ toEuro(invoicePosition.price) }}
-      </option>
-    </select>
+        <IconDelete />
+      </UICta>
+    </span>
 
-    <div class="divider my-8">oder hinzufügen</div>
+    <div class="divider my-6">oder hinzufügen</div>
 
     <form
       class="grid gap-7"
@@ -134,7 +145,7 @@ function handleInvoicePositionChange(event: Event): void {
   if (selectedInvoicePosition) {
     const centValue = selectedInvoicePosition.price / 100
     const priceEuro = ~~centValue
-    const priceCent = Number(centValue.toString().split('.').pop() ?? 0)
+    const priceCent = Number(centValue.toFixed(2).toString().split('.').pop() ?? 0)
 
     set({
       ...selectedInvoicePosition,
