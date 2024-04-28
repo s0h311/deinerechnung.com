@@ -23,6 +23,7 @@ export async function createUser(
   const { data: userCreateData, error: userCreateError } = await supabase.auth.admin.createUser({
     email,
     password: randomPassword,
+    email_confirm: true,
   })
 
   if (userCreateError) {
