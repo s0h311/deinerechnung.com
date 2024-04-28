@@ -1,11 +1,12 @@
 <template>
   <section>
-    <button
-      class="btn btn-secondary w-full"
-      @click="showDialog"
+    <UICta
+      class="w-full"
+      secondary
+      @handle-click="showDialog"
     >
       Fortfahren
-    </button>
+    </UICta>
 
     <dialog
       ref="dialog"

@@ -19,14 +19,16 @@
         <td>{{ invoicePosition.description }}</td>
         <td>{{ toEuro(invoicePosition.price) }}</td>
 
-        <div class="flex items-center gap-2">
-          <button
-            class="btn btn-sm btn-outline btn-error w-fit"
-            @click="handleDelete(invoicePosition.id)"
+        <td>
+          <UICta
+            small
+            outline
+            error
+            @handle-click="handleDelete(invoicePosition.id)"
           >
             <IconDelete />
-          </button>
-        </div>
+          </UICta>
+        </td>
       </tr>
     </tbody>
   </table>

@@ -2,33 +2,45 @@
   <section class="space-y-7">
     <h2>Kunden</h2>
 
-    <ul class="py-4 px-5 border rounded-lg space-y-4">
-      <li
-        v-for="(recipient, index) in recipients"
-        :key="recipient.id"
-        class="grid items-center gap-10 justify-items-end"
-      >
-        <p class="justify-self-start">{{ recipient.name }}</p>
+    <table class="table w-fit">
+      <thead>
+        <tr class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start">
+          <th>Name</th>
+          <th>Adresse</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
 
-        <p class="text-sm">{{ recipient.addressLine }}, {{ recipient.city }}</p>
+      <tbody>
+        <tr
+          v-for="(recipient, index) in recipients"
+          class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start"
+          :key="recipient.id"
+        >
+          <td>{{ recipient.name }}</td>
+          <td>{{ recipient.addressLine }}, {{ recipient.city }}</td>
+          <td class="flex items-center gap-2">
+            <UICta
+              small
+              outline
+              secondary
+              @handle-click="handleEdit(recipient)"
+            >
+              bearbeiten
+            </UICta>
 
-        <div class="flex items-center gap-2">
-          <button
-            class="btn btn-sm btn-outline btn-secondary w-fit"
-            @click="handleEdit(recipient)"
-          >
-            bearbeiten
-          </button>
-
-          <button
-            class="btn btn-sm btn-outline btn-error w-fit"
-            @click="handleDelete(recipient.id, index)"
-          >
-            <IconDelete />
-          </button>
-        </div>
-      </li>
-    </ul>
+            <UICta
+              small
+              outline
+              error
+              @handle-click="handleDelete(recipient.id, index)"
+            >
+              <IconDelete />
+            </UICta>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
 

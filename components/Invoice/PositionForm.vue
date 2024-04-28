@@ -94,12 +94,12 @@
         {{ errors.quantity }}
       </p>
 
-      <button
-        class="btn btn-primary"
+      <UICta
+        primary
         type="submit"
       >
         Hinzufügen
-      </button>
+      </UICta>
     </form>
   </div>
 </template>

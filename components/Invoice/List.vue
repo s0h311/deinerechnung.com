@@ -19,7 +19,6 @@
 
         <div class="flex items-center gap-2">
           <UICta
-            class="w-fit"
             outline
             secondary
             small
@@ -29,7 +28,6 @@
           </UICta>
 
           <UICta
-            class="w-fit"
             outline
             error
             small

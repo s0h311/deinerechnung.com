@@ -9,12 +9,16 @@
         :key="invoicePosition.id"
       >
         <p>{{ invoicePosition.description }}</p>
-        <button
-          class="btn btn-sm btn-outline btn-error w-fit justify-self-end"
-          @click="handleRemoveInvoicePosition(index)"
+
+        <UICta
+          class="justify-self-end"
+          small
+          outline
+          error
+          @handle-click="handleRemoveInvoicePosition(index)"
         >
           <IconDelete />
-        </button>
+        </UICta>
       </li>
     </ul>
   </section>

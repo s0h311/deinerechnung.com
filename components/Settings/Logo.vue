@@ -24,7 +24,6 @@
       </UICta>
 
       <UICta
-        class="w-fit"
         medium
         outline
         error
