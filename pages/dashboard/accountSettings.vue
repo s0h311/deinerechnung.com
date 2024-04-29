@@ -1,9 +1,5 @@
 <template>
-  <div class="flex gap-10">
-    <SettingsAddressForm />
-    <SettingsLogo />
-    <SettingsFootnotesForm />
-  </div>
+  <div></div>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +9,6 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'Einstellungen',
+  title: 'Kontoeinstellungen',
 })
 </script>

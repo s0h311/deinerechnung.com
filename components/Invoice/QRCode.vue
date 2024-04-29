@@ -7,6 +7,8 @@
 </template>
 
 <script setup lang="ts">
+import uglifyIban from '~/utils/iban'
+
 const sender = (await useSender()).value!
 const invoice = await useCurrentInvoice()
 const shouldUseQrCode = useQrCode()
@@ -16,7 +18,7 @@ const total = computed(() => {
     return 0
   }
 
-  return invoice.value.positions.map((position) => position.quantity * position.price).reduce((a, b) => a + b)
+  return invoice.value.positions.map(({ quantity, price }) => quantity * (price / 100)).reduce((a, b) => a + b)
 })
 
 const qrCodeData = computed(
@@ -25,9 +27,9 @@ const qrCodeData = computed(
 002%0A
 1%0A
 SCT%0A
-%0A
+${sender.bic}%0A
 ${sender.name}%0A
-DE12200505501501417032%0A
+${uglifyIban(sender.iban!)}%0A
 EUR${total.value}%0A
 %0A
 %0A

@@ -23,11 +23,11 @@
 
     <div class="mb-10 flex max-w-[300px] items-center gap-2">
       <p>
-        Bitte überweisen Sie den Betrag zeitnah an das Konto in der Fußzeile. Einfach den QR-Code in Ihrer Onlinebanking
-        App scannen.
+        Bitte überweisen Sie den Betrag zeitnah an das Konto in der Fußzeile.
+        {{ sender.iban ? 'Einfach den QR-Code in Ihrer Onlinebanking App scannen.' : '' }}
       </p>
 
-      <InvoiceQRCode :qrCodeData="qrCodeData" />
+      <InvoiceQRCode v-if="sender.iban" />
     </div>
 
     <table
@@ -35,10 +35,10 @@
       class="text-[10px]"
     >
       <thead>
-        <tr class="[&>*]:py-1.5 [&>*]:px-2 border-b">
-          <th class="text-start">Pos</th>
-          <th class="text-start">Beschreibung</th>
-          <th class="text-start">Menge</th>
+        <tr class="[&>*]:px-2 border-b">
+          <th>Pos</th>
+          <th>Beschreibung</th>
+          <th>Menge</th>
           <th class="text-end">Einzelpreis</th>
           <th class="text-end">Gesamtpreis</th>
         </tr>
@@ -47,17 +47,17 @@
       <tbody>
         <tr
           v-for="(position, index) in invoice.positions"
-          class="[&>*]:py-1.5 [&>*]:px-2 border-b pb-4"
+          class="[&>*]:px-2 border-b pb-4"
           :key="'position' + index"
         >
-          <td class="text-start">{{ index + 1 }}</td>
-          <td class="text-start">{{ position.description }}</td>
-          <td class="text-start">{{ position.quantity }}</td>
+          <td>{{ index + 1 }}</td>
+          <td>{{ position.description }}</td>
+          <td>{{ position.quantity }}</td>
           <td class="text-end">{{ toEuro(position.price) }}</td>
           <td class="text-end">{{ toEuro(position.quantity * position.price) }}</td>
         </tr>
 
-        <tr class="[&>*]:pt-1.5 [&>*]:pb-1 [&>*]:px-2 border-b-0">
+        <tr class="[&>*]:pb-1 [&>*]:px-2 border-b-0">
           <td></td>
           <td></td>
           <td></td>

@@ -10,12 +10,23 @@
       {{ title }}
     </NuxtLink>
 
-    <button
-      class="mt-auto mr-auto px-3 py-2 rounded-lg hover:bg-base-200"
-      @click="handleSignout"
-    >
-      Abmelden
-    </button>
+    <div class="grid justify-items-start gap-2 text-sm mt-auto">
+      <NuxtLink
+        v-for="{ title, path } in bottomLinks"
+        class="px-3 py-2 rounded-lg"
+        :class="route.path === path ? 'bg-neutral text-base-200' : 'hover:bg-base-200'"
+        :key="path"
+        :to="path"
+      >
+        {{ title }}
+      </NuxtLink>
+      <button
+        class="px-3 py-2 rounded-lg hover:bg-base-200"
+        @click="handleSignout"
+      >
+        Abmelden
+      </button>
+    </div>
   </aside>
 </template>
 
@@ -31,7 +42,11 @@ const links = [
   { title: 'Rechnungen', path: '/dashboard/invoices' },
   { title: 'Positionen', path: '/dashboard/invoicePositions' },
   { title: 'Kunden', path: '/dashboard/customers' },
-  { title: 'Einstellungen', path: '/dashboard/settings' },
+]
+
+const bottomLinks = [
+  { title: 'Rechnungeinstellungen', path: '/dashboard/invoiceSettings' },
+  { title: 'Kontoeinstellungen', path: '/dashboard/accountSettings' },
 ]
 
 async function handleSignout(): Promise<void> {

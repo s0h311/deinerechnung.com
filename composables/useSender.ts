@@ -19,14 +19,19 @@ export async function useSender(): Promise<Ref<Sender | null>> {
 
   console.warn('FETCHING useSender')
 
-  const { data, error } = await supabase.from('sender').select().eq('user_id', user.value.id)
+  const { data: fetchedSender, error } = await supabase
+    .from('sender')
+    .select()
+    .eq('user_id', user.value.id)
+    .select()
+    .single()
 
   if (error) {
     console.error(error)
     return sender
   }
 
-  let logoPath = data[0].logo_url
+  let logoPath = fetchedSender.logo_url
 
   if (logoPath) {
     const { data: signedLogoUrlData, error: signedLogoUrlError } = await supabase.storage
@@ -41,11 +46,24 @@ export async function useSender(): Promise<Ref<Sender | null>> {
     logoPath = signedLogoUrlData.signedUrl
   }
 
-  const fetchedSender = data[0]
-
   sender.value = {
     ...objectToCamel(fetchedSender),
     logoUrl: logoPath,
+  }
+
+  if (
+    (fetchedSender.footnotes === null || fetchedSender.footnotes.length === 0) &&
+    fetchedSender.credit_institution &&
+    fetchedSender.iban &&
+    fetchedSender.bic
+  ) {
+    sender.value.footnotes = [
+      `${fetchedSender.name}\n${fetchedSender.address_line}\n${fetchedSender.zip_code} ${fetchedSender.city}\n${user.value.email}
+      `,
+      `Kreditinstitut: ${fetchedSender.credit_institution}\nIBAN: ${prettifyIban(fetchedSender.iban)}\nBIC: ${
+        fetchedSender.bic
+      }`,
+    ]
   }
 
   return sender

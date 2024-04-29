@@ -68,17 +68,19 @@ async function handleDownload(): Promise<void> {
 
   const invoiceName = sender.runningInvoiceNumber.toString().padStart(4, '0') + '-rechnung.pdf'
 
-  shouldUseQrCode.value = true
+  if (sender.iban) {
+    shouldUseQrCode.value = true
+  }
 
   createPdf(async (doc) => {
     doc.save(invoiceName)
 
-    await uploadInvoice()
-    await increaseRunningInvoiceNumber()
+    // await uploadInvoice()
+    // await increaseRunningInvoiceNumber()
     resetInvoice()
     shouldUseQrCode.value = false
 
-    isLoadingDownload.value = false
+    setTimeout(() => (isLoadingDownload.value = false))
     dialog.value?.close()
   })
 }
@@ -86,13 +88,16 @@ async function handleDownload(): Promise<void> {
 async function handleSendViaEmail(): Promise<void> {
   isLoadingSendViaEmail.value = true
 
-  shouldUseQrCode.value = true
+  if (sender.iban) {
+    shouldUseQrCode.value = true
+  }
+
   await uploadInvoice()
   await increaseRunningInvoiceNumber()
   resetInvoice()
   shouldUseQrCode.value = false
 
-  isLoadingSendViaEmail.value = false
+  setTimeout(() => (isLoadingSendViaEmail.value = false))
   dialog.value?.close()
 }
 

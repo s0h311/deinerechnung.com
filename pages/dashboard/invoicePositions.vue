@@ -1,7 +1,7 @@
 <template>
-  <table class="table w-fit">
+  <table>
     <thead>
-      <tr class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start">
+      <tr>
         <th>Nummer</th>
         <th>Beschreibung</th>
         <th>Preis</th>
@@ -13,7 +13,6 @@
       <tr
         v-for="(invoicePosition, index) in invoicePositions"
         :key="invoicePosition.id"
-        class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start"
       >
         <td>{{ index + 1 }}</td>
         <td>{{ invoicePosition.description }}</td>

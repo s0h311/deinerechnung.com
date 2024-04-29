@@ -1,7 +1,7 @@
 <template>
-  <table class="table w-fit">
+  <table>
     <thead>
-      <tr class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start">
+      <tr>
         <th>Rechnung</th>
         <th>Datum</th>
         <th>Aktionen</th>
@@ -12,7 +12,6 @@
       <tr
         v-for="invoice in invoices"
         :key="invoice.name"
-        class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start"
       >
         <td>{{ formatInvoiceName(invoice.name) }}</td>
         <td>{{ formatDate(invoice.updatedAt) }}</td>

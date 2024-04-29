@@ -2,9 +2,9 @@
   <section class="space-y-7">
     <h2>Kunden</h2>
 
-    <table class="table w-fit">
+    <table>
       <thead>
-        <tr class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start">
+        <tr>
           <th>Name</th>
           <th>Adresse</th>
           <th>Aktionen</th>
@@ -14,7 +14,6 @@
       <tbody>
         <tr
           v-for="(recipient, index) in recipients"
-          class="[&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start"
           :key="recipient.id"
         >
           <td>{{ recipient.name }}</td>

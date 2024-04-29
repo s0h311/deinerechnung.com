@@ -27,7 +27,7 @@
 
       <textarea
         class="textarea textarea-bordered"
-        placeholder="Spalte 2"
+        placeholder="Spalte 3"
         v-model="fields.column3"
         cols="30"
         rows="4"
@@ -35,8 +35,8 @@
       ></textarea>
 
       <UICta
+        class="w-full"
         primary
-        wide
         :is-loading="isLoading"
         type="submit"
       >

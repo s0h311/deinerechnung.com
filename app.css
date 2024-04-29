@@ -22,3 +22,12 @@ html {
 h2 {
   @apply font-semibold tracking-wider;
 }
+
+table {
+  @apply table w-fit;
+}
+
+thead tr,
+tbody tr {
+  @apply [&>*]:py-1.5 [&>*]:px-5 [&>*]:text-start;
+}

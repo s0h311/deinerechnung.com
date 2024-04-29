@@ -82,9 +82,12 @@ export type Database = {
       sender: {
         Row: {
           address_line: string
+          bic: string | null
           city: string
           country: string
+          credit_institution: string | null
           footnotes: string[] | null
+          iban: string | null
           id: number
           logo_url: string | null
           name: string
@@ -94,9 +97,12 @@ export type Database = {
         }
         Insert: {
           address_line: string
+          bic?: string | null
           city: string
           country: string
+          credit_institution?: string | null
           footnotes?: string[] | null
+          iban?: string | null
           id?: number
           logo_url?: string | null
           name: string
@@ -106,9 +112,12 @@ export type Database = {
         }
         Update: {
           address_line?: string
+          bic?: string | null
           city?: string
           country?: string
+          credit_institution?: string | null
           footnotes?: string[] | null
+          iban?: string | null
           id?: number
           logo_url?: string | null
           name?: string
