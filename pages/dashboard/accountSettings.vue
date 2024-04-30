@@ -1,7 +1,8 @@
 <template>
-  <div class="space-y-7">
+  <div class="grid gap-7">
     <AccountSettingsEmailForm />
     <AccountSettingsPasswordForm />
+    <AccountSettingsDeleteAccountForm />
   </div>
 </template>
 

@@ -55,10 +55,14 @@ async function handleLogin(): Promise<void> {
 
   isLoading.value = true
 
-  const {} = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email: credentials.email,
     password: credentials.password,
   })
+
+  if (error) {
+    console.error(error)
+  }
 
   isLoading.value = false
   navigateTo('/dashboard/newInvoice')

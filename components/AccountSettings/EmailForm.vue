@@ -1,6 +1,6 @@
 <template>
   <form
-    class="bg-base-200 w-1/3 px-4 py-3 rounded-lg space-y-7"
+    class="bg-base-200 grid w-fit px-4 py-3 rounded-lg space-y-7"
     @submit.prevent="submit(handleSubmit)"
   >
     <h2>E-Mail</h2>

@@ -7,6 +7,7 @@
         'btn-md': medium,
         'btn-sm': small,
         'btn-outline': outline,
+        'btn-disabled': disabled,
       },
       color,
     ]"
@@ -39,6 +40,7 @@ type Props = {
   medium?: boolean
   small?: boolean
   type?: 'submit' | 'button'
+  disabled?: boolean
 }
 
 type Emits = {
