@@ -10,7 +10,7 @@
       :height="300"
     />
 
-    <SettingsLogoUpload
+    <InvoiceSettingsLogoUpload
       @image-change="handleImageChange"
       @preview-change="handlePreviewChange"
     />

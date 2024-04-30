@@ -1,5 +1,8 @@
 <template>
-  <div></div>
+  <div class="space-y-7">
+    <AccountSettingsEmailForm />
+    <AccountSettingsPasswordForm />
+  </div>
 </template>
 
 <script setup lang="ts">

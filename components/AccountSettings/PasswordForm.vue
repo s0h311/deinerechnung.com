@@ -1,0 +1,61 @@
+<template>
+  <form
+    class="bg-base-200 w-1/3 px-4 py-3 rounded-lg space-y-7"
+    @submit.prevent="submit(handleSubmit)"
+  >
+    <h2>Passwort</h2>
+
+    <input
+      class="input input-bordered"
+      type="text"
+      v-model="fields.email"
+      :placeholder="user.email"
+    />
+
+    <p
+      v-if="errors.email"
+      class="text-red-400 -mt-6"
+    >
+      {{ errors.email }}
+    </p>
+
+    <UICta
+      primary
+      wide
+      type="submit"
+      :is-loading="isLoading"
+      >Aktualisieren</UICta
+    >
+  </form>
+</template>
+
+<script setup lang="ts">
+import { z } from 'zod'
+
+const user = useSupabaseUser().value!
+const supabase = useSupabaseClient()
+const isLoading = ref<boolean>(false)
+
+const { fields, errors, submit } = useForm({
+  initialValue: {
+    email: user.email as string,
+  },
+  resolver: z.object({
+    email: z.string().email(),
+  }),
+})
+
+async function handleSubmit({ email }: { email: string }): Promise<void> {
+  isLoading.value = true
+  const { data, error } = await supabase.auth.updateUser({
+    email,
+  })
+
+  if (error) {
+    console.error(error)
+    return
+  }
+
+  isLoading.value = false
+}
+</script>

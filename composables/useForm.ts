@@ -1,5 +1,5 @@
 import type { UnwrapNestedRefs } from 'vue'
-import type { ZodType } from 'zod'
+import type { ZodString, ZodType } from 'zod'
 
 type FormActions<T> = {
   reset: () => void
@@ -7,6 +7,7 @@ type FormActions<T> = {
   submit: (handleFn: (fields: UnwrapNestedRefs<T>) => void) => void
   errors: UnwrapNestedRefs<Partial<Record<keyof T, string | null>>>
   set: (form: Partial<T>) => void
+  setError: (errors: Partial<T>) => void
 }
 
 type FormOptions<T> = {
@@ -58,6 +59,13 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
     resetErrors()
   }
 
+  function setError(errors: Partial<T>): void {
+    Object.keys(errors).forEach((key) => {
+      // @ts-expect-error
+      errors[key] = errors[key]
+    })
+  }
+
   // HELPERS
 
   function resetErrors(): void {
@@ -67,7 +75,7 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
     })
   }
 
-  return { reset, fields, submit, errors, set }
+  return { reset, fields, submit, errors, set, setError }
 }
 
 type Nullfy<T> = {

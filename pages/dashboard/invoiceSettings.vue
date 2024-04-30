@@ -1,9 +1,9 @@
 <template>
   <div class="flex gap-10">
-    <SettingsAddressForm />
-    <SettingsPaymentForm />
-    <SettingsLogo />
-    <SettingsFootnotesForm />
+    <InvoiceSettingsAddressForm />
+    <InvoiceSettingsPaymentForm />
+    <InvoiceSettingsLogo />
+    <InvoiceSettingsFootnotesForm />
   </div>
 </template>
 
