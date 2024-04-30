@@ -9,38 +9,30 @@
     Konto löschen
   </UICta>
 
-  <dialog
-    ref="confirmationDialogRef"
-    class="p-4 rounded-lg grid gap-5"
-  >
-    <h2>Möchten Sie wirklich Ihr Konto löschen</h2>
-
-    <p class="text-sm">Sie verlieren alle Ihre Daten.</p>
-
-    <div class="flex justify-end gap-5">
-      <UICta primary>Abbrechen</UICta>
-
-      <UICta
-        error
-        outline
-        @handle-click="handleDeleteAccount"
-      >
-        Unwiderruflich löschen
-      </UICta>
-    </div>
-  </dialog>
+  <UIConfirmationDialog
+    ref="deleteAccountConfirmationDialog"
+    title="Möchten Sie wirklich Ihr Konto löschen?"
+    text="Bitte laden Sie alle Rechnungen herunter, bevor Sie Ihr Konto löschen. Mit der Löschung werden die Rechnungen
+      unwiderruflich gelöscht."
+    continue-button-text="Unwiderruflich löschen"
+    @continue-click="handleDeleteAccount"
+  />
 </template>
 
 <script setup lang="ts">
-const confirmationDialogRef = ref<HTMLDialogElement>()
+import type { UIConfirmationDialog } from '#build/components'
+
+const deleteAccountConfirmationDialog = ref<InstanceType<typeof UIConfirmationDialog>>()
 
 function showConfirmationDialog(): void {
-  confirmationDialogRef.value?.showModal()
+  deleteAccountConfirmationDialog.value?.showModal()
 }
 
 async function handleDeleteAccount(): Promise<void> {
-  const stripeCheckoutUrl = await $fetch('/api/account/delete', {
+  const result = await $fetch('/api/account/delete', {
     method: 'delete',
   })
+
+  deleteAccountConfirmationDialog.value?.closeModal()
 }
 </script>
