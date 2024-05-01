@@ -57,8 +57,8 @@
 
 <script setup lang="ts">
 import { z } from 'zod'
+import logger from '~/utils/logger'
 
-const user = useSupabaseUser().value!
 const supabase = useSupabaseClient()
 const isLoadingRequestOtp = ref<boolean>(false)
 const requestOtpButtonDisabled = ref<string>('')
@@ -82,7 +82,7 @@ async function requestOtp(): Promise<void> {
   const { error } = await supabase.auth.reauthenticate()
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'AccountSettingsPasswordForm - requestOtp')
   }
 
   isLoadingRequestOtp.value = false
@@ -102,7 +102,7 @@ async function handleSubmit({ newPassword, otp }: { newPassword: string; otp: st
   })
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'AccountSettingsPasswordForm - handleSubmit')
     return
   }
 

@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import type { InvoicePosition } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 definePageMeta({
   layout: 'dashboard-grid',
@@ -53,7 +54,7 @@ async function handleDelete(invoicePositionId: InvoicePosition['id']): Promise<v
   const { error } = await supabase.from('invoice_position').delete().eq('id', invoicePositionId)
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'DashboardInvoicePositions - handleDelete')
     return
   }
 

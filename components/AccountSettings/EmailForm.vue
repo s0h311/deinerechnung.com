@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import { z } from 'zod'
+import logger from '~/utils/logger'
 
 const user = useSupabaseUser().value!
 const supabase = useSupabaseClient()
@@ -52,7 +53,7 @@ async function handleSubmit({ email }: { email: string }): Promise<void> {
   })
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'AccountSettingsEmailForm - handleSubmit')
     return
   }
 

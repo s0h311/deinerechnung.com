@@ -1,3 +1,5 @@
+import logger from '~/utils/logger'
+
 type MailContent = {
   recipient: {
     name: string
@@ -22,7 +24,7 @@ export default class MailClient {
       params: { ...params },
     })
 
-    const { status, statusText, json } = await fetch('https://api.brevo.com/v3/smtp/email', {
+    const { status, json } = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'post',
       headers: {
         accept: 'application/json',
@@ -32,14 +34,26 @@ export default class MailClient {
       body,
     })
 
+    const errorBody = await json()
+
     if (status > 399) {
-      console.error(statusText, json)
+      logger.error(errorBody, 'MailClient - send')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to send email',
+      })
     }
   }
 
   private getApiKey(): string {
     if (process.env.BREVO_API_KEY === undefined) {
-      throw new Error('brevo api key is missing')
+      logger.error('brevo api key is missing', 'MailClient - getApiKey')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to send email',
+      })
     }
 
     return process.env.BREVO_API_KEY

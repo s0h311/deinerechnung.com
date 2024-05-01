@@ -105,6 +105,7 @@ import { objectToCamel } from 'ts-case-convert'
 import { z } from 'zod'
 import type { Recipient } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const recipients = await useRecipients()
 const editingRecipient = useEditingRecipient()
@@ -174,7 +175,7 @@ async function updateRecipient(recipient: Omit<Recipient, 'id' | 'senderId'>): P
     .single()
 
   if (updateRecipientError) {
-    console.error(updateRecipientError)
+    logger.error(updateRecipientError.message, 'CustomerForm - updateRecipient')
     return
   }
 
@@ -207,7 +208,7 @@ async function addRecipient(recipient: Omit<Recipient, 'id' | 'senderId'>): Prom
     .single()
 
   if (insertRecipientError) {
-    console.error(insertRecipientError)
+    logger.error(insertRecipientError.message, 'CustomerForm - addRecipient')
     return
   }
 

@@ -91,6 +91,7 @@
 import { z } from 'zod'
 import type { Sender } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const sender = (await useSender()).value!
 const supabase = useSupabaseClient<Database>()
@@ -132,7 +133,7 @@ async function handleSubmit(
     .single()
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'InvoiceSettingsAddressForm - handleSubmit')
     return
   }
 

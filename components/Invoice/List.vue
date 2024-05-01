@@ -21,7 +21,7 @@
             outline
             secondary
             small
-            @handle-click="handleDelete(invoice.name)"
+            @handle-click="handleOpenInvoice(invoice.name)"
           >
             anzeigen
           </UICta>
@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { objectToCamel } from 'ts-case-convert'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const supabase = useSupabaseClient<Database>()
 const sender = (await useSender()).value!
@@ -63,7 +64,7 @@ async function fetchInvoices() {
   })
 
   if (invoicesError) {
-    console.error(invoicesError)
+    logger.error(invoicesError.message, 'InvoiceList - fetchInvoices')
     return []
   }
 
@@ -83,7 +84,7 @@ async function handleOpenInvoice(invoiceName: string): Promise<void> {
     .createSignedUrl(invoicePath, 60 * 60 * 24)
 
   if (signedLogoUrlError) {
-    console.error(signedLogoUrlError)
+    logger.error(signedLogoUrlError.message, 'InvoiceList - handleOpenInvoice')
     return
   }
 
@@ -102,7 +103,7 @@ async function handleDelete(invoiceName: string): Promise<void> {
   const { error } = await supabase.storage.from('invoice').remove([invoicePath])
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'InvoiceList - handleDelete')
     return
   }
 

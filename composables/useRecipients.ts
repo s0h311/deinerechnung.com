@@ -1,6 +1,7 @@
 import { objectToCamel } from 'ts-case-convert'
 import type { Recipient } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 export async function useRecipients(): Promise<Ref<Recipient[]>> {
   const recipients = useState<Recipient[]>('recipients', () => [])
@@ -13,7 +14,7 @@ export async function useRecipients(): Promise<Ref<Recipient[]>> {
   const sender = await useSender()
 
   if (!sender || !sender.value) {
-    console.error('Sender not found')
+    logger.error('Unable to find sender', 'useRecipients')
     return recipients
   }
 
@@ -25,7 +26,7 @@ export async function useRecipients(): Promise<Ref<Recipient[]>> {
     .eq('sender_id', sender.value.id)
 
   if (recipientError) {
-    console.error(recipientError)
+    logger.error(recipientError.message, 'useRecipients')
     return recipients
   }
 

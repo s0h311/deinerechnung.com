@@ -1,6 +1,7 @@
 import Stripe from 'stripe'
 import UserService from '../../data/userService'
 import type { H3Event } from 'h3'
+import logger from '~/utils/logger'
 
 type StripeWebhookHandlerQuery = {
   rawEvent: string
@@ -38,22 +39,22 @@ export default class StripeWebhookHandler {
     customerDetails: Stripe.Checkout.Session.CustomerDetails | null
   ): Promise<void> {
     if (!customerDetails) {
-      console.error('cannot create user, customerDetails is null')
+      logger.error('Unable to create user, customerDetails is null', 'WebhookHandler')
       return
     }
 
     if (!customerDetails.address) {
-      console.error('cannot create user, address is null')
+      logger.error('Unable to create user, address is null', 'WebhookHandler')
       return
     }
 
     if (!customerDetails.name) {
-      console.error('cannot create user, name is null')
+      logger.error('Unable to create user, name is null', 'WebhookHandler')
       return
     }
 
     if (!customerDetails.email) {
-      console.error('cannot create user, email is null')
+      logger.error('Unable to create user, email is null', 'WebhookHandler')
       return
     }
 
@@ -77,13 +78,23 @@ export default class StripeWebhookHandler {
     try {
       return this.stripe.webhooks.constructEvent(rawEvent, stripeSignatureHeader, whsec)
     } catch (err) {
-      throw new Error('stripe event could not be verified')
+      logger.error('Stripe event could not be verified', 'StripeWebhookHandler - getVerifiedEvent')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to verify request',
+      })
     }
   }
 
   private getStripeSecret(): string {
     if (process.env.STRIPE_SECRET_KEY === undefined) {
-      throw new Error('stripe secret key is missing')
+      logger.error('Stripe secret key is missing', 'StripeWebhookHandler - getStripeSecret')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to handle webhook',
+      })
     }
 
     return process.env.STRIPE_SECRET_KEY
@@ -91,7 +102,12 @@ export default class StripeWebhookHandler {
 
   private getStripeWebhookSecret(): string {
     if (process.env.STRIPE_WHSEC === undefined) {
-      throw new Error('stripe secret key is missing')
+      logger.error('Stripe webhook secret key is missing', 'StripeWebhookHandler - getStripeWebhookSecret')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to handle webhook',
+      })
     }
 
     return process.env.STRIPE_WHSEC

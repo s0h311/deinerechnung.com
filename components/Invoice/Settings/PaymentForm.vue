@@ -66,6 +66,7 @@ import { z } from 'zod'
 import type { Sender } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
 import uglifyIban from '~/utils/iban'
+import logger from '~/utils/logger'
 
 const sender = (await useSender()).value!
 const supabase = useSupabaseClient<Database>()
@@ -98,7 +99,7 @@ async function handleSubmit(paymentData: Pick<Sender, 'creditInstitution' | 'iba
     .single()
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'InvoiceSettingsPaymentForm - handleSubmit')
     return
   }
 

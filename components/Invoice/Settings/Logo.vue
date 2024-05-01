@@ -38,6 +38,7 @@
 
 <script setup lang="ts">
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const sender = await useSender()
 const user = useSupabaseUser()
@@ -73,14 +74,14 @@ async function handleSaveImage(): Promise<void> {
       upsert: true,
     })
 
-  if (uploadLogoError || !uploadLogoData) {
-    console.error(uploadLogoError)
+  if (uploadLogoError) {
+    logger.error(uploadLogoError.message, 'InvoiceSettingsLogo - handleSaveImage')
     isUploadLoading.value = false
     return
   }
 
   if (!sender.value) {
-    console.error('No sender')
+    logger.error('Unable to find sender', 'InvoiceSettingsLogo - handleSaveImage')
     isUploadLoading.value = false
     return
   }
@@ -90,6 +91,7 @@ async function handleSaveImage(): Promise<void> {
     .createSignedUrl(uploadLogoData.path, 60 * 60 * 24)
 
   if (signedLogoUrlError) {
+    logger.error(signedLogoUrlError.message, 'InvoiceSettingsLogo - handleSaveImage')
     isUploadLoading.value = false
     return
   }
@@ -104,7 +106,7 @@ async function handleSaveImage(): Promise<void> {
     .eq('id', sender.value.id)
 
   if (updateLogoUrlError) {
-    console.error(updateLogoUrlError)
+    logger.error(updateLogoUrlError.message, 'InvoiceSettingsLogo - handleSaveImage')
   }
 
   isUploadLoading.value = false
@@ -121,21 +123,21 @@ async function handleDeleteImage(): Promise<void> {
     .eq('id', sender.value!.id)
 
   if (senderUpdateError) {
-    console.error(senderUpdateError)
+    logger.error(senderUpdateError.message, 'InvoiceSettingsLogo - handleDeleteImage')
     return
   }
 
   const logoPathMatch = sender.value!.logoUrl!.match(/pictures\/(.+\/logo.+)\?/)
 
   if (!logoPathMatch || logoPathMatch.length === 0) {
-    console.error('Could not extract logo path from signed url')
+    logger.error('Unable to extract logo path from signed url', 'InvoiceSettingsLogo - handleDeleteImage')
     return
   }
 
   const { error } = await supabase.storage.from('pictures').remove([logoPathMatch[1]])
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'InvoiceSettingsLogo - handleDeleteImage')
   }
 
   sender.value!.logoUrl = null

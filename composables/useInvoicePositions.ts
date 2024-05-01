@@ -1,6 +1,7 @@
 import { objectToCamel } from 'ts-case-convert'
 import type { InvoicePosition } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
   const invoicePositions = useState<InvoicePosition[]>('invoicePositions', () => [])
@@ -13,7 +14,7 @@ export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
   const sender = await useSender()
 
   if (!sender.value) {
-    console.error('Sender not found')
+    logger.error('Unable to find sender', 'useInvoicePositions')
     return invoicePositions
   }
 
@@ -25,7 +26,7 @@ export async function useInvoicePositions(): Promise<Ref<InvoicePosition[]>> {
     .eq('sender_id', sender.value.id)
 
   if (invoicePositionsError) {
-    console.error(invoicePositionsError)
+    logger.error(invoicePositionsError.message, 'useInvoicePositions')
     return invoicePositions
   }
 

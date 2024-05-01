@@ -109,6 +109,7 @@ import type { Database } from '~/supabase/database.types'
 import { objectToCamel } from 'ts-case-convert'
 import type { InvoicePosition } from '~/server/types'
 import { z } from 'zod'
+import logger from '~/utils/logger'
 
 const supabase = useSupabaseClient<Database>()
 const sender = await useSender()
@@ -163,7 +164,7 @@ async function handleSubmit(
   }
 ): Promise<void> {
   if (!sender.value) {
-    console.error('Could not create invoice position, sender is undefined or null')
+    logger.error('Unable to create invoice position, sender is undefined or null', 'InvoicePositionForm - handleSubmit')
     return
   }
 
@@ -184,7 +185,7 @@ async function handleSubmit(
       .single()
 
     if (insertInvoicePositionError) {
-      console.error(insertInvoicePositionError)
+      logger.error(insertInvoicePositionError.message, 'InvoicePositionForm - handleSubmit')
       return
     }
 

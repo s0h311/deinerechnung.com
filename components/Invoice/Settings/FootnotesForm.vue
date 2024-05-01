@@ -49,6 +49,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const sender = await useSender()
 const supabase = useSupabaseClient<Database>()
@@ -86,7 +87,7 @@ async function handleSubmit(fields: Record<`column${number}`, string>): Promise<
     .single()
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'InvoiceSettingsFootnotesForm - handleSubmit')
     return
   }
 

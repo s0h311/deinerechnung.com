@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { jsPDF } from 'jspdf'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const supabase = useSupabaseClient<Database>()
 const sender = (await useSender()).value!
@@ -116,7 +117,7 @@ async function uploadInvoice(): Promise<void> {
       const { error: uploadInvoiceError } = await supabase.storage.from('invoice').upload(invoicePath, invoiceFile)
 
       if (uploadInvoiceError) {
-        console.error(uploadInvoiceError)
+        logger.error(uploadInvoiceError.message, 'InvoiceNextSteps - uploadInvoice')
         reject()
       }
 
@@ -131,7 +132,7 @@ async function increaseRunningInvoiceNumber(): Promise<void> {
   })
 
   if (increaseRunningInvoiceNumberError) {
-    console.error(increaseRunningInvoiceNumberError)
+    logger.error(increaseRunningInvoiceNumberError.message, 'InvoiceNextSteps - increaseRunningInvoiceNumber')
     return
   }
 
@@ -144,7 +145,7 @@ function createPdf(callback: (jsPdf: jsPDF) => void): void {
   const invoice = document.getElementById('invoiceDocument')
 
   if (!invoice) {
-    console.error('Cannot create pdf, invoice element is null')
+    logger.error('Unable to find invoiceDocument', 'InvoiceNextSteps - createPdf')
     return
   }
 

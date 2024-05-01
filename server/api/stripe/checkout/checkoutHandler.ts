@@ -1,4 +1,5 @@
 import Stripe from 'stripe'
+import logger from '~/utils/logger'
 
 type StripeCheckoutQuery = {
   paymentPeriod: 'monthly' | 'oneTime'
@@ -38,19 +39,29 @@ export default class StripeCheckoutHandler {
       })
 
       if (!session.url) {
-        throw new Error('cannot find stripe session url')
+        logger.error('Unable to find stripe session url', 'CheckoutHandler')
+
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Unable to complete checkout',
+        })
       }
 
       return session.url
     } catch (e) {
-      console.error(e)
+      logger.error(JSON.stringify(e), 'CheckoutHandler')
       return '/checkout/error'
     }
   }
 
   private getStripeSecret(): string {
     if (process.env.STRIPE_SECRET_KEY === undefined) {
-      throw new Error('stripe secret key is missing')
+      logger.error('Stripe secret key is missing', 'CheckoutHandler - getStripeSecret')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to complete checkout',
+      })
     }
 
     return process.env.STRIPE_SECRET_KEY

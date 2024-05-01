@@ -46,6 +46,7 @@
 <script setup lang="ts">
 import type { Recipient } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 const recipients = await useRecipients()
 const supabase = useSupabaseClient<Database>()
@@ -60,7 +61,7 @@ async function handleDelete(recipientId: Recipient['id'], recipientIndex: number
   const { error } = await supabase.from('recipient').delete().eq('id', recipientId)
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'CustomerList - handleDelete')
   }
 
   recipients.value = recipients.value.toSpliced(recipientIndex, 1)

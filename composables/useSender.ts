@@ -1,6 +1,7 @@
 import { objectToCamel } from 'ts-case-convert'
 import type { Sender } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 export async function useSender(): Promise<Ref<Sender | null>> {
   const sender = useState<Sender | null>('sender', () => null)
@@ -27,7 +28,7 @@ export async function useSender(): Promise<Ref<Sender | null>> {
     .single()
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'useSender')
     return sender
   }
 
@@ -39,7 +40,7 @@ export async function useSender(): Promise<Ref<Sender | null>> {
       .createSignedUrl(logoPath, 60 * 60 * 24)
 
     if (signedLogoUrlError) {
-      console.error(signedLogoUrlError)
+      logger.error(signedLogoUrlError.message, 'useSender')
       return sender
     }
 

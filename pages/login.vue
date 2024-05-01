@@ -31,6 +31,8 @@
 </template>
 
 <script setup lang="ts">
+import logger from '~/utils/logger'
+
 definePageMeta({
   middleware: ['not-auth'],
 })
@@ -61,7 +63,7 @@ async function handleLogin(): Promise<void> {
   })
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'Login - handleLogin')
   }
 
   isLoading.value = false

@@ -118,6 +118,7 @@ import { objectToCamel } from 'ts-case-convert'
 import { z } from 'zod'
 import type { Sender } from '~/server/types'
 import type { Database } from '~/supabase/database.types'
+import logger from '~/utils/logger'
 
 definePageMeta({
   middleware: [
@@ -169,8 +170,13 @@ async function handleSubmit(
     password: newSender.password,
   })
 
-  if (signupError || !signupData.user) {
-    console.error(signupError)
+  if (signupError) {
+    logger.error(signupError.message, 'Signup - handleSubmit')
+    return
+  }
+
+  if (!signupData.user) {
+    logger.error('No user found', 'Signup - handleSubmit')
     return
   }
 
@@ -188,7 +194,7 @@ async function handleSubmit(
     .single()
 
   if (insertSenderError) {
-    console.error(insertSenderError)
+    logger.error(insertSenderError.message, 'Signup - handleSubmit')
     return
   }
 
