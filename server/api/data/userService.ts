@@ -4,8 +4,9 @@ import { User } from '@supabase/auth-js/'
 import { Database } from '~/supabase/database.types'
 import type { H3Event } from 'h3'
 import MailClient from '../mail/mailClient'
-import { SenderAddress } from '~/server/types'
+import { Sender, SenderAddress } from '~/server/types'
 import logger from '~/utils/logger'
+import { objectToCamel } from 'ts-case-convert'
 
 export default class UserService {
   private supabase: SupabaseClient<Database>
@@ -16,12 +17,22 @@ export default class UserService {
     this.mailClient = new MailClient()
   }
 
-  public async create({ name, email, address }: { name: string; email: string; address: SenderAddress }) {
+  public async create({
+    name,
+    email,
+    address,
+  }: {
+    name: string
+    email: string
+    address: SenderAddress
+  }): Promise<Sender> {
     const randomPassword = this.generateRandomPassword()
 
     const user = await this.createUser(email, randomPassword)
-    await this.createSender(user.id, name, address)
+    const sender = await this.createSender(user.id, name, address)
     await this.sendPasswordViaEmail(name, email, randomPassword)
+
+    return sender
   }
 
   private async createUser(email: string, password: string): Promise<User> {
@@ -43,15 +54,19 @@ export default class UserService {
     return userCreateData.user
   }
 
-  private async createSender(userId: string, name: string, address: SenderAddress): Promise<void> {
-    const { error: senderCreateError } = await this.supabase.from('sender').insert({
-      name,
-      user_id: userId,
-      address_line: address.addressLine,
-      zip_code: address.zipCode,
-      city: address.city,
-      country: address.country,
-    })
+  private async createSender(userId: string, name: string, address: SenderAddress): Promise<Sender> {
+    const { data: senderCreateData, error: senderCreateError } = await this.supabase
+      .from('sender')
+      .insert({
+        name,
+        user_id: userId,
+        address_line: address.addressLine,
+        zip_code: address.zipCode,
+        city: address.city,
+        country: address.country,
+      })
+      .select()
+      .single()
 
     if (senderCreateError) {
       logger.error(senderCreateError.message, 'UserService - createSender')
@@ -61,6 +76,8 @@ export default class UserService {
         statusMessage: 'Unable to create sender',
       })
     }
+
+    return objectToCamel(senderCreateData)
   }
 
   public async delete(userId: string): Promise<void> {
@@ -136,6 +153,21 @@ export default class UserService {
       },
       templateId: 2,
     })
+  }
+
+  public async getSenderFromEmail(email: string): Promise<number> {
+    const { data, error } = await this.supabase.rpc('get_sender_id_from_user_email')
+
+    if (error) {
+      logger.error('Unable to get sender id from user email', 'UserService - getSenderFromEmail')
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to get sender id from user email',
+      })
+    }
+
+    return data
   }
 
   private async sendPasswordViaEmail(name: string, email: string, password: string): Promise<void> {

@@ -2,10 +2,11 @@ import Stripe from 'stripe'
 import UserService from '../../data/userService'
 import type { H3Event } from 'h3'
 import logger from '~/utils/logger'
+import SubscriptionService from '../../data/subscriptionService'
+import { Sender } from '~/server/types'
 
 type StripeWebhookHandlerQuery = {
   rawEvent: string
-  h3Event: H3Event
   stripeSignatureHeader: string
 }
 
@@ -15,52 +16,89 @@ export type StripeWebhookHandlerResponse = {
 
 export default class StripeWebhookHandler {
   private stripe: Stripe
+  private userService: UserService
+  private subscriptionService: SubscriptionService
 
-  constructor() {
+  constructor(h3Event: H3Event) {
     this.stripe = new Stripe(this.getStripeSecret())
+    this.userService = new UserService(h3Event)
+    this.subscriptionService = new SubscriptionService(h3Event)
   }
 
   public async execute({
     rawEvent,
-    h3Event,
     stripeSignatureHeader,
   }: StripeWebhookHandlerQuery): Promise<StripeWebhookHandlerResponse> {
     const event = this.getVerifiedEvent(rawEvent, stripeSignatureHeader)
 
     if (event.type === 'checkout.session.completed') {
-      await this.sendCreateUser(h3Event, event.data.object.customer_details)
+      const sender = await this.sendCreateUser(event.data.object.customer_details)
+
+      const subscriptionType = event.data.object.mode === 'subscription' ? 'monthly' : 'lifetime'
+
+      await this.subscriptionService.create(sender.id, subscriptionType)
+    }
+
+    if (event.type === 'charge.succeeded') {
+      const email = event.data.object.billing_details.email
+
+      if (!email) {
+        logger.error('Unable to update last payment, email is null', 'WebhookHandler')
+
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Unable to update last payment, email is null',
+          data: {
+            email,
+          },
+        })
+      }
+
+      const senderId = await this.userService.getSenderFromEmail(email)
+      await this.subscriptionService.updateLastPayment(senderId, new Date())
     }
 
     return { received: true }
   }
 
-  private async sendCreateUser(
-    h3Event: H3Event,
-    customerDetails: Stripe.Checkout.Session.CustomerDetails | null
-  ): Promise<void> {
+  private async sendCreateUser(customerDetails: Stripe.Checkout.Session.CustomerDetails | null): Promise<Sender> {
     if (!customerDetails) {
       logger.error('Unable to create user, customerDetails is null', 'WebhookHandler')
-      return
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to create user',
+      })
     }
 
     if (!customerDetails.address) {
       logger.error('Unable to create user, address is null', 'WebhookHandler')
-      return
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to create user',
+      })
     }
 
     if (!customerDetails.name) {
       logger.error('Unable to create user, name is null', 'WebhookHandler')
-      return
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to create user',
+      })
     }
 
     if (!customerDetails.email) {
       logger.error('Unable to create user, email is null', 'WebhookHandler')
-      return
+
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Unable to create user',
+      })
     }
 
-    const userService = new UserService(h3Event)
-
-    await userService.create({
+    const sender = await this.userService.create({
       name: customerDetails.name,
       email: customerDetails.email,
       address: {
@@ -70,6 +108,8 @@ export default class StripeWebhookHandler {
         country: customerDetails.address.country!,
       },
     })
+
+    return sender
   }
 
   private getVerifiedEvent(rawEvent: string, stripeSignatureHeader: string): Stripe.Event {

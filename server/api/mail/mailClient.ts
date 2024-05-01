@@ -11,6 +11,10 @@ type MailContent = {
 
 export default class MailClient {
   public async send({ recipient, params, templateId }: MailContent): Promise<void> {
+    if (!this.shouldSendEmail()) {
+      return
+    }
+
     const apiKey = this.getApiKey()
 
     let body: Record<string, any> = {
@@ -58,5 +62,14 @@ export default class MailClient {
     }
 
     return process.env.BREVO_API_KEY
+  }
+
+  private shouldSendEmail(): boolean {
+    if (process.env.SEND_EMAILS === 'false') {
+      logger.warn('Skipping email', 'MailClient - shouldSendEmail')
+      return false
+    }
+
+    return true
   }
 }

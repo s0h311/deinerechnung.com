@@ -3,6 +3,7 @@ import { Database } from '~/supabase/database.types'
 export type Recipient = SnakeToCamelCaseNested<Database['public']['Tables']['recipient']['Row']>
 export type InvoicePosition = SnakeToCamelCaseNested<Database['public']['Tables']['invoice_position']['Row']>
 export type Sender = SnakeToCamelCaseNested<Database['public']['Tables']['sender']['Row']>
+export type Subscription = SnakeToCamelCaseNested<Database['public']['Tables']['subscription']['Row']>
 
 export type SenderAddress = Pick<Sender, 'addressLine' | 'zipCode' | 'city' | 'country'>
 

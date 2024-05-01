@@ -135,11 +135,49 @@ export type Database = {
           },
         ]
       }
+      subscription: {
+        Row: {
+          created_at: string
+          id: number
+          last_payment: string | null
+          sender_id: number
+          type: Database["public"]["Enums"]["subscription_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          last_payment?: string | null
+          sender_id: number
+          type: Database["public"]["Enums"]["subscription_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          last_payment?: string | null
+          sender_id?: number
+          type?: Database["public"]["Enums"]["subscription_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: true
+            referencedRelation: "sender"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      get_sender_id_from_user_email: {
+        Args: {
+          email: string
+        }
+        Returns: number
+      }
       increase_running_invoice_number: {
         Args: {
           user_id: number
@@ -148,7 +186,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      subscription_type: "monthly" | "lifetime"
     }
     CompositeTypes: {
       [_ in never]: never

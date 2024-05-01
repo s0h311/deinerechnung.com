@@ -20,12 +20,7 @@ export async function useSender(): Promise<Ref<Sender | null>> {
 
   logger.warn('FETCHING', 'useSender')
 
-  const { data: fetchedSender, error } = await supabase
-    .from('sender')
-    .select()
-    .eq('user_id', user.value.id)
-    .select()
-    .single()
+  const { data: fetchedSender, error } = await supabase.from('sender').select().eq('user_id', user.value.id).single()
 
   if (error) {
     logger.error(error.message, 'useSender')
