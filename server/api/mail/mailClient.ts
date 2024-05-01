@@ -13,7 +13,7 @@ export default class MailClient {
   public async send({ recipient, params, templateId }: MailContent): Promise<void> {
     const apiKey = this.getApiKey()
 
-    const body = JSON.stringify({
+    let body: Record<string, any> = {
       to: [
         {
           name: recipient.name,
@@ -21,23 +21,24 @@ export default class MailClient {
         },
       ],
       templateId,
-      params: { ...params },
-    })
+    }
 
-    const { status, json } = await fetch('https://api.brevo.com/v3/smtp/email', {
+    if (params) {
+      body['params'] = params
+    }
+
+    const { status, statusText } = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'post',
       headers: {
         accept: 'application/json',
         'api-key': apiKey,
         contentType: 'application/json',
       },
-      body,
+      body: JSON.stringify(body),
     })
 
-    const errorBody = await json()
-
     if (status > 399) {
-      logger.error(errorBody, 'MailClient - send')
+      logger.error(statusText, 'MailClient - send')
 
       throw createError({
         statusCode: 500,

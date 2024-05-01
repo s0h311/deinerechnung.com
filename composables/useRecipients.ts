@@ -18,7 +18,7 @@ export async function useRecipients(): Promise<Ref<Recipient[]>> {
     return recipients
   }
 
-  console.warn('FETCHING useRecipients')
+  logger.warn('FETCHING', 'useRecipients')
 
   const { data: recipientData, error: recipientError } = await supabase
     .from('recipient')

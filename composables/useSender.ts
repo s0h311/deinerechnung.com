@@ -18,7 +18,7 @@ export async function useSender(): Promise<Ref<Sender | null>> {
 
   const supabase = useSupabaseClient<Database>()
 
-  console.warn('FETCHING useSender')
+  logger.warn('FETCHING', 'useSender')
 
   const { data: fetchedSender, error } = await supabase
     .from('sender')
