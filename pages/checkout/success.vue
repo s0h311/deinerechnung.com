@@ -21,6 +21,6 @@
 
 <script setup lang="ts">
 onMounted(() => {
-  //setTimeout(() => navigateTo('/login'), 1000 * 5)
+  setTimeout(() => navigateTo('/login'), 1000 * 5)
 })
 </script>

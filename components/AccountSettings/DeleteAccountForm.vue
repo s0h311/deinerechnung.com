@@ -22,6 +22,8 @@
 <script setup lang="ts">
 import type { UIConfirmationDialog } from '#build/components'
 
+const supabase = useSupabaseClient()
+
 const deleteAccountConfirmationDialog = ref<InstanceType<typeof UIConfirmationDialog>>()
 
 function showConfirmationDialog(): void {
@@ -29,10 +31,13 @@ function showConfirmationDialog(): void {
 }
 
 async function handleDeleteAccount(): Promise<void> {
-  const result = await $fetch('/api/account/delete', {
+  await $fetch('/api/account', {
     method: 'delete',
   })
 
   deleteAccountConfirmationDialog.value?.closeModal()
+
+  await supabase.auth.signOut()
+  navigateTo('/')
 }
 </script>

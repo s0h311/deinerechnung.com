@@ -23,7 +23,8 @@
       <UICta
         error
         outline
-        @handle-click="emits('continueClick')"
+        :is-loading="isLoading"
+        @handle-click="handleContinueClick"
       >
         {{ continueButtonText }}
       </UICta>
@@ -50,8 +51,15 @@ defineExpose({
 })
 
 const confirmationDialogRef = ref<HTMLDialogElement>()
+const isLoading = ref<boolean>(false)
+
+function handleContinueClick(): void {
+  isLoading.value = true
+  emits('continueClick')
+}
 
 function closeModal(): void {
+  isLoading.value = false
   confirmationDialogRef.value?.close()
 }
 

@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import { createUser } from '../../data/user'
+import UserService from '../../data/userService'
 import type { H3Event } from 'h3'
 
 type StripeWebhookHandlerQuery = {
@@ -57,10 +57,17 @@ export default class StripeWebhookHandler {
       return
     }
 
-    await createUser(h3Event, {
+    const userService = new UserService(h3Event)
+
+    await userService.create({
       name: customerDetails.name,
       email: customerDetails.email,
-      address: customerDetails.address,
+      address: {
+        addressLine: customerDetails.address.line1!,
+        zipCode: customerDetails.address.postal_code!,
+        city: customerDetails.address.city!,
+        country: customerDetails.address.country!,
+      },
     })
   }
 

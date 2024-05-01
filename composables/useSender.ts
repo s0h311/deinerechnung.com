@@ -51,19 +51,20 @@ export async function useSender(): Promise<Ref<Sender | null>> {
     logoUrl: logoPath,
   }
 
-  if (
-    (fetchedSender.footnotes === null || fetchedSender.footnotes.length === 0) &&
-    fetchedSender.credit_institution &&
-    fetchedSender.iban &&
-    fetchedSender.bic
-  ) {
+  const isFootnotesEmpty = fetchedSender.footnotes === null || fetchedSender.footnotes.length === 0
+
+  if (isFootnotesEmpty) {
     sender.value.footnotes = [
-      `${fetchedSender.name}\n${fetchedSender.address_line}\n${fetchedSender.zip_code} ${fetchedSender.city}\n${user.value.email}
-      `,
+      `${fetchedSender.name}\n${fetchedSender.address_line}\n${fetchedSender.zip_code} ${fetchedSender.city}\n${user.value.email}`,
+    ]
+  }
+
+  if (isFootnotesEmpty && fetchedSender.credit_institution && fetchedSender.iban && fetchedSender.bic) {
+    sender.value.footnotes!.push(
       `Kreditinstitut: ${fetchedSender.credit_institution}\nIBAN: ${prettifyIban(fetchedSender.iban)}\nBIC: ${
         fetchedSender.bic
-      }`,
-    ]
+      }`
+    )
   }
 
   return sender

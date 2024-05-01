@@ -19,7 +19,7 @@ export default class MailClient {
         },
       ],
       templateId,
-      params,
+      params: { ...params },
     })
 
     const { status, statusText, json } = await fetch('https://api.brevo.com/v3/smtp/email', {

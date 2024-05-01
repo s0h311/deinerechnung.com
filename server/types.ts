@@ -4,6 +4,8 @@ export type Recipient = SnakeToCamelCaseNested<Database['public']['Tables']['rec
 export type InvoicePosition = SnakeToCamelCaseNested<Database['public']['Tables']['invoice_position']['Row']>
 export type Sender = SnakeToCamelCaseNested<Database['public']['Tables']['sender']['Row']>
 
+export type SenderAddress = Pick<Sender, 'addressLine' | 'zipCode' | 'city' | 'country'>
+
 type SnakeToCamelCase<S extends string> = S extends `${infer T}_${infer U}`
   ? `${T}${Capitalize<SnakeToCamelCase<U>>}`
   : S
