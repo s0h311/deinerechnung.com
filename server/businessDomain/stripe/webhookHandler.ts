@@ -17,11 +17,13 @@ export default class StripeWebhookHandler {
   private stripe: Stripe
   private userService: UserService
   private subscriptionService: SubscriptionService
+  private chargedEmails: Set<string>
 
   constructor() {
     this.stripe = new Stripe(this.getStripeSecret())
     this.userService = new UserService()
     this.subscriptionService = new SubscriptionService()
+    this.chargedEmails = new Set()
   }
 
   public async execute({
@@ -36,9 +38,26 @@ export default class StripeWebhookHandler {
       const subscriptionType = event.data.object.mode === 'subscription' ? 'monthly' : 'lifetime'
 
       await this.subscriptionService.create(sender.id, subscriptionType)
-    }
 
-    if (event.type === 'charge.succeeded') {
+      const email = event.data.object.customer_details?.email
+
+      if (!email) {
+        logger.error('Unable to update last payment, email is null', 'WebhookHandler')
+
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Unable to update last payment, email is null',
+          data: {
+            email,
+          },
+        })
+      }
+
+      if (this.chargedEmails.delete(email)) {
+        // TODO this doesn't seem to work
+        await this.subscriptionService.updateLastPayment(sender.id, new Date())
+      }
+    } else if (event.type === 'charge.succeeded') {
       const email = event.data.object.billing_details.email
 
       if (!email) {
@@ -53,8 +72,7 @@ export default class StripeWebhookHandler {
         })
       }
 
-      const senderId = await this.userService.getSenderFromEmail(email)
-      await this.subscriptionService.updateLastPayment(senderId, new Date())
+      this.chargedEmails.add(email)
     }
 
     return { received: true }

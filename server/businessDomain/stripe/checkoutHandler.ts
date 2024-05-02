@@ -9,7 +9,7 @@ type StripeCheckoutQuery = {
 
 export default class StripeCheckoutHandler {
   private PRICE_ID_MONTHLY = 'price_1P8d4dBzByKpK8243H8OtprY'
-  private PRICE_ID_ONE_TIME = 'price_1P8PhnBzByKpK824TzMU45Qq'
+  private PRICE_ID_LIFETIME = 'price_1P8PhnBzByKpK824TzMU45Qq'
 
   private stripe: Stripe
 
@@ -18,7 +18,7 @@ export default class StripeCheckoutHandler {
   }
 
   public async execute(query: StripeCheckoutQuery): Promise<string> {
-    const priceId = query.paymentPeriod === 'monthly' ? this.PRICE_ID_MONTHLY : this.PRICE_ID_ONE_TIME
+    const priceId = query.paymentPeriod === 'monthly' ? this.PRICE_ID_MONTHLY : this.PRICE_ID_LIFETIME
     const mode = query.paymentPeriod === 'monthly' ? 'subscription' : 'payment'
 
     const successUrl = `${query.requestProtocol}://${query.requestHost}/checkout/success`
