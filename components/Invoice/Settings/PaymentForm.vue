@@ -11,7 +11,7 @@
       class="input input-bordered"
       type="text"
       placeholder="Kreditinstitut"
-    >
+    />
 
     <p
       v-if="errors.creditInstitution"
@@ -25,9 +25,8 @@
       type="text"
       :value="prettifyIban(fields.iban ?? '')"
       placeholder="IBAN"
-      @input="(e) => set({iban: (e.target as HTMLInputElement).value})
-      "
-    >
+      @input="(e) => set({ iban: (e.target as HTMLInputElement).value })"
+    />
 
     <p
       v-if="errors.iban"
@@ -41,7 +40,7 @@
       class="input input-bordered"
       type="text"
       placeholder="BIC"
-    >
+    />
 
     <p
       v-if="errors.bic"

@@ -5,3 +5,4 @@ dist
 *.lock
 *.d.ts
 .DS_Store
+.vscode

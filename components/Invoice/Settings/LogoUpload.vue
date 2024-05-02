@@ -5,7 +5,7 @@
       class="file-input file-input-bordered file-input-primary w-full max-w-xs"
       accept="image/*"
       @change="handleImage"
-    >
+    />
   </div>
 </template>
 

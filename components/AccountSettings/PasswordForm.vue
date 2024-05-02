@@ -21,7 +21,7 @@
         class="input input-bordered"
         type="text"
         placeholder="Neues Password"
-      >
+      />
 
       <p
         v-if="errors.newPassword"
@@ -35,7 +35,7 @@
         class="input input-bordered"
         type="text"
         placeholder="Bestätigungscode"
-      >
+      />
 
       <p
         v-if="errors.otp"

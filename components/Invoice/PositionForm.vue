@@ -59,7 +59,7 @@
           :max="100_000"
           :step="1"
           placeholder="Euro"
-        >
+        />
 
         <input
           v-model="fields.priceCent"
@@ -69,14 +69,14 @@
           :max="99"
           :step="1"
           placeholder="Cent"
-        >
+        />
       </div>
 
       <p
         v-if="errors.priceEuro || errors.priceCent"
         class="text-red-400 -mt-6"
       >
-        {{ errors.priceEuro }} <br >
+        {{ errors.priceEuro }} <br />
         {{ errors.priceCent }}
       </p>
 
@@ -85,7 +85,7 @@
         class="input input-bordered"
         type="number"
         placeholder="Menge"
-      >
+      />
 
       <p
         v-if="errors.quantity"

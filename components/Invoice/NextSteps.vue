@@ -21,7 +21,7 @@
           class="input input-bordered"
           type="email"
           placeholder="empfänger@email.de"
-        >
+        />
 
         <UICta
           primary

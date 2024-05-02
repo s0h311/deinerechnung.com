@@ -54,11 +54,11 @@ const color = computed(() =>
   props.primary
     ? 'btn-primary'
     : props.secondary
-    ? 'btn-secondary'
-    : props.accent
-    ? 'btn-accent'
-    : props.error
-    ? 'btn-error'
-    : 'btn-neutral'
+      ? 'btn-secondary'
+      : props.accent
+        ? 'btn-accent'
+        : props.error
+          ? 'btn-error'
+          : 'btn-neutral'
 )
 </script>

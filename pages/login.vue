@@ -7,7 +7,7 @@
         type="text"
         class="grow"
         placeholder="E-Mail"
-      >
+      />
     </label>
 
     <label class="input input-bordered flex items-center gap-2">
@@ -17,7 +17,7 @@
         type="password"
         class="grow"
         placeholder="Passwort"
-      >
+      />
     </label>
 
     <UICta

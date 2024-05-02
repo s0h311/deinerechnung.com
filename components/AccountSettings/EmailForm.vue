@@ -10,7 +10,7 @@
       class="input input-bordered"
       type="text"
       :placeholder="user.email"
-    >
+    />
 
     <p
       v-if="errors.email"

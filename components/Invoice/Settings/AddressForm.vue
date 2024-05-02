@@ -11,7 +11,7 @@
       class="input input-bordered"
       type="text"
       placeholder="Name"
-    >
+    />
 
     <p
       v-if="errors.name"
@@ -25,7 +25,7 @@
       class="input input-bordered"
       type="text"
       placeholder="Straße und Hausnummer"
-    >
+    />
 
     <p
       v-if="errors.addressLine"
@@ -39,7 +39,7 @@
       class="input input-bordered"
       type="text"
       placeholder="PZL"
-    >
+    />
 
     <p
       v-if="errors.zipCode"
@@ -53,7 +53,7 @@
       class="input input-bordered"
       type="text"
       placeholder="Ort"
-    >
+    />
 
     <p
       v-if="errors.city"
@@ -67,7 +67,7 @@
       class="input input-bordered"
       type="text"
       placeholder="Land"
-    >
+    />
 
     <p
       v-if="errors.country"

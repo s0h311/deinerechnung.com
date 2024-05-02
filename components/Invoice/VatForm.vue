@@ -7,7 +7,7 @@
     :max="99"
     :step="1"
     placeholder="USt. %"
-  >
+  />
 </template>
 
 <script setup lang="ts">

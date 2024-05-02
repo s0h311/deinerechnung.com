@@ -10,7 +10,7 @@
         class="grow"
         type="text"
         placeholder="Firmenname"
-      >
+      />
     </label>
 
     <p
@@ -26,7 +26,7 @@
         class="grow"
         type="text"
         placeholder="Straße und Hausnummer"
-      >
+      />
     </label>
 
     <p
@@ -42,7 +42,7 @@
         class="grow"
         type="text"
         placeholder="PLZ"
-      >
+      />
     </label>
 
     <p
@@ -58,7 +58,7 @@
         class="grow"
         type="text"
         placeholder="Ort"
-      >
+      />
     </label>
 
     <p
@@ -75,7 +75,7 @@
         class="grow"
         type="email"
         placeholder="E-Mail"
-      >
+      />
     </label>
 
     <p
@@ -93,7 +93,7 @@
         type="password"
         minlength="6"
         placeholder="Passwort"
-      >
+      />
     </label>
 
     <p
