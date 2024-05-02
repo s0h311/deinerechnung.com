@@ -1,55 +1,17 @@
 <template>
-  <div
+  <UIPricing
     id="pricing"
-    class="space-y-10"
-  >
-    <h2 class="text-3xl text-center">Preise</h2>
-
-    <div class="grid grid-cols-2 gap-20">
-      <div
-        v-for="(option, indexPricing) in pricingOptions"
-        :key="'option' + indexPricing"
-        class="border-2 p-8 rounded-xl space-y-10 shadow-md"
-        :class="option.isPremium ? 'border-primary' : 'border-neutral'"
-      >
-        <p
-          class="line-through text-sm -mb-8"
-          :class="option.oldPrice ? '' : 'invisible'"
-        >
-          {{ option.oldPrice }}€
-        </p>
-        <div class="flex items-center gap-2">
-          <p class="text-3xl font-semibold">{{ option.newPrice }}€</p>
-          <p class="text-sm">/ {{ option.paymentPeriodText }}</p>
-        </div>
-
-        <ul>
-          <li
-            v-for="(benefit, indexBenetifs) in option.benefits"
-            :key="'benefit' + indexBenetifs"
-            class="flex items-center gap-2 text-sm"
-          >
-            <IconCheck /> {{ benefit }}
-          </li>
-        </ul>
-
-        <UICta
-          class="w-full"
-          :primary="option.isPremium"
-          :is-loading="isLoading === indexPricing"
-          @handle-click="handleGoToCheckout(indexPricing)"
-        >
-          Jetzt holen
-        </UICta>
-      </div>
-    </div>
-  </div>
+    title="Preise"
+    :pricing-options="pricingOptions"
+    cta-title="Jetzt holen"
+    :handle-fn="handleGoToCheckout"
+  />
 </template>
 
 <script setup lang="ts">
-const isLoading = ref<number | null>(null)
+import type { PricingOption } from '../UI/Pricing.vue'
 
-const pricingOptions = [
+const pricingOptions: PricingOption[] = [
   {
     title: 'Monatlich',
     oldPrice: 9.99,
@@ -64,7 +26,7 @@ const pricingOptions = [
     title: 'Einmalig, für immer',
     oldPrice: 69.99,
     newPrice: 39.99,
-    paymentPeriod: 'oneTime',
+    paymentPeriod: 'lifetime',
     paymentPeriodText: 'einmalig',
     benefits: ['Automatische Verbesserungen', '24/7 Kundenservice', 'Einmal zahlen, für immer benutzen'],
     isPremium: true,
@@ -72,16 +34,12 @@ const pricingOptions = [
 ]
 
 async function handleGoToCheckout(pricingOptionIndex: number): Promise<void> {
-  isLoading.value = pricingOptionIndex
-
   const stripeCheckoutUrl = await $fetch('/api/stripe/checkout', {
     method: 'post',
     body: {
       paymentPeriod: pricingOptions[pricingOptionIndex].paymentPeriod,
     },
   })
-
-  isLoading.value = null
 
   await navigateTo(stripeCheckoutUrl, { external: true })
 }

@@ -2,7 +2,7 @@ import Stripe from 'stripe'
 import logger from '~/utils/logger'
 
 type StripeCheckoutQuery = {
-  paymentPeriod: 'monthly' | 'oneTime'
+  paymentPeriod: 'monthly' | 'lifetime'
   requestHost: string
   requestProtocol: 'http' | 'https'
 }
