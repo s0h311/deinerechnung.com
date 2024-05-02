@@ -43,7 +43,7 @@ type Emits = {
   continueClick: []
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const emits = defineEmits<Emits>()
 defineExpose({
   closeModal,

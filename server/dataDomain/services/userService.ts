@@ -155,7 +155,7 @@ export default class UserService {
   }
 
   public async getSenderFromEmail(email: string): Promise<number> {
-    const { data, error } = await this.supabase.rpc('get_sender_id_from_user_email')
+    const { data, error } = await this.supabase.rpc('get_sender_id_from_user_email', { email })
 
     if (error) {
       logger.error('Unable to get sender id from user email', 'UserService - getSenderFromEmail')

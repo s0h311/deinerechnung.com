@@ -33,7 +33,6 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const sender = await useSender()
 

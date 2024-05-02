@@ -7,8 +7,8 @@
 
     <div class="grid grid-cols-2 gap-20">
       <div
-        v-for="(option, index) in pricingOptions"
-        :key="'option' + index"
+        v-for="(option, indexPricing) in pricingOptions"
+        :key="'option' + indexPricing"
         class="border-2 p-8 rounded-xl space-y-10 shadow-md"
         :class="option.isPremium ? 'border-primary' : 'border-neutral'"
       >
@@ -25,8 +25,8 @@
 
         <ul>
           <li
-            v-for="(benefit, index) in option.benefits"
-            :key="'benefit' + index"
+            v-for="(benefit, indexBenetifs) in option.benefits"
+            :key="'benefit' + indexBenetifs"
             class="flex items-center gap-2 text-sm"
           >
             <IconCheck /> {{ benefit }}
@@ -36,8 +36,8 @@
         <UICta
           class="w-full"
           :primary="option.isPremium"
-          :is-loading="isLoading === index"
-          @handle-click="handleGoToCheckout(index)"
+          :is-loading="isLoading === indexPricing"
+          @handle-click="handleGoToCheckout(indexPricing)"
         >
           Jetzt holen
         </UICta>

@@ -48,7 +48,7 @@ const { fields, errors, submit } = useForm({
 
 async function handleSubmit({ email }: { email: string }): Promise<void> {
   isLoading.value = true
-  const { data, error } = await supabase.auth.updateUser({
+  const { error } = await supabase.auth.updateUser({
     email,
   })
 

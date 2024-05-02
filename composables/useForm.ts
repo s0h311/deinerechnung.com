@@ -1,5 +1,5 @@
 import type { UnwrapNestedRefs } from 'vue'
-import type { ZodString, ZodType } from 'zod'
+import type { ZodType } from 'zod'
 
 type FormActions<T> = {
   reset: () => void
@@ -24,6 +24,7 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
 
   function reset(): void {
     Object.keys(fields).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       fields[key] = initial[key]
     })
@@ -39,6 +40,7 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
 
       if (!validationResult.success) {
         validationResult.error.errors.forEach((error) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           errors[error.path[0]] = error.message
         })
@@ -52,6 +54,7 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
 
   function set(form: Partial<T>): void {
     Object.keys(fields).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       fields[key] = form[key]
     })
@@ -59,10 +62,11 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
     resetErrors()
   }
 
-  function setError(errors: Partial<T>): void {
-    Object.keys(errors).forEach((key) => {
+  function setError(fields: Partial<T>): void {
+    Object.keys(fields).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
-      errors[key] = errors[key]
+      errors[key] = fields[key]
     })
   }
 
@@ -70,6 +74,7 @@ export default function useForm<T extends object>({ initialValue, resolver }: Fo
 
   function resetErrors(): void {
     Object.keys(fields).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       errors[key] = null
     })

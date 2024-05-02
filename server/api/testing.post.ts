@@ -1,1 +1,1 @@
-export default defineEventHandler(async (event): Promise<void> => {})
+export default defineEventHandler(async (_event): Promise<void> => {})
