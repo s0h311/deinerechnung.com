@@ -1,8 +1,8 @@
 import Stripe from 'stripe'
-import UserService from '../../data/userService'
+import UserService from '../../dataDomain/services/userService'
 import type { H3Event } from 'h3'
 import logger from '~/utils/logger'
-import SubscriptionService from '../../data/subscriptionService'
+import SubscriptionService from '../../dataDomain/services/subscriptionService'
 import { Sender } from '~/server/types'
 
 type StripeWebhookHandlerQuery = {
@@ -19,10 +19,10 @@ export default class StripeWebhookHandler {
   private userService: UserService
   private subscriptionService: SubscriptionService
 
-  constructor(h3Event: H3Event) {
+  constructor() {
     this.stripe = new Stripe(this.getStripeSecret())
-    this.userService = new UserService(h3Event)
-    this.subscriptionService = new SubscriptionService(h3Event)
+    this.userService = new UserService()
+    this.subscriptionService = new SubscriptionService()
   }
 
   public async execute({

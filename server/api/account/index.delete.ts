@@ -1,6 +1,6 @@
 import { serverSupabaseUser } from '#supabase/server'
 import logger from '~/utils/logger'
-import UserService from '../data/userService'
+import UserService from '../../dataDomain/services/userService'
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
@@ -13,6 +13,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const userService = new UserService(event)
+  const userService = new UserService()
   await userService.delete(user.id)
 })

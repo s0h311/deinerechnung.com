@@ -1,15 +1,14 @@
-import { serverSupabaseServiceRole } from '#supabase/server'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { Database } from '~/supabase/database.types'
-import type { H3Event } from 'h3'
-import { SenderAddress, Subscription } from '~/server/types'
+import { Subscription } from '~/server/types'
 import logger from '~/utils/logger'
+import useSupabaseAdmin from '../../infrastructure/supabase/useSupabaseAdmin'
 
 export default class SubscriptionService {
   private supabase: SupabaseClient<Database>
 
-  constructor(event: H3Event) {
-    this.supabase = serverSupabaseServiceRole<Database>(event)
+  constructor() {
+    this.supabase = useSupabaseAdmin()
   }
 
   public async create(senderId: number, subscriptionType: Subscription['type']): Promise<void> {

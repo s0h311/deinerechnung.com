@@ -16,7 +16,9 @@
     "test": "vitest",
     "migrate:up": "npx supabase migration up --linked",
     "gen:db:types": "npx supabase gen types typescript --project-id dhoxlruyybwfiifulzvs > supabase/database.types.ts",
-    "stripe:webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
+    "stripe:webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@nuxt/image": "^1.4.0",
@@ -31,11 +33,13 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@nuxt/eslint": "^0.3.10",
     "@nuxtjs/supabase": "^1.2.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.10.2",
+    "eslint": "^8.57.0",
     "nuxt": "^3.11.2",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",

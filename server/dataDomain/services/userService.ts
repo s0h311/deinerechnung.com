@@ -1,19 +1,18 @@
-import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { User } from '@supabase/auth-js/'
 import { Database } from '~/supabase/database.types'
-import type { H3Event } from 'h3'
-import MailClient from '../mail/mailClient'
+import MailClient from '../../infrastructure/mail/mailClient'
 import { Sender, SenderAddress } from '~/server/types'
 import logger from '~/utils/logger'
 import { objectToCamel } from 'ts-case-convert'
+import useSupabaseAdmin from '../../infrastructure/supabase/useSupabaseAdmin'
 
 export default class UserService {
   private supabase: SupabaseClient<Database>
   private mailClient: MailClient
 
-  constructor(event: H3Event) {
-    this.supabase = serverSupabaseServiceRole<Database>(event)
+  constructor() {
+    this.supabase = useSupabaseAdmin()
     this.mailClient = new MailClient()
   }
 
