@@ -5,8 +5,7 @@
       <p>Sie erhalten in kürze Ihr Passwort per E-Mail</p>
       <span class="flex items-center gap-5"
         >Sie werden nun zur Anmeldeseite weitergeleitet
-        <div class="loading loading-spinner"></div
-      ></span>
+        <div class="loading loading-spinner"/></span>
     </div>
 
     <NuxtImg

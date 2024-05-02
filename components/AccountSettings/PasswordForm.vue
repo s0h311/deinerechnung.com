@@ -17,11 +17,11 @@
       @submit.prevent="submit(handleSubmit)"
     >
       <input
+        v-model="fields.newPassword"
         class="input input-bordered"
         type="text"
-        v-model="fields.newPassword"
         placeholder="Neues Password"
-      />
+      >
 
       <p
         v-if="errors.newPassword"
@@ -31,11 +31,11 @@
       </p>
 
       <input
+        v-model="fields.otp"
         class="input input-bordered"
         type="text"
-        v-model="fields.otp"
         placeholder="Bestätigungscode"
-      />
+      >
 
       <p
         v-if="errors.otp"

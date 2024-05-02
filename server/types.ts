@@ -1,4 +1,4 @@
-import { Database } from '~/supabase/database.types'
+import type { Database } from '~/supabase/database.types'
 
 export type Recipient = SnakeToCamelCaseNested<Database['public']['Tables']['recipient']['Row']>
 export type InvoicePosition = SnakeToCamelCaseNested<Database['public']['Tables']['invoice_position']['Row']>

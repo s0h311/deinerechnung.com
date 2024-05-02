@@ -12,6 +12,6 @@
       stroke-linejoin="round"
       stroke-width="2"
       d="m5 13l4 4L19 7"
-    ></path>
+    />
   </svg>
 </template>

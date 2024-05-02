@@ -3,7 +3,7 @@ import UserService from '../../dataDomain/services/userService'
 import type { H3Event } from 'h3'
 import logger from '~/utils/logger'
 import SubscriptionService from '../../dataDomain/services/subscriptionService'
-import { Sender } from '~/server/types'
+import type { Sender } from '~/server/types'
 
 type StripeWebhookHandlerQuery = {
   rawEvent: string

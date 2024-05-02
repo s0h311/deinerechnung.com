@@ -6,11 +6,11 @@
     <h2>E-Mail</h2>
 
     <input
+      v-model="fields.email"
       class="input input-bordered"
       type="text"
-      v-model="fields.email"
       :placeholder="user.email"
-    />
+    >
 
     <p
       v-if="errors.email"

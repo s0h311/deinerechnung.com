@@ -8,12 +8,12 @@
         v-if="sender.logoUrl"
         :src="sender.logoUrl"
         class="max-w-[30%] ml-auto"
-      />
+      >
     </div>
 
     <div class="space-y-3 mb-16 mt-10">
       <p class="text-xxs">{{ senderFullAddress }}</p>
-      <p v-html="recipientFullAddress"></p>
+      <p v-html="recipientFullAddress"/>
     </div>
 
     <div class="flex items-center justify-between mb-5">
@@ -47,8 +47,8 @@
       <tbody>
         <tr
           v-for="(position, index) in invoice.positions"
-          class="[&>*]:px-2 border-b pb-4"
           :key="'position' + index"
+          class="[&>*]:px-2 border-b pb-4"
         >
           <td>{{ index + 1 }}</td>
           <td>{{ position.description }}</td>
@@ -58,9 +58,9 @@
         </tr>
 
         <tr class="[&>*]:pb-1 [&>*]:px-2 border-b-0">
-          <td></td>
-          <td></td>
-          <td></td>
+          <td/>
+          <td/>
+          <td/>
           <td class="text-end">USt.:</td>
           <td class="text-end">
             {{ (invoice.vatRate ?? 0) + '%' }}
@@ -68,9 +68,9 @@
         </tr>
 
         <tr class="[&>*]:pt-0 [&>*]:px-2">
-          <td></td>
-          <td></td>
-          <td></td>
+          <td/>
+          <td/>
+          <td/>
           <td class="text-end">Gesamtbrutto:</td>
           <td class="text-end break-normal">
             {{ toEuro(total) }}
@@ -82,10 +82,10 @@
     <div class="grid grid-cols-3 mt-auto w-full text-xxs text-gray-300">
       <div
         v-for="(column, index) in sender.footnotes"
-        :class="index === 1 ? 'text-center' : index === 2 ? 'text-end' : ''"
         :key="'column' + index"
+        :class="index === 1 ? 'text-center' : index === 2 ? 'text-end' : ''"
         v-html="ln2Br(column)"
-      ></div>
+      />
     </div>
   </div>
 </template>

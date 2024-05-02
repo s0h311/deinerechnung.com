@@ -38,10 +38,10 @@
       @submit.prevent="submit(handleSubmit)"
     >
       <textarea
+        v-model="fields.description"
         class="textarea textarea-bordered"
         placeholder="Beschreibung"
-        v-model="fields.description"
-      ></textarea>
+      />
 
       <p
         v-if="errors.description"
@@ -52,40 +52,40 @@
 
       <div class="grid grid-cols-2 gap-3">
         <input
-          class="input input-bordered"
           v-model="fields.priceEuro"
+          class="input input-bordered"
           type="number"
           :min="0"
           :max="100_000"
           :step="1"
           placeholder="Euro"
-        />
+        >
 
         <input
-          class="input input-bordered"
           v-model="fields.priceCent"
+          class="input input-bordered"
           type="number"
           :min="0"
           :max="99"
           :step="1"
           placeholder="Cent"
-        />
+        >
       </div>
 
       <p
         v-if="errors.priceEuro || errors.priceCent"
         class="text-red-400 -mt-6"
       >
-        {{ errors.priceEuro }} <br />
+        {{ errors.priceEuro }} <br >
         {{ errors.priceCent }}
       </p>
 
       <input
-        class="input input-bordered"
         v-model="fields.quantity"
+        class="input input-bordered"
         type="number"
         placeholder="Menge"
-      />
+      >
 
       <p
         v-if="errors.quantity"

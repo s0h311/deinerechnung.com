@@ -5,8 +5,8 @@
     <ul class="space-y-2 w-full">
       <li
         v-for="(invoicePosition, index) in currentInvoice.positions"
-        class="grid grid-flow-col items-center"
         :key="invoicePosition.id"
+        class="grid grid-flow-col items-center"
       >
         <p>{{ invoicePosition.description }}</p>
 

@@ -27,8 +27,8 @@
         medium
         outline
         error
-        @handle-click="handleDeleteImage"
         :is-loading="isDeleteLoading"
+        @handle-click="handleDeleteImage"
       >
         Löschen <IconDelete />
       </UICta>

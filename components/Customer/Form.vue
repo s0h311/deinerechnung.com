@@ -6,11 +6,11 @@
     <h2>Neuer Kunde</h2>
 
     <input
+      v-model="fields.name"
       class="input input-bordered"
       type="text"
-      v-model="fields.name"
       placeholder="Name"
-    />
+    >
 
     <p
       v-if="errors.name"
@@ -20,11 +20,11 @@
     </p>
 
     <input
+      v-model="fields.emailAddress"
       class="input input-bordered"
       type="email"
-      v-model="fields.emailAddress"
       placeholder="hi@reffect.org"
-    />
+    >
 
     <p
       v-if="errors.emailAddress"
@@ -34,11 +34,11 @@
     </p>
 
     <input
+      v-model="fields.addressLine"
       class="input input-bordered"
       type="text"
-      v-model="fields.addressLine"
       placeholder="Straße und Hausnummer"
-    />
+    >
 
     <p
       v-if="errors.addressLine"
@@ -48,11 +48,11 @@
     </p>
 
     <input
+      v-model="fields.zipCode"
       class="input input-bordered"
       type="text"
-      v-model="fields.zipCode"
       placeholder="PZL"
-    />
+    >
 
     <p
       v-if="errors.zipCode"
@@ -62,11 +62,11 @@
     </p>
 
     <input
+      v-model="fields.city"
       class="input input-bordered"
       type="text"
-      v-model="fields.city"
       placeholder="Ort"
-    />
+    >
 
     <p
       v-if="errors.city"
@@ -76,11 +76,11 @@
     </p>
 
     <input
+      v-model="fields.country"
       class="input input-bordered"
       type="text"
-      v-model="fields.country"
       placeholder="Land"
-    />
+    >
 
     <p
       v-if="errors.country"

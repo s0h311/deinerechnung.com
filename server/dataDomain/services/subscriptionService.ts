@@ -1,6 +1,6 @@
-import { SupabaseClient } from '@supabase/supabase-js'
-import { Database } from '~/supabase/database.types'
-import { Subscription } from '~/server/types'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '~/supabase/database.types'
+import type { Subscription } from '~/server/types'
 import logger from '~/utils/logger'
 import useSupabaseAdmin from '../../infrastructure/supabase/useSupabaseAdmin'
 

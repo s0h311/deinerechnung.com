@@ -8,31 +8,31 @@
       @submit.prevent="submit(handleSubmit)"
     >
       <textarea
+        v-model="fields.column1"
         class="textarea textarea-bordered"
         placeholder="Spalte 1"
-        v-model="fields.column1"
         cols="30"
         rows="4"
         spellcheck="true"
-      ></textarea>
+      />
 
       <textarea
+        v-model="fields.column2"
         class="textarea textarea-bordered"
         placeholder="Spalte 2"
-        v-model="fields.column2"
         cols="30"
         rows="4"
         spellcheck="true"
-      ></textarea>
+      />
 
       <textarea
+        v-model="fields.column3"
         class="textarea textarea-bordered"
         placeholder="Spalte 3"
-        v-model="fields.column3"
         cols="30"
         rows="4"
         spellcheck="true"
-      ></textarea>
+      />
 
       <UICta
         class="w-full"

@@ -6,11 +6,11 @@
     <label class="input input-bordered flex items-center gap-2">
       <IconCompany />
       <input
+        v-model="fields.name"
         class="grow"
         type="text"
-        v-model="fields.name"
         placeholder="Firmenname"
-      />
+      >
     </label>
 
     <p
@@ -22,11 +22,11 @@
 
     <label class="input input-bordered flex items-center gap-2">
       <input
+        v-model="fields.addressLine"
         class="grow"
         type="text"
-        v-model="fields.addressLine"
         placeholder="Straße und Hausnummer"
-      />
+      >
     </label>
 
     <p
@@ -38,11 +38,11 @@
 
     <label class="input input-bordered flex items-center gap-2">
       <input
+        v-model="fields.zipCode"
         class="grow"
         type="text"
-        v-model="fields.zipCode"
         placeholder="PLZ"
-      />
+      >
     </label>
 
     <p
@@ -54,11 +54,11 @@
 
     <label class="input input-bordered flex items-center gap-2">
       <input
+        v-model="fields.city"
         class="grow"
         type="text"
-        v-model="fields.city"
         placeholder="Ort"
-      />
+      >
     </label>
 
     <p
@@ -71,11 +71,11 @@
     <label class="input input-bordered flex items-center gap-2">
       <IconEmail />
       <input
+        v-model="fields.email"
         class="grow"
         type="email"
-        v-model="fields.email"
         placeholder="E-Mail"
-      />
+      >
     </label>
 
     <p
@@ -88,12 +88,12 @@
     <label class="input input-bordered flex items-center gap-2">
       <IconPassword />
       <input
+        v-model="fields.password"
         class="grow"
         type="password"
-        v-model="fields.password"
         minlength="6"
         placeholder="Passwort"
-      />
+      >
     </label>
 
     <p

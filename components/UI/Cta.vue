@@ -17,10 +17,10 @@
     <span
       v-if="isLoading"
       class="loading loading-spinner"
-    ></span>
+    />
     <p
-      class="flex items-center gap-1"
       v-else
+      class="flex items-center gap-1"
     >
       <slot />
     </p>

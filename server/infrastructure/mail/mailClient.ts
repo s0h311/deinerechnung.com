@@ -17,7 +17,7 @@ export default class MailClient {
 
     const apiKey = this.getApiKey()
 
-    let body: Record<string, any> = {
+    const body: Record<string, any> = {
       to: [
         {
           name: recipient.name,

@@ -3,21 +3,21 @@
     <label class="input input-bordered flex items-center gap-2">
       <IconEmail />
       <input
+        v-model="credentials.email"
         type="text"
         class="grow"
-        v-model="credentials.email"
         placeholder="E-Mail"
-      />
+      >
     </label>
 
     <label class="input input-bordered flex items-center gap-2">
       <IconPassword />
       <input
+        v-model="credentials.password"
         type="password"
         class="grow"
-        v-model="credentials.password"
         placeholder="Passwort"
-      />
+      >
     </label>
 
     <UICta

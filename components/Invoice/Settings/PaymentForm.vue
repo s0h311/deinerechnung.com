@@ -7,11 +7,11 @@
     <h2>Zahlungsdaten</h2>
 
     <input
+      v-model="fields.creditInstitution"
       class="input input-bordered"
       type="text"
-      v-model="fields.creditInstitution"
       placeholder="Kreditinstitut"
-    />
+    >
 
     <p
       v-if="errors.creditInstitution"
@@ -27,7 +27,7 @@
       placeholder="IBAN"
       @input="(e) => set({iban: (e.target as HTMLInputElement).value})
       "
-    />
+    >
 
     <p
       v-if="errors.iban"
@@ -37,11 +37,11 @@
     </p>
 
     <input
+      v-model="fields.bic"
       class="input input-bordered"
       type="text"
-      v-model="fields.bic"
       placeholder="BIC"
-    />
+    >
 
     <p
       v-if="errors.bic"
