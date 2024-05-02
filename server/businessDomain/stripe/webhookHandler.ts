@@ -33,7 +33,7 @@ export default class StripeWebhookHandler {
     const event = this.getVerifiedEvent(rawEvent, stripeSignatureHeader)
 
     if (event.type === 'checkout.session.completed') {
-      const sender = await this.sendCreateUser(event.data.object.customer_details)
+      const sender = await this.createUser(event.data.object.customer_details)
 
       const subscriptionType = event.data.object.mode === 'subscription' ? 'monthly' : 'lifetime'
 
@@ -54,7 +54,6 @@ export default class StripeWebhookHandler {
       }
 
       if (this.chargedEmails.delete(email)) {
-        // TODO this doesn't seem to work
         await this.subscriptionService.updateLastPayment(sender.id, new Date())
       }
     } else if (event.type === 'charge.succeeded') {
@@ -78,7 +77,7 @@ export default class StripeWebhookHandler {
     return { received: true }
   }
 
-  private async sendCreateUser(customerDetails: Stripe.Checkout.Session.CustomerDetails | null): Promise<Sender> {
+  private async createUser(customerDetails: Stripe.Checkout.Session.CustomerDetails | null): Promise<Sender> {
     if (!customerDetails) {
       logger.error('Unable to create user, customerDetails is null', 'WebhookHandler')
 

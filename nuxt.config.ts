@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/image', '@vueuse/nuxt', '@nuxtjs/supabase', '@nuxt/eslint'],
+  modules: ['@nuxt/image', '@vueuse/nuxt', '@nuxtjs/supabase', '@nuxt/eslint', '@nuxt/test-utils/module'],
   app: {
     head: {
       title: 'Deine Rechnung: Rechnungen einfacher gemacht',

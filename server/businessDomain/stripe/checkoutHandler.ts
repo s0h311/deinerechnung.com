@@ -60,7 +60,7 @@ export default class StripeCheckoutHandler {
 
       throw createError({
         statusCode: 500,
-        statusMessage: 'Unable to complete checkout',
+        statusMessage: 'Unable to instantiate StripeCheckoutHandler',
       })
     }
 
