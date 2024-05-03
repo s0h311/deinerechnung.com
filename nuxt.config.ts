@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/image', '@vueuse/nuxt', '@nuxtjs/supabase', '@nuxt/eslint', '@nuxt/test-utils/module'],
   app: {
     head: {
-      title: 'Deine Rechnung: Rechnungen einfacher gemacht',
+      title: 'DeineRechnung: Rechnungen einfacher gemacht',
     },
   },
   devtools: { enabled: true },
