@@ -21,13 +21,12 @@ const pricingOptions: PricingOption[] = [
     benefits: ['Automatische Verbesserungen', '24/7 Kundenservice', 'Flexibel monatlich zahlen'],
     isPremium: false,
   },
-
   {
-    title: 'Einmalig, für immer',
+    title: 'Über 50% Sparen',
     oldPrice: 69.99,
     newPrice: 39.99,
-    paymentPeriod: 'lifetime',
-    paymentPeriodText: 'einmalig',
+    paymentPeriod: 'yearly',
+    paymentPeriodText: 'jährlich',
     benefits: ['Automatische Verbesserungen', '24/7 Kundenservice', 'Einmal zahlen, für immer benutzen'],
     isPremium: true,
   },

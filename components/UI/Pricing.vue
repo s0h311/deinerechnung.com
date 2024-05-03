@@ -9,15 +9,20 @@
         class="border-2 p-8 rounded-xl space-y-10 shadow-md"
         :class="option.isPremium ? 'border-primary' : 'border-neutral'"
       >
-        <p
-          class="line-through text-sm -mb-8"
-          :class="option.oldPrice ? '' : 'invisible'"
-        >
-          {{ option.oldPrice }}€
-        </p>
-        <div class="flex items-center gap-2">
-          <p class="text-3xl font-semibold">{{ option.newPrice }}€</p>
-          <p class="text-sm">/ {{ option.paymentPeriodText }}</p>
+        <h3 class="font-bold text-lg">{{ option.title }}</h3>
+
+        <div class="space-y-2">
+          <p
+            class="line-through text-sm"
+            :class="option.oldPrice ? '' : 'invisible'"
+          >
+            {{ option.oldPrice }}€
+          </p>
+
+          <div class="flex items-center gap-2">
+            <p class="text-3xl font-semibold">{{ option.newPrice }}€</p>
+            <p class="text-sm">/ {{ option.paymentPeriodText }}</p>
+          </div>
         </div>
 
         <ul>

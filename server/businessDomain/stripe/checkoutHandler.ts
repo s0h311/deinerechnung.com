@@ -1,28 +1,37 @@
 import Stripe from 'stripe'
 import logger from '~/utils/logger'
+import { buildUrl } from '~/utils/url'
 
 type StripeCheckoutQuery = {
-  paymentPeriod: 'monthly' | 'lifetime'
+  paymentPeriod: 'monthly' | 'yearly' | 'lifetime'
   requestHost: string
   requestProtocol: 'http' | 'https'
 }
 
 export default class StripeCheckoutHandler {
-  private PRICE_ID_MONTHLY = 'price_1P8d4dBzByKpK8243H8OtprY'
-  private PRICE_ID_LIFETIME = 'price_1P8PhnBzByKpK824TzMU45Qq'
-
   private stripe: Stripe
+
+  private priceIds: Record<string, string> = {
+    monthly: 'price_1P8d4dBzByKpK8243H8OtprY',
+    yearly: 'price_1P8PhnBzByKpK824TzMU45Qq',
+  }
+
+  private modes: Record<string, Stripe.Checkout.Session.Mode> = {
+    monthly: 'subscription',
+    yearly: 'subscription',
+    lifetime: 'payment',
+  }
 
   constructor() {
     this.stripe = new Stripe(this.getStripeSecret())
   }
 
   public async execute(query: StripeCheckoutQuery): Promise<string> {
-    const priceId = query.paymentPeriod === 'monthly' ? this.PRICE_ID_MONTHLY : this.PRICE_ID_LIFETIME
-    const mode = query.paymentPeriod === 'monthly' ? 'subscription' : 'payment'
+    const priceId = this.priceIds[query.paymentPeriod]
+    const mode = this.modes[query.paymentPeriod]
 
-    const successUrl = `${query.requestProtocol}://${query.requestHost}/checkout/success`
-    const cancelUrl = `${query.requestProtocol}://${query.requestHost}/`
+    const successUrl = buildUrl(query.requestProtocol, query.requestHost, '/checkout/success')
+    const cancelUrl = buildUrl(query.requestProtocol, query.requestHost)
 
     try {
       const session = await this.stripe.checkout.sessions.create({
