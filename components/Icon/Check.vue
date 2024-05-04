@@ -7,7 +7,7 @@
   >
     <path
       fill="none"
-      stroke="oklch(76.6626% 0.135433 153.450024/1)"
+      :class="strokeColor ?? 'stroke-current'"
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="2"
@@ -15,3 +15,11 @@
     />
   </svg>
 </template>
+
+<script setup lang="ts">
+type Props = {
+  strokeColor?: string
+}
+
+defineProps<Props>()
+</script>
