@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { StripeWebhookHandlerResponse } from '../../../businessDomain/stripe/webhookHandler'
-import StripeWebhookHandler from '../../../businessDomain/stripe/webhookHandler'
+import type { StripeWebhookHandlerResponse } from '../../../businessLayer/stripe/webhookHandler'
+import StripeWebhookHandler from '../../../businessLayer/stripe/webhookHandler'
 
 export default defineEventHandler(async (event): Promise<StripeWebhookHandlerResponse> => {
   const rawEvent = parseRawBody(await readRawBody(event))

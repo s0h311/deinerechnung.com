@@ -32,7 +32,7 @@
 
     <table
       v-if="invoice.positions.length > 0"
-      class="text-[10px]"
+      class="text-[10px] w-full"
     >
       <thead>
         <tr class="[&>*]:px-2 border-b">

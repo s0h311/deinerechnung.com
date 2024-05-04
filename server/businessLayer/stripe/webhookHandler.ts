@@ -1,7 +1,7 @@
 import Stripe from 'stripe'
-import UserService from '../../dataDomain/services/userService'
+import UserService from '../../dataLayer/services/userService'
 import logger from '~/utils/logger'
-import SubscriptionService from '../../dataDomain/services/subscriptionService'
+import SubscriptionService from '../../dataLayer/services/subscriptionService'
 import type { Sender } from '~/server/types'
 import type { Storage } from 'unstorage'
 

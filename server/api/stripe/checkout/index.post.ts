@@ -1,4 +1,4 @@
-import StripeCheckoutHandler from '../../../businessDomain/stripe/checkoutHandler'
+import StripeCheckoutHandler from '../../../businessLayer/stripe/checkoutHandler'
 
 export default defineEventHandler(async (event): Promise<string> => {
   const requestHost = getRequestHost(event)

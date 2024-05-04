@@ -1,6 +1,6 @@
 import { serverSupabaseUser } from '#supabase/server'
 import logger from '~/utils/logger'
-import UserService from '../../dataDomain/services/userService'
+import UserService from '../../dataLayer/services/userService'
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)

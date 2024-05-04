@@ -11,8 +11,8 @@ import {
   mockSender,
 } from './mockData/mockStripeEvents'
 import type Stripe from 'stripe'
-import UserService from '~/server/dataDomain/services/userService'
-import SubscriptionService from '~/server/dataDomain/services/subscriptionService'
+import UserService from '~/server/dataLayer/services/userService'
+import SubscriptionService from '~/server/dataLayer/services/subscriptionService'
 
 vi.mock('~/server/dataDomain/services/userService', () => {
   const UserService = vi.fn()
