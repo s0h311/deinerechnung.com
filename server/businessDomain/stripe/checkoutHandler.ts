@@ -13,7 +13,7 @@ export default class StripeCheckoutHandler {
 
   private priceIds: Record<string, string> = {
     monthly: 'price_1P8d4dBzByKpK8243H8OtprY',
-    yearly: 'price_1P8PhnBzByKpK824TzMU45Qq',
+    yearly: 'price_1PCcAZBzByKpK824npFeIyNK',
   }
 
   private modes: Record<string, Stripe.Checkout.Session.Mode> = {
@@ -30,7 +30,7 @@ export default class StripeCheckoutHandler {
     const priceId = this.priceIds[query.paymentPeriod]
     const mode = this.modes[query.paymentPeriod]
 
-    const successUrl = buildUrl(query.requestProtocol, query.requestHost, '/checkout/success')
+    const successUrl = buildUrl(query.requestProtocol, query.requestHost, 'checkout/success')
     const cancelUrl = buildUrl(query.requestProtocol, query.requestHost)
 
     try {

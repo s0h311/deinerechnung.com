@@ -3,6 +3,7 @@ import UserService from '../../dataDomain/services/userService'
 import logger from '~/utils/logger'
 import SubscriptionService from '../../dataDomain/services/subscriptionService'
 import type { Sender } from '~/server/types'
+import type { Storage } from 'unstorage'
 
 type StripeWebhookHandlerQuery = {
   rawEvent: string
@@ -17,13 +18,13 @@ export default class StripeWebhookHandler {
   private stripe: Stripe
   private userService: UserService
   private subscriptionService: SubscriptionService
-  private chargedEmails: Set<string>
+  private cache: Storage
 
   constructor() {
     this.stripe = new Stripe(this.getStripeSecret())
     this.userService = new UserService()
     this.subscriptionService = new SubscriptionService()
-    this.chargedEmails = new Set()
+    this.cache = useStorage('cache')
   }
 
   public async execute({
@@ -53,8 +54,10 @@ export default class StripeWebhookHandler {
         })
       }
 
-      if (this.chargedEmails.delete(email)) {
+      const hasEmail = await this.cache.hasItem(email)
+      if (hasEmail) {
         await this.subscriptionService.updateLastPayment(sender.id, new Date())
+        await this.cache.removeItem(email)
       }
     } else if (event.type === 'charge.succeeded') {
       const email = event.data.object.billing_details.email
@@ -71,7 +74,7 @@ export default class StripeWebhookHandler {
         })
       }
 
-      this.chargedEmails.add(email)
+      await this.cache.setItem(email, 'charge.succeeded')
     }
 
     return { received: true }
