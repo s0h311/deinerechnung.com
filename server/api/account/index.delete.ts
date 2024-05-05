@@ -2,7 +2,7 @@ import { serverSupabaseUser } from '#supabase/server'
 import logger from '~/utils/logger'
 import UserService from '../../dataLayer/services/userService'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<void> => {
   const user = await serverSupabaseUser(event)
 
   if (!user) {

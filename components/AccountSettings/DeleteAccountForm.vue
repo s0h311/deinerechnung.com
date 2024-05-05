@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import type { UIConfirmationDialog } from '#build/components'
 
-const supabase = useSupabaseClient()
+const sender = await useSender()
 
 const deleteAccountConfirmationDialog = ref<InstanceType<typeof UIConfirmationDialog>>()
 
@@ -37,7 +37,16 @@ async function handleDeleteAccount(): Promise<void> {
 
   deleteAccountConfirmationDialog.value?.closeModal()
 
-  await supabase.auth.signOut()
-  navigateTo('/')
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+
+    if (key?.includes('auth-token')) {
+      localStorage.removeItem(key)
+      break
+    }
+  }
+
+  sender.value = null
+  await navigateTo('/')
 }
 </script>

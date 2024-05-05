@@ -1,5 +1,5 @@
 <template>
-  <section class="grid grid-cols-2 gap-10 w-fit [&>div]:space-y-7">
+  <section class="flex gap-10 w-fit">
     <div>
       <AccountSettingsEmailForm />
       <AccountSettingsPasswordForm />
@@ -25,6 +25,6 @@ useSeoMeta({
 
 <style scoped>
 section div div {
-  @apply bg-base-200 px-4 py-3 rounded-lg space-y-7;
+  @apply bg-base-200 px-4 py-3 rounded-lg space-y-7 first:mb-10;
 }
 </style>
