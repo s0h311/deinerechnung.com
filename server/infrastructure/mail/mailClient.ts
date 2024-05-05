@@ -1,16 +1,23 @@
 import logger from '~/utils/logger'
 
-type MailContent = {
+export type MailAttachment = {
+  name: string
+  url: string
+  content?: string
+}
+
+export type MailData = {
   recipient: {
     name: string
     email: string
   }
   params?: Record<string, string>
   templateId: number
+  attachments?: MailAttachment[]
 }
 
 export default class MailClient {
-  public async send({ recipient, params, templateId }: MailContent): Promise<void> {
+  public async send({ recipient, params, templateId, attachments }: MailData): Promise<void> {
     if (!this.shouldSendEmail()) {
       return
     }
@@ -29,6 +36,10 @@ export default class MailClient {
 
     if (params) {
       body['params'] = params
+    }
+
+    if (attachments) {
+      body['attachment'] = attachments
     }
 
     const { status, statusText } = await fetch('https://api.brevo.com/v3/smtp/email', {

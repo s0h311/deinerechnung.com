@@ -52,6 +52,7 @@ import logger from '~/utils/logger'
 
 const supabase = useSupabaseClient<Database>()
 const sender = (await useSender()).value!
+const invoice = await useCurrentInvoice()
 const recipientEmail = ref<string>('')
 const shouldUseQrCode = useQrCode()
 
@@ -67,7 +68,7 @@ function showDialog(): void {
 async function handleDownload(): Promise<void> {
   isLoadingDownload.value = true
 
-  const invoiceName = sender.runningInvoiceNumber.toString().padStart(4, '0') + '-rechnung.pdf'
+  const invoiceName = getInvoiceName()
 
   if (sender.iban) {
     shouldUseQrCode.value = true
@@ -89,21 +90,38 @@ async function handleDownload(): Promise<void> {
 async function handleSendViaEmail(): Promise<void> {
   isLoadingSendViaEmail.value = true
 
+  const invoiceName = getInvoiceName()
+
   if (sender.iban) {
     shouldUseQrCode.value = true
   }
 
-  await uploadInvoice()
+  const path = await uploadInvoice()
   await increaseRunningInvoiceNumber()
-  resetInvoice()
   shouldUseQrCode.value = false
 
+  await $fetch('/api/sendInvoice', {
+    method: 'post',
+    body: {
+      recipient: {
+        name: invoice.value.recipient?.name,
+        email: recipientEmail.value,
+      },
+      senderName: sender.name,
+      invoice: {
+        name: invoiceName,
+        url: path,
+      },
+    },
+  })
+
+  resetInvoice()
   setTimeout(() => (isLoadingSendViaEmail.value = false))
   dialog.value?.close()
 }
 
-async function uploadInvoice(): Promise<void> {
-  const invoiceName = `${sender.runningInvoiceNumber.toString().padStart(4, '0')}-rechnung-${new Date().getTime()}.pdf`
+async function uploadInvoice(): Promise<string> {
+  const invoiceName = `${getInvoiceName()}-${new Date().getTime()}.pdf`
   const invoicePath = `${sender.userId}/${invoiceName}`
 
   return new Promise((resolve, reject) => {
@@ -121,7 +139,16 @@ async function uploadInvoice(): Promise<void> {
         reject()
       }
 
-      resolve()
+      const { data: createSignedUrlData, error: createSignedUrlError } = await supabase.storage
+        .from('invoice')
+        .createSignedUrl(invoicePath, 60 * 60 * 24 * 14) // Valid for 14 days
+
+      if (createSignedUrlError) {
+        logger.error(createSignedUrlError.message, 'InvoiceNextSteps - uploadInvoice')
+        reject()
+      }
+
+      resolve(createSignedUrlData?.signedUrl ?? '')
     })
   })
 }
@@ -155,5 +182,9 @@ function createPdf(callback: (jsPdf: jsPDF) => void): void {
       callback(doc)
     },
   })
+}
+
+function getInvoiceName(): string {
+  return sender.runningInvoiceNumber.toString().padStart(4, '0') + '-rechnung.pdf'
 }
 </script>
