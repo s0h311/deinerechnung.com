@@ -10,13 +10,12 @@ export async function useSubscription(): Promise<Ref<Subscription | null>> {
     return subscription
   }
 
+  const supabase = useSupabaseClient<Database>()
   const sender = await useSender()
 
   if (!sender.value) {
     return subscription
   }
-
-  const supabase = useSupabaseClient<Database>()
 
   logger.warn('FETCHING', 'useSubscription')
 

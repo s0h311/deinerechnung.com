@@ -53,7 +53,7 @@ import logger from '~/utils/logger'
 const supabase = useSupabaseClient<Database>()
 const sender = (await useSender()).value!
 const invoice = await useCurrentInvoice()
-const recipientEmail = ref<string>('')
+const recipientEmail = ref<string>(invoice.value.recipient?.emailAddress ?? '')
 const shouldUseQrCode = useQrCode()
 
 const dialog = ref<HTMLDialogElement>()

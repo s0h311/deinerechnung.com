@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-base-200 w-fit px-4 py-3 rounded-lg space-y-7">
+  <div>
     <h2>Passwort</h2>
 
     <UICta
@@ -11,6 +11,7 @@
     >
       {{ requestOtpButtonDisabled ? requestOtpButtonDisabled : 'Code anfordern' }}
     </UICta>
+
     <form
       v-if="showPasswordResetForm"
       class="grid space-y-7"
@@ -52,6 +53,8 @@
         >Aktualisieren</UICta
       >
     </form>
+
+    <p class="text-xs max-w-md text-gray-500">Sie erhalten einen Code per E-Mail, diesen müssen Sie hier angeben.</p>
   </div>
 </template>
 

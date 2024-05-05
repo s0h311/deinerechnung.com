@@ -1,32 +1,38 @@
 <template>
-  <form
-    class="bg-base-200 grid w-fit px-4 py-3 rounded-lg space-y-7"
-    @submit.prevent="submit(handleSubmit)"
-  >
-    <h2>E-Mail</h2>
-
-    <input
-      v-model="fields.email"
-      class="input input-bordered"
-      type="text"
-      :placeholder="user.email"
-    />
-
-    <p
-      v-if="errors.email"
-      class="text-red-400 -mt-6"
+  <div>
+    <form
+      class="grid gap-7 w-fit"
+      @submit.prevent="submit(handleSubmit)"
     >
-      {{ errors.email }}
+      <h2>E-Mail</h2>
+
+      <input
+        v-model="fields.email"
+        class="input input-bordered"
+        type="text"
+        :placeholder="user.email"
+      />
+
+      <p
+        v-if="errors.email"
+        class="text-red-400 -mt-6"
+      >
+        {{ errors.email }}
+      </p>
+
+      <UICta
+        primary
+        wide
+        type="submit"
+        :is-loading="isLoading"
+        >Aktualisieren</UICta
+      >
+    </form>
+
+    <p class="text-xs max-w-md text-gray-500">
+      Die Änderung müssen Sie bestätigen. Dazu erhalten Sie eine E-Mail zu Ihrer neuen E-Mail Adresse
     </p>
-
-    <UICta
-      primary
-      wide
-      type="submit"
-      :is-loading="isLoading"
-      >Aktualisieren</UICta
-    >
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
