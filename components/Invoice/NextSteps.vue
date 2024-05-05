@@ -76,8 +76,8 @@ async function handleDownload(): Promise<void> {
   createPdf(async (doc) => {
     doc.save(invoiceName)
 
-    // await uploadInvoice()
-    // await increaseRunningInvoiceNumber()
+    await uploadInvoice()
+    await increaseRunningInvoiceNumber()
     resetInvoice()
     shouldUseQrCode.value = false
 

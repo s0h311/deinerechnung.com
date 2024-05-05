@@ -61,6 +61,16 @@
           <td />
           <td />
           <td />
+          <td class="text-end">Gesamtnetto:</td>
+          <td class="text-end break-normal">
+            {{ toEuro(netTotal) }}
+          </td>
+        </tr>
+
+        <tr class="[&>*]:pt-0 [&>*]:px-2 border-b-0">
+          <td />
+          <td />
+          <td />
           <td class="text-end">USt.:</td>
           <td class="text-end">
             {{ (invoice.vatRate ?? 0) + '%' }}
@@ -73,7 +83,7 @@
           <td />
           <td class="text-end">Gesamtbrutto:</td>
           <td class="text-end break-normal">
-            {{ toEuro(total) }}
+            {{ toEuro(grossTotal) }}
           </td>
         </tr>
       </tbody>
@@ -108,11 +118,17 @@ const recipientFullAddress = computed(() => {
 
 const invoiceText = computed(() => `RECHNUNG Nr. ${sender.runningInvoiceNumber.toString().padStart(4, '0')}`)
 const dateText = computed(() => `Datum: ${formatDate(new Date())}`)
-const total = computed(() => {
+
+const netTotal = computed(() => {
   if (invoice.value.positions.length === 0) {
     return 0
   }
 
   return invoice.value.positions.map((position) => position.quantity * position.price).reduce((a, b) => a + b)
+})
+
+const grossTotal = computed(() => {
+  const vatPrecentage = (invoice.value.vatRate ?? 0) / 100
+  return netTotal.value * (1 + vatPrecentage)
 })
 </script>

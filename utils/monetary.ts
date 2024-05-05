@@ -1,8 +1,10 @@
 export function toEuro(centValue: number): string {
+  const centValueWithoutDecimal = Math.floor(centValue)
+
   return new Intl.NumberFormat('de-DE', {
     style: 'currency',
     currency: 'EUR',
-  }).format(centValue / 100)
+  }).format(centValueWithoutDecimal / 100)
 }
 
 export function toCents(euroValue: number, centValue?: number): number {

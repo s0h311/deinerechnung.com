@@ -56,6 +56,7 @@ onMounted(async () => {
 
 async function fetchInvoices() {
   const userId = sender.userId
+
   const { data: invoicesData, error: invoicesError } = await supabase.storage.from('invoice').list(userId, {
     sortBy: {
       column: 'updated_at',

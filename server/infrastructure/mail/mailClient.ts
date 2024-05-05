@@ -31,8 +31,6 @@ export default class MailClient {
       body['params'] = params
     }
 
-    // TODO fix this
-
     const { status, statusText } = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'post',
       headers: {
