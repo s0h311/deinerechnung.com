@@ -18,15 +18,7 @@ export default class SubscriptionService {
     })
 
     if (error) {
-      logger.error(error.message, 'SubscriptionService - create')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create subscription',
-        data: {
-          senderId,
-        },
-      })
+      throw logger.error(error.message, 'SubscriptionService - create', true, { senderId })
     }
   }
 
@@ -39,15 +31,7 @@ export default class SubscriptionService {
       .eq('sender_id', senderId)
 
     if (error) {
-      logger.error(error.message, 'SubscriptionService - updateLastPayment')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to update last payment for subscription',
-        data: {
-          senderId,
-        },
-      })
+      throw logger.error(error.message, 'SubscriptionService - updateLastPayment', true, { senderId })
     }
   }
 
@@ -55,15 +39,7 @@ export default class SubscriptionService {
     const { error } = await this.supabase.from('subscription').delete().eq('sender_id', senderId)
 
     if (error) {
-      logger.error(error.message, 'SubscriptionService - delete')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to delete subscription',
-        data: {
-          senderId,
-        },
-      })
+      throw logger.error(error.message, 'SubscriptionService - delete', true, { senderId })
     }
   }
 }

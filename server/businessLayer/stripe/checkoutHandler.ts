@@ -48,12 +48,7 @@ export default class StripeCheckoutHandler {
       })
 
       if (!session.url) {
-        logger.error('Unable to find stripe session url', 'CheckoutHandler')
-
-        throw createError({
-          statusCode: 500,
-          statusMessage: 'Unable to complete checkout',
-        })
+        throw logger.error('Unable to find stripe session url', 'CheckoutHandler', true)
       }
 
       return session.url
@@ -65,12 +60,7 @@ export default class StripeCheckoutHandler {
 
   private getStripeSecret(): string {
     if (process.env.STRIPE_SECRET_KEY === undefined) {
-      logger.error('Stripe secret key is missing', 'CheckoutHandler - getStripeSecret')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to instantiate StripeCheckoutHandler',
-      })
+      throw logger.error('Stripe secret key is missing', 'CheckoutHandler - getStripeSecret', true)
     }
 
     return process.env.STRIPE_SECRET_KEY

@@ -15,8 +15,16 @@ const logger = {
     p.warn(`[${source}] ${message}`)
   },
 
-  error: (message: string, source = 'Unknown Source') => {
+  error: (message: string, source = 'Unknown Source', shouldThrow = false, data: Record<string, unknown> = {}) => {
     p.error(`[${source}] ${message}`)
+
+    if (shouldThrow) {
+      return createError({
+        statusCode: 500,
+        statusMessage: message,
+        data,
+      })
+    }
   },
 }
 

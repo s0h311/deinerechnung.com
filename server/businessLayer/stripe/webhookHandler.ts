@@ -43,15 +43,7 @@ export default class StripeWebhookHandler {
       const email = event.data.object.customer_details?.email
 
       if (!email) {
-        logger.error('Unable to update last payment, email is null', 'WebhookHandler')
-
-        throw createError({
-          statusCode: 500,
-          statusMessage: 'Unable to update last payment, email is null',
-          data: {
-            email,
-          },
-        })
+        throw logger.error('Unable to update last payment, email is null', 'WebhookHandler', true, { email })
       }
 
       const hasEmail = await this.cache.hasItem(email)
@@ -63,15 +55,7 @@ export default class StripeWebhookHandler {
       const email = event.data.object.billing_details.email
 
       if (!email) {
-        logger.error('Unable to update last payment, email is null', 'WebhookHandler')
-
-        throw createError({
-          statusCode: 500,
-          statusMessage: 'Unable to update last payment, email is null',
-          data: {
-            email,
-          },
-        })
+        throw logger.error('Unable to update last payment, email is null', 'WebhookHandler', true, { email })
       }
 
       await this.cache.setItem(email, 'charge.succeeded')
@@ -82,39 +66,19 @@ export default class StripeWebhookHandler {
 
   private async createUser(customerDetails: Stripe.Checkout.Session.CustomerDetails | null): Promise<Sender> {
     if (!customerDetails) {
-      logger.error('Unable to create user, customerDetails is null', 'WebhookHandler')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create user',
-      })
+      throw logger.error('Unable to create user, customerDetails is null', 'WebhookHandler', true)
     }
 
     if (!customerDetails.address) {
-      logger.error('Unable to create user, address is null', 'WebhookHandler')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create user',
-      })
+      throw logger.error('Unable to create user, address is null', 'WebhookHandler', true)
     }
 
     if (!customerDetails.name) {
-      logger.error('Unable to create user, name is null', 'WebhookHandler')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create user',
-      })
+      throw logger.error('Unable to create user, name is null', 'WebhookHandler', true)
     }
 
     if (!customerDetails.email) {
-      logger.error('Unable to create user, email is null', 'WebhookHandler')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create user',
-      })
+      throw logger.error('Unable to create user, email is null', 'WebhookHandler', true)
     }
 
     const sender = await this.userService.create({
@@ -137,23 +101,15 @@ export default class StripeWebhookHandler {
     try {
       return this.stripe.webhooks.constructEvent(rawEvent, stripeSignatureHeader, whsec)
     } catch (err) {
-      logger.error('Stripe event could not be verified', 'StripeWebhookHandler - getVerifiedEvent')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to verify request',
+      throw logger.error('Stripe event could not be verified', 'StripeWebhookHandler - getVerifiedEvent', true, {
+        error: err,
       })
     }
   }
 
   private getStripeSecret(): string {
     if (process.env.STRIPE_SECRET_KEY === undefined) {
-      logger.error('Stripe secret key is missing', 'StripeWebhookHandler - getStripeSecret')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to handle webhook',
-      })
+      throw logger.error('Stripe secret key is missing', 'StripeWebhookHandler - getStripeSecret', true)
     }
 
     return process.env.STRIPE_SECRET_KEY
@@ -161,12 +117,7 @@ export default class StripeWebhookHandler {
 
   private getStripeWebhookSecret(): string {
     if (process.env.STRIPE_WHSEC === undefined) {
-      logger.error('Stripe webhook secret key is missing', 'StripeWebhookHandler - getStripeWebhookSecret')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to handle webhook',
-      })
+      throw logger.error('Stripe webhook secret key is missing', 'StripeWebhookHandler - getStripeWebhookSecret', true)
     }
 
     return process.env.STRIPE_WHSEC

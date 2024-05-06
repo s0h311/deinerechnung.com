@@ -53,23 +53,13 @@ export default class MailClient {
     })
 
     if (status > 399) {
-      logger.error(statusText, 'MailClient - send')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to send email',
-      })
+      throw logger.error(statusText, 'MailClient - send', true)
     }
   }
 
   private getApiKey(): string {
     if (process.env.BREVO_API_KEY === undefined) {
-      logger.error('brevo api key is missing', 'MailClient - getApiKey')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to send email',
-      })
+      throw logger.error('brevo api key is missing', 'MailClient - getApiKey', true)
     }
 
     return process.env.BREVO_API_KEY

@@ -6,11 +6,7 @@ export default defineEventHandler(async (event): Promise<void> => {
   const user = await serverSupabaseUser(event)
 
   if (!user) {
-    logger.error('Unable to delete user, no user found', 'Account Delete API')
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'No user found',
-    })
+    throw logger.error('Unable to delete user, no user found', 'Account Delete API', true)
   }
 
   const userService = new UserService()

@@ -42,12 +42,7 @@ export default class UserService {
     })
 
     if (userCreateError) {
-      logger.error(userCreateError.message, 'UserService - createUser')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create user',
-      })
+      throw logger.error(userCreateError.message, 'UserService - createUser', true)
     }
 
     return userCreateData.user
@@ -68,12 +63,7 @@ export default class UserService {
       .single()
 
     if (senderCreateError) {
-      logger.error(senderCreateError.message, 'UserService - createSender')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to create sender',
-      })
+      throw logger.error(senderCreateError.message, 'UserService - createSender', true)
     }
 
     return objectToCamel(senderCreateData)
@@ -87,12 +77,7 @@ export default class UserService {
       .single()
 
     if (fetchSenderError) {
-      logger.error(fetchSenderError.message, 'UserService - delete')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to delete user',
-      })
+      throw logger.error(fetchSenderError.message, 'UserService - delete', true)
     }
 
     const { error: deleteInvoicePositionsError } = await this.supabase
@@ -101,12 +86,7 @@ export default class UserService {
       .eq('sender_id', fetchSenderData.id)
 
     if (deleteInvoicePositionsError) {
-      logger.error(deleteInvoicePositionsError.message, 'UserService - delete')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to delete invoice positions',
-      })
+      throw logger.error(deleteInvoicePositionsError.message, 'UserService - delete', true)
     }
 
     const { error: deleteRecipientsError } = await this.supabase
@@ -115,34 +95,19 @@ export default class UserService {
       .eq('sender_id', fetchSenderData.id)
 
     if (deleteRecipientsError) {
-      logger.error(deleteRecipientsError.message, 'UserService - delete')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to delete recipients',
-      })
+      throw logger.error(deleteRecipientsError.message, 'UserService - delete', true)
     }
 
     const { error: deleteSenderError } = await this.supabase.from('sender').delete().eq('id', fetchSenderData.id)
 
     if (deleteSenderError) {
-      logger.error(deleteSenderError.message, 'UserService - delete')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to delete sender',
-      })
+      throw logger.error(deleteSenderError.message, 'UserService - delete', true)
     }
 
     const { data: deleteUserData, error: deleteUserError } = await this.supabase.auth.admin.deleteUser(userId)
 
     if (deleteUserError) {
-      logger.error(deleteUserError.message, 'UserService - delete')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to delete user',
-      })
+      throw logger.error(deleteUserError.message, 'UserService - delete', true)
     }
 
     await this.mailClient.send({
@@ -158,12 +123,7 @@ export default class UserService {
     const { data, error } = await this.supabase.rpc('get_sender_id_from_user_email', { email })
 
     if (error) {
-      logger.error('Unable to get sender id from user email', 'UserService - getSenderFromEmail')
-
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Unable to get sender id from user email',
-      })
+      throw logger.error('Unable to get sender id from user email', 'UserService - getSenderFromEmail', true)
     }
 
     return data
