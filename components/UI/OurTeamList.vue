@@ -15,7 +15,7 @@
         :key="'person' + index"
       >
         <NuxtImg
-          class="rounded-full mx-auto mb-5"
+          class="rounded-full mx-auto mb-5 size-24 object-cover"
           :src="image"
           width="100"
           height="100"
