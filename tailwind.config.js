@@ -16,6 +16,8 @@ export default {
         xxs: '8.5px',
       },
       screens: {
+        tablet: '768px',
+        laptop: '1024px',
         desktop: '1850px',
       },
     },

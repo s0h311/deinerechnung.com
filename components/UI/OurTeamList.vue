@@ -8,23 +8,33 @@
 
     <ul
       class="grid gap-20 w-fit mx-auto text-center"
-      :class="`grid-cols-${people.length}`"
+      :class="`tablet:grid-cols-${people.length}`"
     >
       <li
-        v-for="({ name, role, image }, index) in people"
+        v-for="({ name, role, image, link }, index) in people"
         :key="'person' + index"
       >
-        <NuxtImg
-          class="rounded-full mx-auto mb-5 size-24 object-cover"
-          :src="image"
-          width="100"
-          height="100"
-          :alt="name"
-        />
+        <NuxtLink
+          :to="link ? link : ''"
+          target="_blank"
+        >
+          <NuxtImg
+            class="rounded-full mx-auto mb-5 size-24 object-cover hover:ring-4"
+            :src="image"
+            width="96"
+            height="96"
+            :alt="name"
+          />
+        </NuxtLink>
 
         <p class="font-semibold">{{ name }}</p>
 
-        <p class="text-sm">{{ role }}</p>
+        <p
+          v-if="role"
+          class="text-sm"
+        >
+          {{ role }}
+        </p>
       </li>
     </ul>
   </section>
@@ -36,10 +46,18 @@ type Props = {
   text: string
   people: {
     name: string
-    role: string
+    role?: string
     image: string
+    link?: string
   }[]
 }
 
 defineProps<Props>()
 </script>
+
+<style scoped>
+img:hover {
+  transform: translateY(-20%);
+  animation: 1s linear;
+}
+</style>

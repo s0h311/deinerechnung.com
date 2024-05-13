@@ -25,20 +25,18 @@
       :people="[
         {
           name: 'Maximilian Buchmann',
-          role: 'Geschäftsführer',
           image: 'person-1.png',
         },
 
         {
           name: 'Fahram Tehrani',
-          role: 'Mensch',
           image: 'person-2.png',
         },
 
         {
           name: 'Soheil Nazari',
-          role: 'Software Architekt',
           image: 'person-3.png',
+          link: 'https://soheilnazari.de',
         },
       ]"
     />
