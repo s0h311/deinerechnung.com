@@ -6,10 +6,7 @@
       {{ text }}
     </p>
 
-    <ul
-      class="grid gap-20 w-fit mx-auto text-center"
-      :class="`tablet:grid-cols-${people.length}`"
-    >
+    <ul class="grid gap-20 tablet:grid-cols-3 w-fit mx-auto text-center">
       <li
         v-for="({ name, role, image, link }, index) in people"
         :key="'person' + index"
