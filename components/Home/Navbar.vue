@@ -1,11 +1,6 @@
 <template>
   <nav class="navbar px-10 grid grid-cols-3 place-items-center">
-    <NuxtLink
-      class="tracking-wider bg-neutral text-base-100 px-2 py-1 text-lg rounded-sm justify-self-start"
-      to="/"
-    >
-      DeineRechnung
-    </NuxtLink>
+    <HomeLogo />
 
     <div class="space-x-7">
       <NuxtLink

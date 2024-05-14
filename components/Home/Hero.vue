@@ -12,7 +12,7 @@
             :key="'gain' + index"
             class="flex items-center gap-2"
           >
-            <IconCheck /> {{ gain }}
+            <IconCheck stroke-color="stroke-primary" /> {{ gain }}
           </li>
         </ul>
 

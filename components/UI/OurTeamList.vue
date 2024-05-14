@@ -16,7 +16,7 @@
           target="_blank"
         >
           <NuxtImg
-            class="rounded-full mx-auto mb-5 size-24 object-cover hover:ring-4"
+            class="rounded-full mx-auto mb-5 size-28 object-cover tablet:hover:ring-4 p-2"
             :src="image"
             width="96"
             height="96"
@@ -54,7 +54,6 @@ defineProps<Props>()
 
 <style scoped>
 img:hover {
-  transform: translateY(-20%);
-  animation: 1s linear;
+  @apply md:-translate-y-5 md:duration-500;
 }
 </style>
